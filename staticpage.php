@@ -80,7 +80,7 @@ else {
 		$title = $page;
 
 	// Prepare moodle page
-	$PAGE->set_context(get_context_instance(CONTEXT_SYSTEM));
+	$PAGE->set_context(context_system::instance());
 	if (array_key_exists('staticpage', $PAGE->theme->layouts))
 		$PAGE->set_pagelayout('staticpage');
 	else
