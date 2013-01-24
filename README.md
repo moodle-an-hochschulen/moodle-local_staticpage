@@ -10,6 +10,7 @@ This plugin requires Moodle 2.3+
 
 Changes
 =======
+2013-01-21 - Fix a flaw in README file regarding Apache mod_rewrite
 2013-01-21 - Migrate plugin settings from config.php to a settings page within Moodle
 2012-09-26 - Replace deprecated get_context_instance function
 2012-06-25 - Update version.php for Moodle 2.3
@@ -106,7 +107,7 @@ local_staticpage is able to use Apache's mod_rewrite module to provide static pa
 Please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
 
 RewriteEngine On
-RewriteRule ^/static/(.*)\.html /local/staticpage/staticpage.php?page=$1&%{QUERY_STRING} [L]
+RewriteRule ^/static/(.*)\.html /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
 Now, the static pages from the above example are available on
 http://www.yourmoodle.com/static/imprint.html
