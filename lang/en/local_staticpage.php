@@ -15,4 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 $string['pluginname'] = 'Static Pages';
+$string['apacherewrite'] = 'Force Apache mod_rewrite';
+$string['apacherewritedescription'] = 'Serve static pages only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
+$string['documentdirectory'] = 'Document directory';
+$string['documentdirectorydescription'] = 'The document directory which contains .html files with the static pages\' HTML code. See README file for details.';
+$string['documentlist'] = 'Document list';
+$string['documentlistdirectoryempty'] = 'There are no .html files in the document directory, therefore there are no static pages to be delivered. See README file for details.';
+$string['documentlistdirectorynotreadable'] = 'The document directory is not readable, therefore there are no static pages to be delivered.';
+$string['documentlistentryfilename'] = 'The following document file was found:<br /><strong>{$a}</strong>';
+$string['documentlistentrylanguage'] = 'The document will be available for the following language:<br /><strong>{$a}</strong>';
+$string['documentlistentryreachable'] = 'The document is available and can be linked to at the following URL:<br /><strong>{$a}</strong>';
+$string['documentlistentryrewrite'] = 'The document is available and can be linked to at the following clean URL (as long as you did enable Apache mod_rewrite rules as described in the README file):<br /><strong>{$a}</strong>';
+$string['documentlistentrypagename'] = 'From the document file\'s filename, Moodle derived the following pagename:<br /><strong>{$a}</strong>';
+$string['documentlistentryunsupported'] = 'The filename suffix refers to an unsupported language pack and therefore, the document will <strong>not be available</strong>. Please change the document filename to a supported language pack.';
+$string['documentlistinstruction'] = 'This list shows all files which have been found in the document directory and their URLs';
+$string['documentlistnodirectory'] = 'The document directory doesn\'t exist, therefore there are no static pages to be delivered.';
+$string['international'] = 'All languages';
 $string['pagenotfound'] = 'Page not found';
