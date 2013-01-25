@@ -10,6 +10,7 @@ This plugin requires Moodle 2.3+
 
 Changes
 =======
+2013-01-21 - Fix a flaw in README file regarding filename examples
 2013-01-21 - Fix a flaw in README file regarding Apache mod_rewrite
 2013-01-21 - Migrate plugin settings from config.php to a settings page within Moodle
 2012-09-26 - Replace deprecated get_context_instance function
@@ -42,8 +43,8 @@ The document directory /var/www/files/moodledata/staticpage contains the files f
 After finding a file with a .html filename extension, local_staticpage takes a second look at the filename to see if it can find another filename extension. If there is one, it is used as language of the static page.
 
 Example:
-The document directory /var/www/files/moodledata/staticpage contains the files impress.en.html, impressum.de.html and faq.html. local_staticpage looks at the filename extensions and serves the static pages as follows: 
-File impress.en.html will be served as static page with the page name "impress", but only when the current language of the user is english.
+The document directory /var/www/files/moodledata/staticpage contains the files imprint.en.html, impressum.de.html and faq.html. local_staticpage looks at the filename extensions and serves the static pages as follows: 
+File imprint.en.html will be served as static page with the page name "imprint", but only when the current language of the user is english.
 File impressum.de.html will be served as static page with the page name "impressum", but only when the current language of the user is german.
 File faq.html will be served as static page with the page name "faq" regardless of the current language of the user. 
 
