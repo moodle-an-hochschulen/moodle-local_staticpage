@@ -5,11 +5,12 @@ Moodle plugin which displays static information pages which exist outside any co
 
 Requirements
 ============
-This plugin requires Moodle 2.3+
+This plugin requires Moodle 2.4+
 
 
 Changes
 =======
+2013-02-18 - Check compatibility for Moodle 2.4, fix language string names to comply with language string name convention
 2013-01-21 - Fix a flaw in README file regarding filename examples
 2013-01-21 - Fix a flaw in README file regarding Apache mod_rewrite
 2013-01-21 - Migrate plugin settings from config.php to a settings page within Moodle
@@ -23,7 +24,7 @@ Installation
 Install the plugin like any other plugin to folder
 /local/staticpage
 
-See http://docs.moodle.org/23/en/Installing_plugins for details on installing Moodle plugins
+See http://docs.moodle.org/24/en/Installing_plugins for details on installing Moodle plugins
 
 
 Usage & Settings
@@ -163,6 +164,13 @@ Further information
 local_staticpage is found in the Moodle Plugins repository: http://moodle.org/plugins/view.php?plugin=local_staticpage
 
 Report a bug or suggest an improvement: https://github.com/abias/moodle-local_staticpage/issues
+
+
+Moodle release support
+======================
+Due to limited ressources, local_staticpage is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
+
+There may be several weeks after a new major release of Moodle has been published until I can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that local_staticpage still works with a new major relase - please let me know on https://github.com/abias/moodle-local_staticpage/issues
 
 
 Copyright

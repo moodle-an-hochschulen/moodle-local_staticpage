@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 $plugin->component = 'local_staticpage';
-$plugin->version = 2013012103;
-$plugin->release = '2.3 RC1 (Build: 2013012103)';
-$plugin->requires = 2012062500;
-$plugin->maturity = MATURITY_RC;
+$plugin->version = 2013021800;
+$plugin->release = '2.4 (Build: 2013021800)';
+$plugin->requires = 2012120300;
+$plugin->maturity = MATURITY_STABLE;

@@ -16,9 +16,9 @@
 
 $string['pluginname'] = 'Static Pages';
 $string['apacherewrite'] = 'Force Apache mod_rewrite';
-$string['apacherewritedescription'] = 'Serve static pages only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
+$string['apacherewrite_desc'] = 'Serve static pages only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
 $string['documentdirectory'] = 'Document directory';
-$string['documentdirectorydescription'] = 'The document directory which contains .html files with the static pages\' HTML code. See README file for details.';
+$string['documentdirectory_desc'] = 'The document directory which contains .html files with the static pages\' HTML code. See README file for details.';
 $string['documentlist'] = 'Document list';
 $string['documentlistdirectoryempty'] = 'There are no .html files in the document directory, therefore there are no static pages to be delivered. See README file for details.';
 $string['documentlistdirectorynotreadable'] = 'The document directory is not readable, therefore there are no static pages to be delivered.';

@@ -16,9 +16,9 @@
 
 $string['pluginname'] = 'Statische Seiten';
 $string['apacherewrite'] = 'Apache mod_rewrite Nutzung erzwingen';
-$string['apacherewritedescription'] = 'Statische Seiten sollen ausschließlich unter einer griffigen URL, die von Apache mod_rewrite erzeugt wird, bereitgestellt werden. Bitte lesen Sie die README Datei für Details.';
+$string['apacherewrite_desc'] = 'Statische Seiten sollen ausschließlich unter einer griffigen URL, die von Apache mod_rewrite erzeugt wird, bereitgestellt werden. Bitte lesen Sie die README Datei für Details.';
 $string['documentdirectory'] = 'Dokumenten-Verzeichnis';
-$string['documentdirectorydescription'] = 'Das Dokumenten-Verzeichnis, welches die .html Dateien mit dem HTML Code für die statischen Seiten enthält. Bitte lesen Sie die README Datei für Details.';
+$string['documentdirectory_desc'] = 'Das Dokumenten-Verzeichnis, welches die .html Dateien mit dem HTML Code für die statischen Seiten enthält. Bitte lesen Sie die README Datei für Details.';
 $string['documentlist'] = 'Dokumenten-Liste';
 $string['documentlistdirectoryempty'] = 'Das Dokumenten-Verzeichnis enthält keine .html Dateien, es werden also keine statischen Seiten bereitgestellt. Bitte lesen Sie die README Datei für Details.';
 $string['documentlistdirectorynotreadable'] = 'Das Dokumenten-Verzeichnis kann nicht gelesen werden, es werden also keine statischen Seiten bereitgestellt.';

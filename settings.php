@@ -16,7 +16,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-global $CFG;
+global $CFG, $PAGE;
 
 if ($hassiteconfig) {
 	// New settings page
@@ -27,14 +27,14 @@ if ($hassiteconfig) {
 	$page->add(new admin_setting_heading('local_staticpage/documentdirectoryheading', get_string('documentdirectory', 'local_staticpage'), ''));
 
 	// Create document directory widget
-	$page->add(new admin_setting_configdirectory('local_staticpage/documentdirectory', get_string('documentdirectory', 'local_staticpage'), get_string('documentdirectorydescription', 'local_staticpage'), $CFG->dataroot.'/staticpage'));
+	$page->add(new admin_setting_configdirectory('local_staticpage/documentdirectory', get_string('documentdirectory', 'local_staticpage'), get_string('documentdirectory_desc', 'local_staticpage'), $CFG->dataroot.'/staticpage'));
 
 
 	// Apache rewrite
 	$page->add(new admin_setting_heading('local_staticpage/apacherewriteheading', get_string('apacherewrite', 'local_staticpage'), ''));
 
 	// Create apache rewrite control widget
-	$page->add(new admin_setting_configcheckbox('local_staticpage/apacherewrite', get_string('apacherewrite', 'local_staticpage'), get_string('apacherewritedescription', 'local_staticpage'), 0));
+	$page->add(new admin_setting_configcheckbox('local_staticpage/apacherewrite', get_string('apacherewrite', 'local_staticpage'), get_string('apacherewrite_desc', 'local_staticpage'), 0));
 
 
 	// Get previously configured plugin config
