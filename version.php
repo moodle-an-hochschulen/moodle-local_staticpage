@@ -14,8 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
+
 $plugin->component = 'local_staticpage';
-$plugin->version = 2013021800;
-$plugin->release = '2.4 (Build: 2013021800)';
+$plugin->version = 2013021801;
+$plugin->release = '2.4 (Build: 2013031800)';
 $plugin->requires = 2012120300;
 $plugin->maturity = MATURITY_STABLE;

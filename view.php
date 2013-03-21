@@ -14,6 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Local plugin "staticpage" - View page
+ *
+ * @package     local
+ * @subpackage  local_staticpage
+ * @copyright   2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
 
 // Include config.php
 require_once('../../config.php');
@@ -27,9 +37,9 @@ $config = get_config('local_staticpage');
 
 // View only with /static/ URL
 if ($config->apacherewrite == true) {
-	if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
-		die;
-	}
+    if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
+        die;
+    }
 }
 
 
@@ -38,42 +48,46 @@ $page = required_param('page', PARAM_ALPHA);
 
 // Put together absolute document paths based on requested page and current language
 $lang = current_language();
-$path_language = rtrim($config->documentdirectory,'/').'/'.$page.'.'.$lang.'.html';
-$path_international = rtrim($config->documentdirectory,'/').'/'.$page.'.html';
+$path_language = rtrim($config->documentdirectory, '/').'/'.$page.'.'.$lang.'.html';
+$path_international = rtrim($config->documentdirectory, '/').'/'.$page.'.html';
 
 
 // Does language based document file exist?
 if (file_exists($path_language) == true) {
-	// Remember document path
-	$path = $path_language;
+    // Remember document path
+    $path = $path_language;
 }
 // Otherwise, does international document file exist?
 else if (file_exists($path_international) == true) {
-	// Remember document path
-	$path = $path_international;
+    // Remember document path
+    $path = $path_international;
 }
 // If not, quit with error message
 else {
-	print_error('pagenotfound', 'local_staticpage');
+    print_error('pagenotfound', 'local_staticpage');
 }
 
 
 // Import the document, load DOM
-$staticdoc = new DOMDocument(); 
-$staticdoc->loadHTMLFile($path); 
+$staticdoc = new DOMDocument();
+$staticdoc->loadHTMLFile($path);
 
 // Extract page title (if present)
-if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue))
-	$title = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
-else
-	$title = $page;
+if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
+    $title = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
+}
+else {
+    $title = $page;
+}
 
 // Prepare moodle page
 $PAGE->set_context(context_system::instance());
-if (array_key_exists('staticpage', $PAGE->theme->layouts))
-	$PAGE->set_pagelayout('staticpage');
-else
-	$PAGE->set_pagelayout('standard');
+if (array_key_exists('staticpage', $PAGE->theme->layouts)) {
+    $PAGE->set_pagelayout('staticpage');
+}
+else {
+    $PAGE->set_pagelayout('standard');
+}
 $PAGE->navbar->add($title);
 $PAGE->set_heading($title);
 $PAGE->set_title($title);
