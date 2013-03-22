@@ -10,6 +10,7 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-03-22 - Bugfix: Static page wouldn't show even if everything was configured correctly; Please notice that apache rewrite rule has changed
 2013-03-18 - Code cleanup according to moodle codechecker
 2013-02-18 - Check compatibility for Moodle 2.4, fix language string names to comply with language string name convention
 2013-01-21 - Fix a flaw in README file regarding filename examples
@@ -110,7 +111,7 @@ local_staticpage is able to use Apache's mod_rewrite module to provide static pa
 Please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
 
 RewriteEngine On
-RewriteRule ^/static/(.*)\.html /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
+RewriteRule ^/static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
 Now, the static pages from the above example are available on
 http://www.yourmoodle.com/static/imprint.html

@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+// defined('MOODLE_INTERNAL') || die(); - Must not be called because this script is called from outside moodle
 
 // Include config.php
 require_once('../../config.php');
@@ -78,6 +78,14 @@ if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
 }
 else {
     $title = $page;
+}
+
+// Set page url
+if ($config->apacherewrite == true) {
+    $PAGE->set_url('/static/'.$page);
+}
+else {
+    $PAGE->set_url('/local/staticpage/view.php?'.$page);
 }
 
 // Prepare moodle page
