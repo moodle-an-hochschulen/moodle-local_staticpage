@@ -10,6 +10,8 @@ This plugin requires Moodle 2.4+
 
 Changes
 =======
+2013-04-23 - Fix problems on windows systems
+2013-04-22 - Bugfix: Language switcher didn't work anymore on a static page
 2013-03-22 - Bugfix: Static page wouldn't show even if everything was configured correctly; Please notice that apache rewrite rule has changed
 2013-03-18 - Code cleanup according to moodle codechecker
 2013-02-18 - Check compatibility for Moodle 2.4, fix language string names to comply with language string name convention

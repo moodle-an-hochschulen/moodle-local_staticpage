@@ -49,16 +49,18 @@ $page = required_param('page', PARAM_ALPHA);
 // Put together absolute document paths based on requested page and current language
 $lang = current_language();
 $path_language = rtrim($config->documentdirectory, '/').'/'.$page.'.'.$lang.'.html';
+$path_language = str_replace('\\', '/', $path_language); // Replace backslashes in path with forward slashes if we are on a windows system
 $path_international = rtrim($config->documentdirectory, '/').'/'.$page.'.html';
+$path_international = str_replace('\\', '/', $path_international); // Replace backslashes in path with forward slashes if we are on a windows system
 
 
 // Does language based document file exist?
-if (file_exists($path_language) == true) {
+if (is_readable($path_language) == true) {
     // Remember document path
     $path = $path_language;
 }
 // Otherwise, does international document file exist?
-else if (file_exists($path_international) == true) {
+else if (is_readable($path_international) == true) {
     // Remember document path
     $path = $path_international;
 }
@@ -82,10 +84,10 @@ else {
 
 // Set page url
 if ($config->apacherewrite == true) {
-    $PAGE->set_url('/static/'.$page);
+    $PAGE->set_url('/static/'.$page.'.html');
 }
 else {
-    $PAGE->set_url('/local/staticpage/view.php?'.$page);
+    $PAGE->set_url('/local/staticpage/view.php?page='.$page);
 }
 
 // Prepare moodle page
