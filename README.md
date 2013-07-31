@@ -5,11 +5,14 @@ Moodle plugin which displays static information pages which exist outside any co
 
 Requirements
 ============
-This plugin requires Moodle 2.4+
+This plugin requires Moodle 2.5+
 
 
 Changes
 =======
+2013-07-30 - Transfer Github repository from github.com/abias/... to github.com/moodleuulm/...; Please update your Git paths if necessary
+2013-07-30 - Check compatibility for Moodle 2.5, no functionality change
+2013-07-23 - Extend valid URLs with "_-" characters
 2013-04-23 - Fix problems on windows systems
 2013-04-22 - Bugfix: Language switcher didn't work anymore on a static page
 2013-03-22 - Bugfix: Static page wouldn't show even if everything was configured correctly; Please notice that apache rewrite rule has changed
@@ -28,7 +31,7 @@ Installation
 Install the plugin like any other plugin to folder
 /local/staticpage
 
-See http://docs.moodle.org/24/en/Installing_plugins for details on installing Moodle plugins
+See http://docs.moodle.org/25/en/Installing_plugins for details on installing Moodle plugins
 
 
 Usage & Settings
@@ -167,14 +170,14 @@ Further information
 ===================
 local_staticpage is found in the Moodle Plugins repository: http://moodle.org/plugins/view.php?plugin=local_staticpage
 
-Report a bug or suggest an improvement: https://github.com/abias/moodle-local_staticpage/issues
+Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-local_staticpage/issues
 
 
 Moodle release support
 ======================
 Due to limited ressources, local_staticpage is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
 
-There may be several weeks after a new major release of Moodle has been published until I can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that local_staticpage still works with a new major relase - please let me know on https://github.com/abias/moodle-local_staticpage/issues
+There may be several weeks after a new major release of Moodle has been published until I can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that local_staticpage still works with a new major relase - please let me know on https://github.com/moodleuulm/moodle-local_staticpage/issues
 
 
 Right-to-left support

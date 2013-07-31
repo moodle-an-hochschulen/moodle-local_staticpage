@@ -44,7 +44,7 @@ if ($config->apacherewrite == true) {
 
 
 // Get requested page's name
-$page = required_param('page', PARAM_ALPHA);
+$page = required_param('page', PARAM_ALPHAEXT);
 
 // Put together absolute document paths based on requested page and current language
 $lang = current_language();
