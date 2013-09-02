@@ -25,6 +25,9 @@
 
 // defined('MOODLE_INTERNAL') || die(); - Must not be called because this script is called from outside moodle
 
+// Include lib.php
+require_once(dirname(__FILE__) . '/lib.php');
+
 // Include config.php
 require_once('../../config.php');
 
@@ -74,9 +77,17 @@ else {
 $staticdoc = new DOMDocument();
 $staticdoc->loadHTMLFile($path);
 
-// Extract page title (if present)
+// Extract page's first h1 (if present)
 if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
-    $title = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
+    $firsth1 = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
+}
+else {
+    $firsth1 = $page;
+}
+
+// Extract page title (if present)
+if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
+    $title = $staticdoc->getElementsByTagName('title')->item(0)->nodeValue;
 }
 else {
     $title = $page;
@@ -90,7 +101,7 @@ else {
     $PAGE->set_url('/local/staticpage/view.php?page='.$page);
 }
 
-// Prepare moodle page
+// Set page layout
 $PAGE->set_context(context_system::instance());
 if (array_key_exists('staticpage', $PAGE->theme->layouts)) {
     $PAGE->set_pagelayout('staticpage');
@@ -98,9 +109,40 @@ if (array_key_exists('staticpage', $PAGE->theme->layouts)) {
 else {
     $PAGE->set_pagelayout('standard');
 }
-$PAGE->navbar->add($title);
-$PAGE->set_heading($title);
-$PAGE->set_title($title);
+
+// Set page title
+if ($config->documenttitlesource == STATICPAGE_TITLE_H1) {
+    $PAGE->set_title($firsth1);
+}
+else if ($config->documenttitlesource == STATICPAGE_TITLE_HEAD) {
+    $PAGE->set_title($title);
+}
+else {
+    $PAGE->set_title($title);
+}
+
+// Set page heading
+if ($config->documentheadingsource == STATICPAGE_TITLE_H1) {
+    $PAGE->set_heading($firsth1);
+}
+else if ($config->documentheadingsource == STATICPAGE_TITLE_H1) {
+    $PAGE->set_heading($title);
+}
+else {
+    $PAGE->set_heading($title);
+}
+
+// Set page navbar
+if ($config->documentnavbarsource == STATICPAGE_TITLE_H1) {
+    $PAGE->navbar->add($firsth1);
+}
+else if ($config->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
+    $PAGE->navbar->add($title);
+}
+else {
+    $PAGE->navbar->add($title);
+}
+
 echo $OUTPUT->header();
 
 // Get html code

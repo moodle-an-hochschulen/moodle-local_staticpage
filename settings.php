@@ -25,6 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+// Include lib.php
+require_once(dirname(__FILE__) . '/lib.php');
+
 global $CFG, $PAGE;
 
 if ($hassiteconfig) {
@@ -37,6 +40,17 @@ if ($hassiteconfig) {
 
     // Create document directory widget
     $page->add(new admin_setting_configdirectory('local_staticpage/documentdirectory', get_string('documentdirectory', 'local_staticpage'), get_string('documentdirectory_desc', 'local_staticpage'), $CFG->dataroot.'/staticpage'));
+
+
+    // Document title source
+    $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading', get_string('documenttitlesource', 'local_staticpage'), ''));
+
+    // Create document title source widget
+    $titlesource[STATICPAGE_TITLE_H1] = get_string('documenttitlesourceh1', 'local_staticpage');
+    $titlesource[STATICPAGE_TITLE_HEAD] = get_string('documenttitlesourcehead', 'local_staticpage');
+    $page->add(new admin_setting_configselect('local_staticpage/documenttitlesource', get_string('documenttitlesource', 'local_staticpage'), get_string('documenttitlesource_desc', 'local_staticpage'), STATICPAGE_TITLE_H1, $titlesource));
+    $page->add(new admin_setting_configselect('local_staticpage/documentheadingsource', get_string('documentheadingsource', 'local_staticpage'), get_string('documentheadingsource_desc', 'local_staticpage'), STATICPAGE_TITLE_H1, $titlesource));
+    $page->add(new admin_setting_configselect('local_staticpage/documentnavbarsource', get_string('documentnavbarsource', 'local_staticpage'), get_string('documentnavbarsource_desc', 'local_staticpage'), STATICPAGE_TITLE_H1, $titlesource));
 
 
     // Apache rewrite
@@ -110,19 +124,43 @@ if ($hassiteconfig) {
                     foreach ($files as $doc) {
                         if ($doc->language == 'unsupported') {
                             $html .= html_writer::start_tag('li');
-                            $html .= '<p>'.get_string('documentlistentryfilename', 'local_staticpage', $doc->filename).'</p>';
-                            $html .= '<p><span class="errormessage">'.get_string('documentlistentryunsupported', 'local_staticpage').'</span></p>';
+                                $html .= '<p>'.get_string('documentlistentryfilename', 'local_staticpage', $doc->filename).'</p>';
+                                $html .= '<p><span class="errormessage">'.get_string('documentlistentryunsupported', 'local_staticpage').'</span></p>';
                             $html .= html_writer::end_tag('li');
                         }
                         else {
                             $html .= html_writer::start_tag('li');
-                            $html .= '<p>'.get_string('documentlistentryfilename', 'local_staticpage', $doc->filename).'</p>';
-                            $html .= '<p>'.get_string('documentlistentrypagename', 'local_staticpage', $doc->pagename).'</p>';
-                            $url_plugin = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$doc->pagename;
-                            $url_rewrite = rtrim($CFG->wwwroot, '/').'/static/'.$doc->pagename.'.html';
-                            $html .= '<p>'.get_string('documentlistentryreachable', 'local_staticpage', '<a href="'.$url_plugin.'">'.$url_plugin.'</a>').'</p>';
-                            $html .= '<p>'.get_string('documentlistentryrewrite', 'local_staticpage', '<a href="'.$url_rewrite.'">'.$url_rewrite.'</a>').'</p>';
-                            $html .= '<p>'.get_string('documentlistentrylanguage', 'local_staticpage', $doc->language).'</p>';
+                                $html .= '<p>'.get_string('documentlistentryfilename', 'local_staticpage', $doc->filename).'</p>';
+                                $html .= '<p>'.get_string('documentlistentrypagename', 'local_staticpage', $doc->pagename).'</p>';
+
+                                // Print only if apache rewrite isn't forced
+                                if(!$config->apacherewrite) {
+                                    $url_plugin = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$doc->pagename;
+                                    $url_plugin_available = check_availability($url_plugin);
+
+                                    // Show if document is available
+                                    if ($url_plugin_available == true) {
+                                        $html .= '<p>'.get_string('documentlistentryreachablesuccess', 'local_staticpage', '<a href="'.$url_plugin.'">'.$url_plugin.'</a>').'</p>';
+                                    }
+                                    // Otherwise
+                                    else {
+                                        $html .= '<p class="errormessage">'.get_string('documentlistentryreachablefail', 'local_staticpage', '<a href="'.$url_plugin.'">'.$url_plugin.'</a>').'</p>';
+                                    }
+                                }
+
+                                $url_rewrite = rtrim($CFG->wwwroot, '/').'/static/'.$doc->pagename.'.html';
+                                $url_rewrite_available = check_availability($url_rewrite);
+
+                                // Show if document is available
+                                if ($url_rewrite_available == true) {
+                                    $html .= '<p>'.get_string('documentlistentryrewritesuccess', 'local_staticpage', '<a href="'.$url_rewrite.'">'.$url_rewrite.'</a>').'</p>';
+                                }
+                                // Otherwise
+                                else {
+                                    $html .= '<p class="errormessage">'.get_string('documentlistentryrewritefail', 'local_staticpage', '<a href="'.$url_rewrite.'">'.$url_rewrite.'</a>').'</p>';
+                                }
+
+                                $html .= '<p>'.get_string('documentlistentrylanguage', 'local_staticpage', $doc->language).'</p>';
                             $html .= html_writer::end_tag('li');
                         }
                     }
