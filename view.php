@@ -35,11 +35,11 @@ require_once('../../config.php');
 global $PAGE;
 
 // Get plugin config
-$config = get_config('local_staticpage');
+$local_staticpage_config = get_config('local_staticpage');
 
 
 // View only with /static/ URL
-if ($config->apacherewrite == true) {
+if ($local_staticpage_config->apacherewrite == true) {
     if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
         die;
     }
@@ -51,9 +51,9 @@ $page = required_param('page', PARAM_ALPHAEXT);
 
 // Put together absolute document paths based on requested page and current language
 $lang = current_language();
-$path_language = rtrim($config->documentdirectory, '/').'/'.$page.'.'.$lang.'.html';
+$path_language = rtrim($local_staticpage_config->documentdirectory, '/').'/'.$page.'.'.$lang.'.html';
 $path_language = str_replace('\\', '/', $path_language); // Replace backslashes in path with forward slashes if we are on a windows system
-$path_international = rtrim($config->documentdirectory, '/').'/'.$page.'.html';
+$path_international = rtrim($local_staticpage_config->documentdirectory, '/').'/'.$page.'.html';
 $path_international = str_replace('\\', '/', $path_international); // Replace backslashes in path with forward slashes if we are on a windows system
 
 
@@ -94,27 +94,26 @@ else {
 }
 
 // Set page url
-if ($config->apacherewrite == true) {
+if ($local_staticpage_config->apacherewrite == true) {
     $PAGE->set_url('/static/'.$page.'.html');
 }
 else {
     $PAGE->set_url('/local/staticpage/view.php?page='.$page);
 }
 
-// Set page layout
+// Set page context
 $PAGE->set_context(context_system::instance());
-if (array_key_exists('staticpage', $PAGE->theme->layouts)) {
-    $PAGE->set_pagelayout('staticpage');
-}
-else {
-    $PAGE->set_pagelayout('standard');
-}
+
+
+// Set page layout
+$PAGE->set_pagelayout('standard');
+
 
 // Set page title
-if ($config->documenttitlesource == STATICPAGE_TITLE_H1) {
+if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_H1) {
     $PAGE->set_title($firsth1);
 }
-else if ($config->documenttitlesource == STATICPAGE_TITLE_HEAD) {
+else if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_HEAD) {
     $PAGE->set_title($title);
 }
 else {
@@ -122,10 +121,10 @@ else {
 }
 
 // Set page heading
-if ($config->documentheadingsource == STATICPAGE_TITLE_H1) {
+if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($firsth1);
 }
-else if ($config->documentheadingsource == STATICPAGE_TITLE_H1) {
+else if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($title);
 }
 else {
@@ -133,10 +132,10 @@ else {
 }
 
 // Set page navbar
-if ($config->documentnavbarsource == STATICPAGE_TITLE_H1) {
+if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_H1) {
     $PAGE->navbar->add($firsth1);
 }
-else if ($config->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
+else if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
     $PAGE->navbar->add($title);
 }
 else {

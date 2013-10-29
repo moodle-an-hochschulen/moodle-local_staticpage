@@ -10,6 +10,7 @@ This plugin requires Moodle 2.5+
 
 Changes
 =======
+2013-10-25 - Remove support for 'staticpage' pagelayout because of problems with Bootstrap-based themes. local_staticpage uses 'standard' pagelayout now. Please check your CSS cascades if you have styled static pages in any special way.
 2013-09-02 - Check availability of static page directly on settings page, show error if page isn't downloadable
 2013-09-02 - Add an option to set the data source of document title, document heading and breadcrumb item title
 2013-08-08 - Improve README
@@ -57,7 +58,7 @@ The document directory /var/www/files/moodledata/staticpage contains the files f
 By default, local_staticpage will use the first <h1> tag as document title, document heading and breadcrumb item title of the resulting Moodle page.
 In this section, you can change this behaviour to using the first <title> tag for each of these.
 
-Please note that if local_staticpage doesn't find the configured (<h1> or <title>) tags, it will derive the document title from the document filename.
+Please note that if local_staticpage doesn't find the configured (<h1> or <title>) tag, it will derive the document title from the document filename.
 
 
 3. Force Apache mod_rewrite
@@ -175,20 +176,13 @@ Theme
 =====
 The local_staticpage plugin uses the "standard" pagelayout of your theme by default for creating the Moodle pages. For most themes, this works well.
 
-If you want to style static pages in any special way, you could extend your theme with a "staticpage" pagelayout. local_staticpage will use this pagelayout as soon as it exists in your /theme/<yourtheme>/config.php:
+If you want to style static pages in any special way, you could use a CSS cascade to style static pages content in some special way:
 
-$THEME->layouts = array(
-	[...]
-	'staticpage' => array(
-		'file' => 'general.php',
-		'regions' => array('side-pre'),
-		'defaultregion' => 'side-pre',
-		'options' => array('langmenu'=>true)
-	);
+If you are using Apache mod_rewrite URLs, you can use this CSS selector:
+body.path-static ... { }
+If you are not using Apache mod_rewrite URLs, you can use this CSS selector:
+body.path-local-staticpage ... { }
 
-With this pagelayout, you could use a CSS cascade like this to style static pages content in some special way:
-
-body.pagelayout-staticpage ... { }
 
 
 Security considerations

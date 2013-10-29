@@ -61,15 +61,15 @@ if ($hassiteconfig) {
 
 
     // Get previously configured plugin config
-    $config = get_config('local_staticpage');
+    $local_staticpage_config = get_config('local_staticpage');
 
 
     // Show Document list - Do only when settings page is shown, otherwise local_staticpage would crawl the document directory at each and every Moodle page delivery
     if ($PAGE->bodyid == 'page-admin-setting-staticpage') {
         // Do only when document directory is configured and only when staticpage document directory exists
-        if ($config->documentdirectory != '' && is_dir($config->documentdirectory)) {
+        if ($local_staticpage_config->documentdirectory != '' && is_dir($local_staticpage_config->documentdirectory)) {
             // Open directory
-            if ($handle = @opendir($config->documentdirectory)) {
+            if ($handle = @opendir($local_staticpage_config->documentdirectory)) {
                 // Get all enabled language packs
                 $langs = get_string_manager()->get_list_of_translations();
 
@@ -78,8 +78,8 @@ if ($hassiteconfig) {
 
                 // Get all document files
                 while (false !== ($filename = readdir($handle))) {
-                    // Is this a .html file?
-                    if (substr($filename, -5) == '.html' && $filename != '.' && $filename != '..') {
+                    // Is this a .html file and is it readable for the webserver?
+                    if (substr($filename, -5) == '.html' && $filename != '.' && $filename != '..' && is_readable(rtrim($local_staticpage_config->documentdirectory, '/').'/'.$filename)) {
                         // Is this a supported language based .html file?
                         foreach ($langs as $key => $lang) {
                             if (substr($filename, -7, 2) == $key) {
@@ -134,7 +134,7 @@ if ($hassiteconfig) {
                                 $html .= '<p>'.get_string('documentlistentrypagename', 'local_staticpage', $doc->pagename).'</p>';
 
                                 // Print only if apache rewrite isn't forced
-                                if(!$config->apacherewrite) {
+                                if(!$local_staticpage_config->apacherewrite) {
                                     $url_plugin = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$doc->pagename;
                                     $url_plugin_available = check_availability($url_plugin);
 
