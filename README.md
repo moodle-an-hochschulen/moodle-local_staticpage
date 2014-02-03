@@ -5,11 +5,14 @@ Moodle plugin which displays static information pages which exist outside any co
 
 Requirements
 ============
-This plugin requires Moodle 2.5+
+This plugin requires Moodle 2.6+
 
 
 Changes
 =======
+2014-01-31 - Extend valid URLs to alphanumeric characters (no numbers were allowed before)
+2014-01-31 - Require login if Moodle is configured to force login - Credits to toby saunders
+2014-01-31 - Check compatibility for Moodle 2.6, no functionality change
 2013-10-25 - Remove support for 'staticpage' pagelayout because of problems with Bootstrap-based themes. local_staticpage uses 'standard' pagelayout now. Please check your CSS cascades if you have styled static pages in any special way.
 2013-09-02 - Check availability of static page directly on settings page, show error if page isn't downloadable
 2013-09-02 - Add an option to set the data source of document title, document heading and breadcrumb item title
@@ -35,7 +38,7 @@ Installation
 Install the plugin like any other plugin to folder
 /local/staticpage
 
-See http://docs.moodle.org/25/en/Installing_plugins for details on installing Moodle plugins
+See http://docs.moodle.org/26/en/Installing_plugins for details on installing Moodle plugins
 
 
 Usage & Settings
