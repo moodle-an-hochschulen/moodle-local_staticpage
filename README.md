@@ -10,6 +10,7 @@ This plugin requires Moodle 2.6+
 
 Changes
 =======
+2014-01-31 - Add description how to add blocks to static pages
 2014-01-31 - Extend valid URLs to alphanumeric characters (no numbers were allowed before)
 2014-01-31 - Require login if Moodle is configured to force login - Credits to toby saunders
 2014-01-31 - Check compatibility for Moodle 2.6, no functionality change
@@ -186,6 +187,10 @@ body.path-static ... { }
 If you are not using Apache mod_rewrite URLs, you can use this CSS selector:
 body.path-local-staticpage ... { }
 
+
+Add blocks to static pages
+==========================
+The local_staticpage plugin was not intended to show blocks on the static pages. However, it is possible. You have to enable page editing somewhere else in Moodle (on your MyMoodle page or on a course page, for example) and go to your static page. Now you see the standard "Add block" menu and can add blocks to the static page. Additionally, if you click on the block's gear icon, you can control if the block is shown only on the static page the block was added to or on all static pages.
 
 
 Security considerations
