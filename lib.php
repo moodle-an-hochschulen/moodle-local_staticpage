@@ -35,7 +35,7 @@ define('STATICPAGE_TITLE_HEAD', 2);
  * @param string $url Static page URL
  * @return bool
  */
-function check_availability($url) {
+function local_staticpage_check_availability($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_NOBODY, true);

@@ -136,7 +136,7 @@ if ($hassiteconfig) {
                                 // Print only if apache rewrite isn't forced
                                 if(!$local_staticpage_config->apacherewrite) {
                                     $url_plugin = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$doc->pagename;
-                                    $url_plugin_available = check_availability($url_plugin);
+                                    $url_plugin_available = local_staticpage_check_availability($url_plugin);
 
                                     // Show if document is available
                                     if ($url_plugin_available == true) {
@@ -149,7 +149,7 @@ if ($hassiteconfig) {
                                 }
 
                                 $url_rewrite = rtrim($CFG->wwwroot, '/').'/static/'.$doc->pagename.'.html';
-                                $url_rewrite_available = check_availability($url_rewrite);
+                                $url_rewrite_available = local_staticpage_check_availability($url_rewrite);
 
                                 // Show if document is available
                                 if ($url_rewrite_available == true) {

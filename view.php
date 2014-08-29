@@ -98,6 +98,12 @@ else {
     $title = $page;
 }
 
+// Extract style tag in head (if present) and insert into HTML head
+if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
+    $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
+    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
+}
+
 // Set page url
 if ($local_staticpage_config->apacherewrite == true) {
     $PAGE->set_url('/static/'.$page.'.html');
