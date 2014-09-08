@@ -100,7 +100,7 @@ As the local_staticpage's HTML reader (DOM parser) is quite dumb, there is a pro
 
 Please note that the <meta> tag is neccessary if you want to use UTF-8 characters in your html document, otherwise they will become crippled when the document is parsed by local_staticpage.
 
-If you want to style your static page with CSS in any special way, you can include a <style> tag into the <head> section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
+If you want to style your static page with CSS in any special way, you can include a <`style`> tag into the <head> section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
 If you want to include images into your static page, please do yourself a favour and link to them with absolute URLs, not relative URLs.
 
