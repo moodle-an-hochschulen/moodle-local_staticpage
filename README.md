@@ -10,7 +10,7 @@ This plugin requires Moodle 2.7+
 
 Changes
 -------
-* 2014-08-19 - Add possibility to use a <style> tag in the HTML code of static page files
+* 2014-08-19 - Add possibility to use a <`style`> tag in the HTML code of static page files
 * 2014-06-30 - Add plugin's name as prefix to function names
 * 2014-06-30 - Check compatibility for Moodle 2.7, no functionality change
 * 2014-01-31 - Add description how to add blocks to static pages
@@ -100,7 +100,7 @@ As the local_staticpage's HTML reader (DOM parser) is quite dumb, there is a pro
 
 Please note that the <meta> tag is neccessary if you want to use UTF-8 characters in your html document, otherwise they will become crippled when the document is parsed by local_staticpage.
 
-If you want to style your static page with CSS in any special way, you can include a <style> tag into the <head> section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
+If you want to style your static page with CSS in any special way, you can include a <`style`> tag into the <head> section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
 If you want to include images into your static page, please do yourself a favour and link to them with absolute URLs, not relative URLs.
 
