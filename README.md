@@ -213,7 +213,7 @@ I thought that this course overhead doesn't make sense, so I created local_stati
 
 Further information
 -------------------
-local_staticpage is found in the Moodle Plugins repository: http://moodle.org/plugins/view.php?plugin=local_staticpage
+local_staticpage is found in the Moodle Plugins repository: https://moodle.org/plugins/view/local_staticpage
 
 Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-local_staticpage/issues
 
