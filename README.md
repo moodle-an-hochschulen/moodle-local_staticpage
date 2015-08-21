@@ -13,6 +13,7 @@ This plugin requires Moodle 2.8+
 Changes
 -------
 
+* 2015-08-18 - Check compatibility for Moodle 2.9, no functionality change
 * 2015-01-23 - Check compatibility for Moodle 2.8, no functionality change
 * 2014-08-19 - Add possibility to use a `<style>` tag in the HTML code of static page files
 * 2014-06-30 - Add plugin's name as prefix to function names
