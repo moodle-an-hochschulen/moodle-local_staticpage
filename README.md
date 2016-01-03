@@ -7,12 +7,13 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 2.8+
+This plugin requires Moodle 3.0+
 
 
 Changes
 -------
 
+* 2016-01-01 - Check compatibility for Moodle 3.0, no functionality change
 * 2015-08-18 - Check compatibility for Moodle 2.9, no functionality change
 * 2015-01-23 - Check compatibility for Moodle 2.8, no functionality change
 * 2014-08-19 - Add possibility to use a `<style>` tag in the HTML code of static page files
