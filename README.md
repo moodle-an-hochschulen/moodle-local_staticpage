@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-01-25 - Improve RewriteRules in README, no functionality change - Credits to Daniel Ruf
 * 2016-01-01 - Check compatibility for Moodle 3.0, no functionality change
 * 2015-08-18 - Check compatibility for Moodle 2.9, no functionality change
 * 2015-01-23 - Check compatibility for Moodle 2.8, no functionality change
@@ -164,6 +165,12 @@ Please add the following to your Apache configuration or your .htaccess file in 
 RewriteEngine On
 RewriteRule ^/static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
+However, in some Apache configurations the following rule will work (without the leading slash - for details, please refer to http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriterule):
+
+RewriteEngine On
+RewriteRule ^static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
+
+
 Now, the static pages from the above example are available on
 http://www.yourmoodle.com/static/imprint.html
 http://www.yourmoodle.com/static/impressum.html
@@ -174,6 +181,11 @@ If you are running Moodle in a subdirectory on your webserver, please add the fo
 
 RewriteEngine On
 RewriteRule ^/yoursubdirectory/static/(.*)\.html$ /yoursubdirectory/local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
+
+However, in some Apache configurations the following rule will work (without the leading slash - for details, please refer to http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriterule):
+
+RewriteEngine On
+RewriteRule ^yoursubdirectory/static/(.*)\.html$ /yoursubdirectory/local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
 Now, the static pages from the above example are available on
 http://www.yourmoodle.com/yoursubdirectory/static/imprint.html
