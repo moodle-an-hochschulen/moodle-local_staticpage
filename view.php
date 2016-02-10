@@ -54,23 +54,32 @@ if ($local_staticpage_config->apacherewrite == true) {
 // Get requested page's name
 $page = required_param('page', PARAM_ALPHANUMEXT);
 $lang = current_language();
+
+// Put together document file names
 $filename = "$page.html";
 $filenamenational = "$page.$lang.html";
+
+// Fetch context
 $context = \context_system::instance();
 
+// Get filearea
 $fs = get_file_storage();
+
+// Get language based document
 $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filenamenational);
 
+// Otherwiese, get international document
 if (!$file) {
     $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
 }
 
+// If no file is found, quit with error message
 if (!$file) {
     print_error('pagenotfound', 'local_staticpage');
 }
 
+// Get file content
 $filecontents = $file->get_content();
-
 
 // Import the document, load DOM
 $staticdoc = new DOMDocument();
