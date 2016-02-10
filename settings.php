@@ -35,12 +35,11 @@ if ($hassiteconfig) {
     $page = new admin_settingpage('staticpage', get_string('pluginname', 'local_staticpage'));
 
 
-    // Document directory
-    $page->add(new admin_setting_heading('local_staticpage/documentdirectoryheading', get_string('documents', 'local_staticpage'), ''));
+    // Document filearea
+    $page->add(new admin_setting_heading('local_staticpage/documentsheading', get_string('documents', 'local_staticpage'), ''));
 
-    // Create document directory widget
-    $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage'), get_string('documents_desc', 'local_staticpage'), 'documents', 0,
-        array('maxfiles' => 0)));
+    // Create document filearea widget
+    $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage'), get_string('documents_desc', 'local_staticpage'), 'documents', 0, array('maxfiles' => 0)));
 
     // Document title source
     $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading', get_string('documenttitlesource', 'local_staticpage'), ''));
