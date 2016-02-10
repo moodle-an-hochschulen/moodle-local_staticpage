@@ -28,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Static Pages';
 $string['apacherewrite'] = 'Force Apache mod_rewrite';
 $string['apacherewrite_desc'] = 'Serve static pages only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
-$string['documentdirectory'] = 'Document directory';
-$string['documentdirectory_desc'] = 'The document directory which contains .html files with the static pages\' HTML code. See README file for details.';
+$string['documents'] = 'Documents';
+$string['documents_desc'] = 'The .html files with the static pages\' HTML code. See README file for details.';
 $string['documentheadingsource'] = 'Data source of document heading';
 $string['documentheadingsource_desc'] = 'The data source of the static page\'s document heading';
 $string['documentlist'] = 'Document list';
@@ -53,3 +53,4 @@ $string['documenttitlesourceh1'] = 'First h1 tag in HTML code (usually located s
 $string['documenttitlesourcehead'] = 'First title tag in HTML code (usually located within the head tag)';
 $string['international'] = 'All languages';
 $string['pagenotfound'] = 'Page not found';
+$string['upgrade_notice_2016020307'] = '<strong>UPGRADE ISSUE:</strong> Unable to remove file {$a}';

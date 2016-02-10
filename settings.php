@@ -36,11 +36,11 @@ if ($hassiteconfig) {
 
 
     // Document directory
-    $page->add(new admin_setting_heading('local_staticpage/documentdirectoryheading', get_string('documentdirectory', 'local_staticpage'), ''));
+    $page->add(new admin_setting_heading('local_staticpage/documentdirectoryheading', get_string('documents', 'local_staticpage'), ''));
 
     // Create document directory widget
-    $page->add(new admin_setting_configdirectory('local_staticpage/documentdirectory', get_string('documentdirectory', 'local_staticpage'), get_string('documentdirectory_desc', 'local_staticpage'), $CFG->dataroot.'/staticpage'));
-
+    $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage'), get_string('documents_desc', 'local_staticpage'), 'documents', 0,
+        array('maxfiles' => 0)));
 
     // Document title source
     $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading', get_string('documenttitlesource', 'local_staticpage'), ''));

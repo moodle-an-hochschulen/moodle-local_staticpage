@@ -53,34 +53,28 @@ if ($local_staticpage_config->apacherewrite == true) {
 
 // Get requested page's name
 $page = required_param('page', PARAM_ALPHANUMEXT);
-
-// Put together absolute document paths based on requested page and current language
 $lang = current_language();
-$path_language = rtrim($local_staticpage_config->documentdirectory, '/').'/'.$page.'.'.$lang.'.html';
-$path_language = str_replace('\\', '/', $path_language); // Replace backslashes in path with forward slashes if we are on a windows system
-$path_international = rtrim($local_staticpage_config->documentdirectory, '/').'/'.$page.'.html';
-$path_international = str_replace('\\', '/', $path_international); // Replace backslashes in path with forward slashes if we are on a windows system
+$filename = "$page.html";
+$filenamenational = "$page.$lang.html";
+$context = \context_system::instance();
 
+$fs = get_file_storage();
+$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filenamenational);
 
-// Does language based document file exist?
-if (is_readable($path_language) == true) {
-    // Remember document path
-    $path = $path_language;
+if (!$file) {
+    $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
 }
-// Otherwise, does international document file exist?
-else if (is_readable($path_international) == true) {
-    // Remember document path
-    $path = $path_international;
-}
-// If not, quit with error message
-else {
+
+if (!$file) {
     print_error('pagenotfound', 'local_staticpage');
 }
+
+$filecontents = $file->get_content();
 
 
 // Import the document, load DOM
 $staticdoc = new DOMDocument();
-$staticdoc->loadHTMLFile($path);
+$staticdoc->loadHTML($filecontents);
 
 // Extract page's first h1 (if present)
 if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
