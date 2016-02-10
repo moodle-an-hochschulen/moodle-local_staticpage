@@ -72,7 +72,7 @@ function xmldb_local_staticpage_upgrade($oldversion) {
             }
         }
 
-        upgrade_plugin_savepoint(true, 2016020309, 'local', 'sandbox');
+        upgrade_plugin_savepoint(true, 2016020309, 'local', 'staticpage');
     }
 
     return true;
