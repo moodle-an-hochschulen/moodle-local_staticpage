@@ -76,13 +76,20 @@ function xmldb_local_staticpage_upgrade($oldversion) {
             foreach ($todelete as $file) {
                 $result = @unlink($file);
 
-                // Show an error message if a file couldn't be deleted
+                // Show a warning message if a file couldn't be deleted
                 if ($result == false) {
-                    $message = get_string('upgrade_notice_2016020307', 'local_staticpage', $file);
-                    echo html_writer::tag('div', $message, array('class' => 'alert alert-info'));
+                    $message = get_string('upgrade_notice_2016020307_deletefile', 'local_staticpage', $file);
+                    echo html_writer::tag('div', $message, array('class' => 'alert alert-warning'));
                 }
             }
+
+            // Show an info message that documents directory is no longer needed
+            $message = get_string('upgrade_notice_2016020307_deletedirectory', 'local_staticpage', $documentsdirectory);
+            echo html_writer::tag('div', $message, array('class' => 'alert alert-info'));
         }
+
+        // Remove documents directory setting because it is not needed anymore
+        set_config('documentdirectory', null, 'local_staticpage');
 
         // Remember upgrade savepoint
         upgrade_plugin_savepoint(true, 2016020309, 'local', 'staticpage');
