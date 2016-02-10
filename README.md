@@ -83,13 +83,6 @@ Please note that if local_staticpage doesn't find the configured (`<h1>` or `<ti
 With this setting, you can configure local_staticpage to only serve static pages on a clean URL, using Apache's mod_rewrite module. See "Apache mod_rewrite" section below for details.
 
 
-### 4. Document list
-
-As soon as you have configured the document directory setting and saved your settings, this list shows all files which have been found in the document directory and their URLs.
-
-Additionally, the document list checks each static page if a browser is actually able to download and view it. If this isn't possible, the static page is marked with an error message in the document list.
-
-
 Create documents
 ----------------
 
