@@ -31,40 +31,52 @@ defined('MOODLE_INTERNAL') || die();
  */
 function xmldb_local_staticpage_upgrade($oldversion) {
 
+    // Fetch documents from documents directory and put them into the new documents filearea.
     if ($oldversion < 2016020309) {
+        // Prepare filearea
         $context = \context_system::instance();
         $fs = get_file_storage();
-
         $filerecord = array('component' => 'local_staticpage', 'filearea' => 'documents',
                             'contextid' => $context->id, 'itemid' => 0, 'filepath' => '/',
                             'filename' => '');
 
+        // Prepare documents directory
         $documentsdirectory = get_config('local_staticpage', 'documentdirectory');
         $handle = @opendir($documentsdirectory);
 
         if ($handle) {
+            // Array to remember file to be deleted from documents directory
             $todelete = array();
-            while (false !== ($file = readdir($handle))) {
-                $ishtml = strpos($file, '.html');
 
+            // Fetch all files from documents directory
+            while (false !== ($file = readdir($handle))) {
+                // Only process .html files
+                $ishtml = strpos($file, '.html');
                 if (!$ishtml) {
                     continue;
                 }
 
+                // Compose file name and path
                 $filerecord['filename'] = $file;
                 $fullpath = $documentsdirectory . '/' . $file;
 
+                // Put file into filearea
                 $fs->create_file_from_pathname($filerecord, $fullpath);
+
+                // Remember file to be deleted
                 $todelete[] = $fullpath;
             }
 
+            // Close documents directory
             if ($handle) {
                 closedir($handle);
             }
 
+            // Delete files from documents directory
             foreach ($todelete as $file) {
                 $result = @unlink($file);
 
+                // Show an error message if a file couldn't be deleted
                 if ($result == false) {
                     $message = get_string('upgrade_notice_2016020307', 'local_staticpage', $file);
                     echo html_writer::tag('div', $message, array('class' => 'alert alert-info'));
@@ -72,6 +84,7 @@ function xmldb_local_staticpage_upgrade($oldversion) {
             }
         }
 
+        // Remember upgrade savepoint
         upgrade_plugin_savepoint(true, 2016020309, 'local', 'staticpage');
     }
 
