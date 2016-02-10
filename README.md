@@ -110,33 +110,12 @@ If you want to style your static page with CSS in any special way, you can inclu
 If you want to include images into your static page, please do yourself a favour and link to them with absolute URLs, not relative URLs.
 
 
-Multiple language support
--------------------------
+Multiple language / Filter support
+----------------------------------
 
-You can use local_staticpage completely without multilanguage support. But when you need multilanguage support, please create one html document for every language you want to provide (because Moodle multilanguage tags are not supported in your HTML code).
+You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can make use in your static page files of any Moodle filter which is enabled on system level.
 
-When local_staticpage checks the Document directory for valid static pages files, it will take every file with a .html filename extension as explained above.
-
-After finding a file with a .html filename extension, local_staticpage takes a second look at the filename to see if it can find another filename extension. If there is one, it is used as language of the static page.
-
-Example:
-
-The document directory /var/www/files/moodledata/staticpage contains the files imprint.en.html, impressum.de.html and faq.html. local_staticpage looks at the filename extensions and serves the static pages as follows:
-
-* File imprint.en.html will be served as static page with the page name "imprint", but only when the current language of the user is english.
-* File impressum.de.html will be served as static page with the page name "impressum", but only when the current language of the user is german.
-* File faq.html will be served as static page with the page name "faq" regardless of the current language of the user.
-
-local_staticpage doesn't know anything about connections with regard to contents between document files. If you want to serve static pages which are translated into multiple languages and which should be switchable with the Moodle language switcher, you are welcome to create symbolic links in your document directory. This has been tested on Unix-like servers, see http://en.wikipedia.org/wiki/Symbolic_link#POSIX_and_Unix-like_operating_systems for details.
-
-Example:
-
--rw-r-----.  1 root   apache 1700 Jan  9 12:20 impressum.de.html
--rw-r-----.  1 root   apache   15 Jan 23 22:16 impressum.en.html -> imprint.en.html
--rw-r-----.  1 root   apache   17 Jan 23 22:15 imprint.de.html -> impressum.de.html
--rw-r-----.  1 root   apache 1658 Jan  9 12:20 imprint.en.html
-
-What you see here is a directory listing with two documents and two symbolic links. local_staticpage will serve the imprint page in the language of the user, regardless of the pagename with which it has been called.
+Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
 
 
 Valid filenames

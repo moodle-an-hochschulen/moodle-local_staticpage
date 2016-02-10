@@ -53,11 +53,9 @@ if ($local_staticpage_config->apacherewrite == true) {
 
 // Get requested page's name
 $page = required_param('page', PARAM_ALPHANUMEXT);
-$lang = current_language();
 
 // Put together document file names
 $filename = "$page.html";
-$filenamenational = "$page.$lang.html";
 
 // Fetch context
 $context = \context_system::instance();
@@ -66,12 +64,7 @@ $context = \context_system::instance();
 $fs = get_file_storage();
 
 // Get language based document
-$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filenamenational);
-
-// Otherwiese, get international document
-if (!$file) {
-    $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
-}
+$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
 
 // If no file is found, quit with error message
 if (!$file) {
@@ -167,6 +160,6 @@ $stopcut = strpos($html, '</body>') - $startcut;
 $html = substr($html, $startcut, $stopcut);
 
 // Print html code
-echo $html;
+echo format_text($html);
 
 echo $OUTPUT->footer();
