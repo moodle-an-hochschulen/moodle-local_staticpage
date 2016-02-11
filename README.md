@@ -229,7 +229,7 @@ Report a bug or suggest an improvement: https://github.com/moodleuulm/moodle-loc
 Moodle release support
 ----------------------
 
-Due to limited ressources, local_staticpage is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
+Due to limited resources, local_staticpage is only maintained for the most recent major release of Moodle. However, previous versions of this plugin which work in legacy major releases of Moodle are still available as-is without any further updates in the Moodle Plugins repository.
 
 There may be several weeks after a new major release of Moodle has been published until we can do a compatibility check and fix problems if necessary. If you encounter problems with a new major release of Moodle - or can confirm that local_staticpage still works with a new major relase - please let us know on https://github.com/moodleuulm/moodle-local_staticpage/issues
 
