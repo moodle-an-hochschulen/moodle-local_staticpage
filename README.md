@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-02-10 - Add a new filearea to save the document files within Moodle - This change might break backwards compatibility in some situations, please read the "Upgrading from previous versions" below
 * 2016-02-10 - Change plugin version and release scheme to the scheme promoted by moodle.org, no functionality change
 * 2016-01-25 - Improve RewriteRules in README, no functionality change - Credits to Daniel Ruf
 * 2016-01-01 - Check compatibility for Moodle 3.0, no functionality change
@@ -57,22 +58,26 @@ See http://docs.moodle.org/en/Installing_plugins for details on installing Moodl
 Usage & Settings
 ----------------
 
-The local_staticpage plugin is designed to fetch a static HTML document from disk, enrich it with Moodle navigation and theme and deliver it as a standard Moodle page which exists outside any course. After installing local_staticpage, the plugin should be configured.
+The local_staticpage plugin is designed to deliver static HTML documents, enriched with Moodle navigation and theme as a standard Moodle page which exist outside any course. After installing local_staticpage, the plugin has to be configured.
 To configure the plugin and its behaviour, please visit Plugins -> Local plugins -> Static pages.
 
-There, you find four sections:
+There, you find three sections:
 
-### 1. Document directory
+### 1. Documents
 
-In this section, you define the directory where the document files are. local_staticpage takes every file in this directory with a .html filename extension, takes the file's name and content and creates a static page out of it.
+In this section, you upload the document files you want to serve as static pages. The filepicker accepts files with .html filename extensions. For each static page you want to serve, upload a HTML document, named as [pagename].html. local_staticpage then uses this filename as pagename.
 
 Example:
-The document directory /var/www/files/moodledata/staticpage contains the files foo.bar and faq.html. local_staticpage looks at the directory and finds two files. File foo.bar is ignored by local_staticpage because it doesn't have the right filename extension. File faq.html will be served as static page with the page name "faq".
+You upload a file named faq.html. This file will be served as static page with the page name "faq".
+
+Valid filenames:
+Please note that not all symbols which are allowed in the filenames in the filepicker are supported / suitable for pagenames.
+Please make sure that your filenames only contain lowercase alphanumeric characters and the - (hypen) and _ (underscore) symbols.
 
 
 ### 2. Data source of document title
 
-By default, local_staticpage will use the first `<h1>` tag as document title, document heading and breadcrumb item title of the resulting Moodle page.
+By default, local_staticpage will use the first `<h1>` tag as document title, document heading and breadcrumb item title of the resulting static page.
 In this section, you can change this behaviour to using the first `<title>` tag for each of these.
 
 Please note that if local_staticpage doesn't find the configured (`<h1>` or `<title>`) tag, it will derive the document title from the document filename.
@@ -83,13 +88,10 @@ Please note that if local_staticpage doesn't find the configured (`<h1>` or `<ti
 With this setting, you can configure local_staticpage to only serve static pages on a clean URL, using Apache's mod_rewrite module. See "Apache mod_rewrite" section below for details.
 
 
-Create documents
-----------------
+Creating static page documents
+------------------------------
 
-Now, you have to create the html documents and put them in the document directory.
-For each static page you want to serve, create a HTML document in the document directory, named as [pagename].html
-
-As the local_staticpage's HTML reader (DOM parser) is quite dumb, there is a proposed structure for the html documents:
+As local_staticpage's HTML reader (DOM parser) is quite dumb, there is a proposed structure for the html documents:
 
 `<html>
 <head>
@@ -107,7 +109,7 @@ Please note that the `<meta>` tag is neccessary if you want to use UTF-8 charact
 
 If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
-If you want to include images into your static page, please do yourself a favour and link to them with absolute URLs, not relative URLs.
+If you want to include images into your static page, you have to upload them somewhere else. local_staticpage is not capable of hosting / serving image files. Linking to image files, please do yourself a favour and link to them with absolute URLs, not relative URLs.
 
 
 Multiple language / Filter support
@@ -116,14 +118,6 @@ Multiple language / Filter support
 You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can make use in your static page files of any Moodle filter which is enabled on system level.
 
 Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
-
-
-Valid filenames
----------------
-
-local_staticpage uses the file's filename as pagename.
-However, not all symbols which are allowed in your filesystem are supported for pagenames.
-Please make sure that your filenames/pagenames only contain alphanumeric characters and the - (hypen) and _ (underscore) symbols.
 
 
 Apache mod_rewrite
@@ -143,11 +137,8 @@ However, in some Apache configurations the following rule will work (without the
 RewriteEngine On
 RewriteRule ^static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
-
-Now, the static pages from the above example are available on
-http://www.yourmoodle.com/static/imprint.html
-http://www.yourmoodle.com/static/impressum.html
-http://www.yourmoodle.com/static/faq.html
+Now, the static pages are available on
+http://www.yourmoodle.com/static/[pagename].html
 
 
 If you are running Moodle in a subdirectory on your webserver, please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
@@ -160,10 +151,8 @@ However, in some Apache configurations the following rule will work (without the
 RewriteEngine On
 RewriteRule ^yoursubdirectory/static/(.*)\.html$ /yoursubdirectory/local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
-Now, the static pages from the above example are available on
-http://www.yourmoodle.com/yoursubdirectory/static/imprint.html
-http://www.yourmoodle.com/yoursubdirectory/static/impressum.html
-http://www.yourmoodle.com/yoursubdirectory/static/faq.html
+Now, the static pages are available on
+http://www.yourmoodle.com/yoursubdirectory/static/[pagename].html
 
 
 You can now create links to these URLs in a Moodle HTML Block, in your Moodle theme footer and so on.
@@ -173,10 +162,8 @@ You can now create links to these URLs in a Moodle HTML Block, in your Moodle th
 
 If you don't want or are unable to use Apache's mod_rewrite, local_staticpage will still work.
 
-The static pages from the above example are available on
-http://www.yourmoodle.com/local/staticpage/view.php?page=imprint
-http://www.yourmoodle.com/local/staticpage/view.php?page=impressum
-http://www.yourmoodle.com/local/staticpage/view.php?page=faq
+The static pages are then available on
+http://www.yourmoodle.com/local/staticpage/view.php?page=[pagename]
 
 These URLs aren't as catchy as with mod_rewrite, but they work in exactly the same manner.
 
@@ -208,15 +195,27 @@ Security considerations
 
 local_staticpage does NOT check the static HTML documents for any malicious code, neither for malicious HTML code which will be delivered directly to the user's browser, nor for malicious PHP code which could break DOM parsing when processing the HTML document on the server.
 
-Therefore, please make sure that your HTML code is well-formed and that only authorized and briefed users have write access to the document directory.
+Therefore, please make sure that your HTML code is well-formed and that only authorized and briefed users upload static page documents on local_staticpage's settings page.
+
+
+Upgrading from previous versions
+--------------------------------
+
+On 2016-02-10, we changed the way the local_staticpage plugin works fundamentally. Until then, there was a documents directory within the Moodledata directory on disk which kept the static page document files. Now, as you know, these files are placed in a filearea within Moodle.
+
+For admins upgrading from a version before this change to a recent version of the plugin, it is important to know:
+
+* Within the plugin upgrade process, the static page document files are copied automatically to the new filearea within Moodle. After the plugin has been upgraded, you can delete the legacy documents directory manually.
+* In previous versions, there was a multilanguage support for static pages which worked on the static page document's filename. This mechanism is not there anymore. If you were using this multilanguage feature, you have to rebuild your static pages with Moodle's multilanguage filter (see above) placing all language into one static page document as well as remove the language identification code from the filenames.
+* In previous versions, there was a document list on the plugin's settings page which listed all documents which were found in the document's directory. This list was there to check that Moodle recognizes all static page documents on disk. As the static page documents are now located within Moodle and thus there aren't any problems with reading files from disk anymore, this list was removed.
 
 
 Motivation for this plugin
 --------------------------
 
-I have seen Moodle installations where there was a need for displaying static information like an imprint, a faq or a contact page and this information couldn't be added everything to the frontpage. As Moodle doesn't have a "page" concept, admins started to create courses, place their information within these courses, open guest access to the course and link to this course from HTML blocks or the custom menu.
+We have seen Moodle installations where there was a need for displaying static information like an imprint, a faq or a contact page and this information couldn't be added everything to the frontpage. As Moodle doesn't have a "page" concept, admins started to create courses, place their information within these courses, open guest access to the course and link to this course from HTML blocks or the custom menu.
 
-I thought that this course overhead doesn't make sense, so I created local_staticpage. It is not meant as a fully features content management solution, especially as you have to work with raw HTML, but it is quite handy for experienced admins for creating some few static pages within Moodle.
+We thought that this course overhead doesn't make sense, so we created local_staticpage. It is not meant as a fully featured content management solution, especially as you have to work with raw HTML, but it is quite handy for experienced admins for creating some few static pages within Moodle.
 
 
 Further information
