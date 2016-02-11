@@ -39,5 +39,4 @@ $string['documenttitlesource_desc'] = 'The data source of the static page\'s doc
 $string['documenttitlesourceh1'] = 'First h1 tag in HTML code (usually located shortly after opening the body tag)';
 $string['documenttitlesourcehead'] = 'First title tag in HTML code (usually located within the head tag)';
 $string['pagenotfound'] = 'Page not found';
-$string['upgrade_notice_2016020307_deletefile'] = '<strong>UPGRADE WARNING:</strong> Static page file {$a} was moved to the new filearea within Moodle (see README), but couldn\'t be deleted on disk. Please delete it manually.';
-$string['upgrade_notice_2016020307_deletedirectory'] = '<strong>UPGRADE NOTICE:</strong> Static page files were moved to the new filearea within Moodle (see README). You can delete the legacy documents directory {$a} now manually.';
+$string['upgrade_notice_2016020307'] = '<strong>UPGRADE NOTICE:</strong> The static page document files were moved to the new filearea within Moodle. You can delete the legacy documents directory {$a} now. For more upgrade instructions, especially if you have been using the multilanguage features of this plugin, see README file.';

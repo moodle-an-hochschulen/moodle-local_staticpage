@@ -72,19 +72,8 @@ function xmldb_local_staticpage_upgrade($oldversion) {
                 closedir($handle);
             }
 
-            // Delete files from documents directory
-            foreach ($todelete as $file) {
-                $result = @unlink($file);
-
-                // Show a warning message if a file couldn't be deleted
-                if ($result == false) {
-                    $message = get_string('upgrade_notice_2016020307_deletefile', 'local_staticpage', $file);
-                    echo html_writer::tag('div', $message, array('class' => 'alert alert-warning'));
-                }
-            }
-
             // Show an info message that documents directory is no longer needed
-            $message = get_string('upgrade_notice_2016020307_deletedirectory', 'local_staticpage', $documentsdirectory);
+            $message = get_string('upgrade_notice_2016020307', 'local_staticpage', $documentsdirectory);
             echo html_writer::tag('div', $message, array('class' => 'alert alert-info'));
         }
 
