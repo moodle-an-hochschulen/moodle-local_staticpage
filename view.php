@@ -62,7 +62,7 @@ $context = \context_system::instance();
 // Get filearea
 $fs = get_file_storage();
 
-// Get language based document
+// Get document from filearea
 $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
 
 // If no file is found, quit with error message
