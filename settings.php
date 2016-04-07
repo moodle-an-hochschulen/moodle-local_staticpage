@@ -59,6 +59,16 @@ if ($hassiteconfig) {
     $page->add(new admin_setting_configcheckbox('local_staticpage/apacherewrite', get_string('apacherewrite', 'local_staticpage'), get_string('apacherewrite_desc', 'local_staticpage'), 0));
 
 
+    // Force login
+    $page->add(new admin_setting_heading('local_staticpage/forceloginheading', get_string('forcelogin', 'local_staticpage'), ''));
+
+    // Create force login widget
+    $forceloginmodes[STATICPAGE_FORCELOGIN_YES] = get_string('yes');
+    $forceloginmodes[STATICPAGE_FORCELOGIN_NO] = get_string('no');
+    $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL] = get_string('forceloginglobal', 'local_staticpage');
+    $page->add(new admin_setting_configselect('local_staticpage/forcelogin', get_string('forcelogin', 'local_staticpage'), get_string('forcelogin_desc', 'local_staticpage'), $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL], $forceloginmodes));
+
+
     // Add settings page to navigation tree
     $ADMIN->add('localplugins', $page);
 }

@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-04-07 - Add a setting to control if a static page should be shown to visitors or not
 * 2016-02-10 - Add a new filearea to save the document files within Moodle - This change might break backwards compatibility in some situations, please read the "Upgrading from previous versions" below
 * 2016-02-10 - Change plugin version and release scheme to the scheme promoted by moodle.org, no functionality change
 * 2016-01-25 - Improve RewriteRules in README, no functionality change - Credits to Daniel Ruf
@@ -86,6 +87,14 @@ Please note that if local_staticpage doesn't find the configured (`<h1>` or `<ti
 ### 3. Force Apache mod_rewrite
 
 With this setting, you can configure local_staticpage to only serve static pages on a clean URL, using Apache's mod_rewrite module. See "Apache mod_rewrite" section below for details.
+
+
+### 4. Force login
+
+With this setting, you can configure local_staticpage to only serve static pages to logged in users or also to service static pages non-logged in visitors. 
+
+This behaviour can be set specifically for static pages or can be set to respect Moodle's global forcelogin ($CFG->forcelogin) setting.
+
 
 
 Creating static page documents

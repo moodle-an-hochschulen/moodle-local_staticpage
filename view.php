@@ -33,14 +33,13 @@ require_once('../../config.php');
 // Globals
 global $PAGE;
 
-// Require login if Moodle is configured to force login
-if ($CFG->forcelogin) {
-    require_login();
-}
-
 // Get plugin config
 $local_staticpage_config = get_config('local_staticpage');
 
+// Require login if the plugin or Moodle is configured to force login
+if ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_YES || ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
+    require_login();
+}
 
 // View only with /static/ URL
 if ($local_staticpage_config->apacherewrite == true) {
