@@ -13,6 +13,7 @@ This plugin requires Moodle 3.0+
 Changes
 -------
 
+* 2016-05-09 - Add settings to control if filters are processed and if the HTML code is cleaned on a static page or not
 * 2016-04-07 - Add a setting to control if a static page should be shown to visitors or not
 * 2016-02-10 - Add a new filearea to save the document files within Moodle - This change might break backwards compatibility in some situations, please read the "Upgrading from previous versions" below
 * 2016-02-10 - Change plugin version and release scheme to the scheme promoted by moodle.org, no functionality change
@@ -91,10 +92,16 @@ With this setting, you can configure local_staticpage to only serve static pages
 
 ### 4. Force login
 
-With this setting, you can configure local_staticpage to only serve static pages to logged in users or also to service static pages non-logged in visitors. 
+With this setting, you can configure local_staticpage to only serve static pages to logged in users or also to service static pages non-logged in visitors.
 
 This behaviour can be set specifically for static pages or can be set to respect Moodle's global forcelogin ($CFG->forcelogin) setting.
 
+
+### 5. Process Content
+
+In this section, you can configure if Moodle filters should be processed when serving a static page's content. You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can set this setting to yes and make use in your static page files of any Moodle filter which is enabled on system level. Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
+
+In this section, you can also configure if the static page's HTML code should be cleaned. If this setting is set to yes, local_staticpage will use a Moodle library function to remove unclean HTML code and special tags like `<iframe>`. If this setting is set to no, local_staticpage will trust the HTML code in your static page's file and will just pass it on to the browser.
 
 
 Creating static page documents
@@ -119,14 +126,6 @@ Please note that the `<meta>` tag is neccessary if you want to use UTF-8 charact
 If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
 If you want to include images into your static page, you have to upload them somewhere else. local_staticpage is not capable of hosting / serving image files. Linking to image files, please do yourself a favour and link to them with absolute URLs, not relative URLs.
-
-
-Multiple language / Filter support
-----------------------------------
-
-You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can make use in your static page files of any Moodle filter which is enabled on system level.
-
-Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
 
 
 Apache mod_rewrite
@@ -202,7 +201,7 @@ The local_staticpage plugin was not intended to show blocks on the static pages.
 Security considerations
 -----------------------
 
-local_staticpage does NOT check the static HTML documents for any malicious code, neither for malicious HTML code which will be delivered directly to the user's browser, nor for malicious PHP code which could break DOM parsing when processing the HTML document on the server.
+Apart from the option to clean HTML code which you can set to yes, local_staticpage does NOT check the static HTML documents for any malicious code, neither for malicious HTML code which will be delivered directly to the user's browser, nor for malicious PHP code which could break DOM parsing when processing the HTML document on the server.
 
 Therefore, please make sure that your HTML code is well-formed and that only authorized and briefed users upload static page documents on local_staticpage's settings page.
 

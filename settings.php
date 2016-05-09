@@ -69,6 +69,20 @@ if ($hassiteconfig) {
     $page->add(new admin_setting_configselect('local_staticpage/forcelogin', get_string('forcelogin', 'local_staticpage'), get_string('forcelogin_desc', 'local_staticpage'), $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL], $forceloginmodes));
 
 
+    // Process content
+    $page->add(new admin_setting_heading('local_staticpage/processcontentheading', get_string('processcontent', 'local_staticpage'), ''));
+
+    // Create process filters widget
+    $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES] = get_string('processfiltersyes', 'local_staticpage');
+    $processfiltersmodes[STATICPAGE_PROCESSFILTERS_NO] = get_string('processfiltersno', 'local_staticpage');
+    $page->add(new admin_setting_configselect('local_staticpage/processfilters', get_string('processfilters', 'local_staticpage'), get_string('processfilters_desc', 'local_staticpage'), $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES], $processfiltersmodes));
+
+    // Create clean HTML widget
+    $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES] = get_string('cleanhtmlyes', 'local_staticpage');
+    $cleanhtmlmodes[STATICPAGE_CLEANHTML_NO] = get_string('cleanhtmlno', 'local_staticpage');
+    $page->add(new admin_setting_configselect('local_staticpage/cleanhtml', get_string('cleanhtml', 'local_staticpage'), get_string('cleanhtml_desc', 'local_staticpage'), $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES], $cleanhtmlmodes));
+
+
     // Add settings page to navigation tree
     $ADMIN->add('localplugins', $page);
 }

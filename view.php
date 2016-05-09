@@ -158,6 +158,21 @@ $stopcut = strpos($html, '</body>') - $startcut;
 $html = substr($html, $startcut, $stopcut);
 
 // Print html code
-echo format_text($html);
+if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+    echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => true));
+}
+else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+    echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => true));
+}
+else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+    echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => false));
+}
+else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+    echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => false));
+}
+// This should not happen
+else {
+    echo $html;
+}
 
 echo $OUTPUT->footer();
