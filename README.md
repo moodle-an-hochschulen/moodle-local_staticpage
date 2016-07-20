@@ -7,12 +7,13 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 3.0+
+This plugin requires Moodle 3.1+
 
 
 Changes
 -------
 
+* 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
 * 2016-05-09 - Add settings to control if filters are processed and if the HTML code is cleaned on a static page or not
 * 2016-04-07 - Add a setting to control if a static page should be shown to visitors or not
 * 2016-02-10 - Add a new filearea to save the document files within Moodle - This change might break backwards compatibility in some situations, please read the "Upgrading from previous versions" below
