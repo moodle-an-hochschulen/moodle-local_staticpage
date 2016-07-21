@@ -84,5 +84,6 @@ if ($hassiteconfig) {
 
 
     // Add settings page to navigation tree
-    $ADMIN->add('localplugins', $page);
+    $ADMIN->add('root', new admin_category('staticpages', get_string('pluginname', 'local_staticpage')));
+    $ADMIN->add('staticpages', $page);
 }

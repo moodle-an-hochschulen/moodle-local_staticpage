@@ -13,6 +13,7 @@ This plugin requires Moodle 3.1+
 Changes
 -------
 
+* 2016-07-21 - Move the plugin's settings page to Site Administration -> Static Pages because this is where it logically belongs to
 * 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
 * 2016-05-09 - Add settings to control if filters are processed and if the HTML code is cleaned on a static page or not
 * 2016-04-07 - Add a setting to control if a static page should be shown to visitors or not
