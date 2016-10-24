@@ -18,7 +18,7 @@
  * Local plugin "staticpage" - View page
  *
  * @package    local_staticpage
- * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
+ * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
