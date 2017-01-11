@@ -13,6 +13,7 @@ This plugin requires Moodle 3.1+
 Changes
 -------
 
+* 2016-01-11 - Improve README
 * 2016-07-21 - Move the plugin's settings page to Site Administration -> Static Pages because this is where it logically belongs to
 * 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
 * 2016-05-09 - Add settings to control if filters are processed and if the HTML code is cleaned on a static page or not
@@ -63,13 +64,13 @@ Usage & Settings
 ----------------
 
 The local_staticpage plugin is designed to deliver static HTML documents, enriched with Moodle navigation and theme as a standard Moodle page which exist outside any course. After installing local_staticpage, the plugin has to be configured.
-To configure the plugin and its behaviour, please visit Plugins -> Local plugins -> Static pages.
+To configure the plugin and its behaviour, please visit Site Administration -> Static Pages.
 
-There, you find three sections:
+There, you find multiple settings pages:
 
 ### 1. Documents
 
-In this section, you upload the document files you want to serve as static pages. The filepicker accepts files with .html filename extensions. For each static page you want to serve, upload a HTML document, named as [pagename].html. local_staticpage then uses this filename as pagename.
+On this page, you upload the document files you want to serve as static pages. The filepicker accepts files with .html filename extensions. For each static page you want to serve, upload a HTML document, named as [pagename].html. local_staticpage then uses this filename as pagename.
 
 Example:
 You upload a file named faq.html. This file will be served as static page with the page name "faq".
@@ -78,28 +79,28 @@ Valid filenames:
 Please note that not all symbols which are allowed in the filenames in the filepicker are supported / suitable for pagenames.
 Please make sure that your filenames only contain lowercase alphanumeric characters and the - (hypen) and _ (underscore) symbols.
 
+### 2. Settings
 
-### 2. Data source of document title
+On this page, you can configure several aspects of local_staticpage's behaviour.
+
+#### 2.1. Data source of document title
 
 By default, local_staticpage will use the first `<h1>` tag as document title, document heading and breadcrumb item title of the resulting static page.
 In this section, you can change this behaviour to using the first `<title>` tag for each of these.
 
 Please note that if local_staticpage doesn't find the configured (`<h1>` or `<title>`) tag, it will derive the document title from the document filename.
 
-
-### 3. Force Apache mod_rewrite
+#### 2.2. Force Apache mod_rewrite
 
 With this setting, you can configure local_staticpage to only serve static pages on a clean URL, using Apache's mod_rewrite module. See "Apache mod_rewrite" section below for details.
 
-
-### 4. Force login
+#### 2.3. Force login
 
 With this setting, you can configure local_staticpage to only serve static pages to logged in users or also to service static pages non-logged in visitors.
 
 This behaviour can be set specifically for static pages or can be set to respect Moodle's global forcelogin ($CFG->forcelogin) setting.
 
-
-### 5. Process Content
+#### 2.4. Process Content
 
 In this section, you can configure if Moodle filters should be processed when serving a static page's content. You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can set this setting to yes and make use in your static page files of any Moodle filter which is enabled on system level. Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
 
@@ -125,9 +126,17 @@ As local_staticpage's HTML reader (DOM parser) is quite dumb, there is a propose
 
 Please note that the `<meta>` tag is neccessary if you want to use UTF-8 characters in your html document, otherwise they will become crippled when the document is parsed by local_staticpage.
 
+
+Styling static pages
+--------------------
+
 If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
-If you want to include images into your static page, you have to upload them somewhere else. local_staticpage is not capable of hosting / serving image files. Linking to image files, please do yourself a favour and link to them with absolute URLs, not relative URLs.
+
+Adding images to static pages
+-----------------------------
+
+If you want to include images into your static page, you cannot just upload them in local_staticpage's filepicker. You have to upload them somewhere else. local_staticpage is not capable of hosting / serving image files. Linking to image files, please do yourself a favour and link to them with absolute URLs, not relative URLs.
 
 
 Apache mod_rewrite
@@ -137,7 +146,7 @@ Apache mod_rewrite
 
 local_staticpage is able to use Apache's mod_rewrite module to provide static pages on a clean and understandable URL.
 
-Please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
+If you are running Moodle in the root of your webserver, please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
 
 RewriteEngine On
 RewriteRule ^/static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
@@ -176,6 +185,11 @@ The static pages are then available on
 http://www.yourmoodle.com/local/staticpage/view.php?page=[pagename]
 
 These URLs aren't as catchy as with mod_rewrite, but they work in exactly the same manner.
+
+Please note: 
+Here, you have to omit the ".html" extension in the pagename.
+The URL http://www.yourmoodle.com/local/staticpage/view.php?page=[pagename].html won't work.
+This has technical reasons as the pagename parameter is cleaned to only contain alphanumeric characters and the - (hypen) and _ (underscore) symbols, but not period characters.
 
 You can now create links to these URLs in a Moodle HTML Block, in your Moodle theme footer and so on.
 
