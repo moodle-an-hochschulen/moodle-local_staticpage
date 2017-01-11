@@ -30,18 +30,26 @@ require_once(dirname(__FILE__) . '/lib.php');
 global $CFG, $PAGE;
 
 if ($hassiteconfig) {
-    // New settings page
-    $page = new admin_settingpage('staticpage', get_string('pluginname', 'local_staticpage', null, true));
+    // Add new category to site admin navigation tree
+    $ADMIN->add('root', new admin_category('local_staticpage', get_string('pluginname', 'local_staticpage', null, true)));
 
+
+    // Create new documents page
+    $page = new admin_settingpage('local_staticpage_documents', get_string('documents', 'local_staticpage', null, true));
 
     if ($ADMIN->fulltree) {
-        // Document filearea
-        $page->add(new admin_setting_heading('local_staticpage/documentsheading', get_string('documents', 'local_staticpage', null, true), ''));
-
         // Create document filearea widget
         $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage', null, true), get_string('documents_desc', 'local_staticpage', null, true), 'documents', 0, array('maxfiles' => -1, 'accepted_types' => '.html')));
+    }
+
+    // Add settings page to navigation category
+    $ADMIN->add('local_staticpage', $page);
 
 
+    // Create new settings page
+    $page = new admin_settingpage('local_staticpage_settings', get_string('settings', 'core', null, true));
+
+    if ($ADMIN->fulltree) {
         // Document title source
         $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading', get_string('documenttitlesource', 'local_staticpage', null, true), ''));
 
@@ -84,8 +92,6 @@ if ($hassiteconfig) {
         $page->add(new admin_setting_configselect('local_staticpage/cleanhtml', get_string('cleanhtml', 'local_staticpage', null, true), get_string('cleanhtml_desc', 'local_staticpage', null, true), $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES], $cleanhtmlmodes));
     }
 
-
-    // Add settings page to navigation tree
-    $ADMIN->add('root', new admin_category('staticpages', get_string('pluginname', 'local_staticpage', null, true)));
-    $ADMIN->add('staticpages', $page);
+    // Add settings page to navigation category
+    $ADMIN->add('local_staticpage', $page);
 }
