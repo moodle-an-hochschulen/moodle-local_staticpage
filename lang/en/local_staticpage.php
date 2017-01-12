@@ -53,8 +53,8 @@ $string['processfilters_desc'] = 'Configure if Moodle filters (especially the mu
 $string['processfiltersyes'] = 'Yes, process filters';
 $string['processfiltersno'] = 'No, don\'t process filters';
 $string['settingspagelist'] = 'List of static pages';
-$string['settingspagelistnofiles'] = 'There are no .html files in the <a href="">static pages document area</a>, therefore there are no static pages to be delivered. See README file for details.';
-$string['settingspagelistinstruction'] = 'This list shows all static pages which have been uploaded into the <a href="">static pages document area</a> and their URLs';
+$string['settingspagelistnofiles'] = 'There are no .html files in the <a href="{$a}">static pages document area</a>, therefore there are no static pages to be delivered. See README file for details.';
+$string['settingspagelistinstruction'] = 'This list shows all static pages which have been uploaded into the <a href="{$a}">static pages document area</a> and their URLs';
 $string['settingspagelistentryfilename'] = 'The following document file was found:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrypagename'] = 'From the document file\'s filename, Moodle derived the following pagename:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrystandardfail'] = 'The static page should be available at the following standard URL, but actually a browser won\'t be able to download and view it (perhaps there is something wrong with your webserver configuration - see README file for details):<br /><strong>{$a}</strong>';
