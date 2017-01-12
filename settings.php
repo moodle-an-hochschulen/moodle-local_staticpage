@@ -42,7 +42,7 @@ if ($hassiteconfig) {
         $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage', null, true), get_string('documents_desc', 'local_staticpage', null, true), 'documents', 0, array('maxfiles' => -1, 'accepted_types' => '.html')));
     }
 
-    // Add settings page to navigation category
+    // Add documents page to navigation category
     $ADMIN->add('local_staticpage', $page);
 
 
@@ -93,5 +93,12 @@ if ($hassiteconfig) {
     }
 
     // Add settings page to navigation category
+    $ADMIN->add('local_staticpage', $page);
+
+
+    // Create new external pagelist page
+    $page = new admin_externalpage('local_staticpage_pagelist', get_string('settingspagelist', 'local_staticpage', null, true), new moodle_url('/local/staticpage/settings_pagelist.php'), 'moodle/site:config');
+
+    // Add pagelist page to navigation category
     $ADMIN->add('local_staticpage', $page);
 }

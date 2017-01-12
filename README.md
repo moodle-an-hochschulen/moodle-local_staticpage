@@ -13,6 +13,7 @@ This plugin requires Moodle 3.1+
 Changes
 -------
 
+* 2016-01-12 - Re-add the list of available static pages
 * 2016-01-11 - Improve README
 * 2016-07-21 - Move the plugin's settings page to Site Administration -> Static Pages because this is where it logically belongs to
 * 2016-07-19 - Check compatibility for Moodle 3.1, no functionality change
@@ -106,6 +107,12 @@ In this section, you can configure if Moodle filters should be processed when se
 
 In this section, you can also configure if the static page's HTML code should be cleaned. If this setting is set to yes, local_staticpage will use a Moodle library function to remove unclean HTML code and special tags like `<iframe>`. If this setting is set to no, local_staticpage will trust the HTML code in your static page's file and will just pass it on to the browser.
 
+### 3. List of static pages
+
+On this page, there is a list which shows all static pages which have been uploaded into the static pages document area and their URLs.
+
+Additionally, the page list checks each static page if a browser is actually able to download and view it. If this isn't possible, the static page is marked with an error message in the page list.
+
 
 Creating static page documents
 ------------------------------
@@ -186,7 +193,7 @@ http://www.yourmoodle.com/local/staticpage/view.php?page=[pagename]
 
 These URLs aren't as catchy as with mod_rewrite, but they work in exactly the same manner.
 
-Please note: 
+Please note:
 Here, you have to omit the ".html" extension in the pagename.
 The URL http://www.yourmoodle.com/local/staticpage/view.php?page=[pagename].html won't work.
 This has technical reasons as the pagename parameter is cleaned to only contain alphanumeric characters and the - (hypen) and _ (underscore) symbols, but not period characters.

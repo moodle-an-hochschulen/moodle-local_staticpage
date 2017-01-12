@@ -36,3 +36,35 @@ define('STATICPAGE_PROCESSFILTERS_NO', 2);
 
 define('STATICPAGE_CLEANHTML_YES', 1);
 define('STATICPAGE_CLEANHTML_NO', 2);
+
+
+/**
+ * Check if static page is available and downloadable on given URL
+ *
+ * @param string $url Static page URL
+ * @return bool
+ */
+function local_staticpage_check_availability($url) {
+    // Prepare cURL request
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    if (!ini_get('open_basedir') && !ini_get('safe_mode')) {
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    }
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // We need that to prevent false errors with self-signed certificates on webserver.
+
+    // Run cURL request
+    $ret = curl_exec($ch);
+    $ret = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    // Return true if static page was available (HTTP 200)
+    if ($ret == 200) {
+        return true;
+    }
+    // Return false in all other cases
+    else {
+        return false;
+    }
+}
