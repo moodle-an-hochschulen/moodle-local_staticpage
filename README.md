@@ -7,12 +7,13 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 3.1+
+This plugin requires Moodle 3.2+
 
 
 Changes
 -------
 
+* 2017-01-12 - Check compatibility for Moodle 3.2, no functionality change
 * 2017-01-12 - Re-add the list of available static pages
 * 2017-01-11 - Improve README
 * 2016-07-21 - Move the plugin's settings page to Site Administration -> Static Pages because this is where it logically belongs to
