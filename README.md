@@ -23,7 +23,7 @@ Usage & Settings
 ----------------
 
 The local_staticpage plugin is designed to deliver static HTML documents, enriched with Moodle navigation and theme as a standard Moodle page which exist outside any course. After installing local_staticpage, the plugin has to be configured.
-To configure the plugin and its behaviour, please visit Site Administration -> Static Pages.
+To configure the plugin and its behaviour, please visit Site administration -> Static Pages.
 
 There, you find multiple settings pages:
 
@@ -227,7 +227,7 @@ Right-to-left support
 ---------------------
 
 This plugin has not been tested with Moodle's support for right-to-left (RTL) languages.
-If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send me a pull request on
+If you want to use this plugin with a RTL language and it doesn't work as-is, you are free to send us a pull request on
 github with modifications.
 
 
