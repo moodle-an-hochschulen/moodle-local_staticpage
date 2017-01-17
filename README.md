@@ -231,6 +231,14 @@ If you want to use this plugin with a RTL language and it doesn't work as-is, yo
 github with modifications.
 
 
+PHP7 Support
+------------
+
+Since Moodle 3.0, Moodle core basically supports PHP7.
+Please note that PHP7 support is on our roadmap for this plugin, but it has not yet been thoroughly tested for PHP7 support and we are still running it in production on PHP5.
+If you encounter any success or failure with this plugin and PHP7, please let us know.
+
+
 Copyright
 ---------
 
