@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.2-r4
 
 * 2017-01-12 - Move Changelog from README.md to CHANGES.md
 
