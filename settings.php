@@ -39,7 +39,7 @@ if ($hassiteconfig) {
 
     if ($ADMIN->fulltree) {
         // Create document filearea widget
-        $page->add(new admin_setting_configstoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage', null, true), get_string('documents_desc', 'local_staticpage', null, true), 'documents', 0, array('maxfiles' => -1, 'accepted_types' => '.html')));
+        $page->add(new \local_staticpage\admin_setting_staticpagestoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage', null, true), get_string('documents_desc', 'local_staticpage', null, true), 'documents', 0, array('maxfiles' => -1, 'accepted_types' => '.html')));
     }
 
     // Add documents page to navigation category
