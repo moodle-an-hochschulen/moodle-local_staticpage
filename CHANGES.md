@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.2-r5
 
 * 2017-01-27 - Automatically rename htm files to html - Credits to Andrew Hancox
 
