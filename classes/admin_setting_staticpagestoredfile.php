@@ -14,10 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Local plugin "staticpage" - Settings class file
+ *
+ * @package    local_staticpage
+ * @copyright  2017 Andrew Hancox, Synergy Learning UK on behalf of Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace local_staticpage;
 
-class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile{
+defined('MOODLE_INTERNAL') || die();
 
+class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile {
+
+    /**
+     * This function renames .htm files to .html (if any files with this extension exist) when the filepicker is saved
+     * and calls the parent function to retain its functionality
+     */
     public function write_setting($data) {
         $now = time() - 1;
 
