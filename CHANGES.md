@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2017-01-27 - Automatically rename htm files to html - Credits to Andrew Hancox
+
 ### v3.2-r4
 
 * 2017-01-12 - Move Changelog from README.md to CHANGES.md

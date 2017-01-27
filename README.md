@@ -37,6 +37,7 @@ You upload a file named faq.html. This file will be served as static page with t
 Valid filenames:
 Please note that not all symbols which are allowed in the filenames in the filepicker are supported / suitable for pagenames.
 Please make sure that your filenames only contain lowercase alphanumeric characters and the - (hypen) and _ (underscore) symbols.
+Please note that the filepicker on this settings page does not only allow you to upload .html files but also to upload .htm files due to the way the Moodle filepicker is built internally. local_staticpage does its best to change the suffix of a .htm file to .html after you save the settings page.
 
 ### 2. Settings
 
