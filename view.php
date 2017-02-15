@@ -22,13 +22,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// defined('MOODLE_INTERNAL') || die(); - Must not be called because this script is called from outside moodle
+// Include config.php
+require_once('../../config.php');
 
 // Include lib.php
 require_once(dirname(__FILE__) . '/lib.php');
-
-// Include config.php
-require_once('../../config.php');
 
 // Globals
 global $PAGE;

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// defined('MOODLE_INTERNAL') || die(); - Must not be called because this script is called from outside moodle
+defined('MOODLE_INTERNAL') || die();
 
 define('STATICPAGE_TITLE_H1', 1);
 define('STATICPAGE_TITLE_HEAD', 2);
