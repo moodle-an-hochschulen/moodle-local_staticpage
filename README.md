@@ -115,7 +115,7 @@ local_staticpage is able to use Apache's mod_rewrite module to provide static pa
 If you are running Moodle in the root of your webserver, please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
 
 RewriteEngine On
-RewriteRule ^/static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
+RewriteRule ^static/(.*)\.html$ /local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
 However, in some Apache configurations the following rule will work (without the leading slash - for details, please refer to http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriterule):
 
@@ -129,7 +129,7 @@ http://www.yourmoodle.com/static/[pagename].html
 If you are running Moodle in a subdirectory on your webserver, please add the following to your Apache configuration or your .htaccess file in the Moodle directory:
 
 RewriteEngine On
-RewriteRule ^/yoursubdirectory/static/(.*)\.html$ /yoursubdirectory/local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
+RewriteRule ^yoursubdirectory/static/(.*)\.html$ /yoursubdirectory/local/staticpage/view.php?page=$1&%{QUERY_STRING} [L]
 
 However, in some Apache configurations the following rule will work (without the leading slash - for details, please refer to http://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewriterule):
 
