@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_staticpage';
-$plugin->version = 2017012700;
-$plugin->release = 'v3.2-r5';
+$plugin->version = 2017050500;
+$plugin->release = 'v3.2-r6';
 $plugin->requires = 2016120500;
 $plugin->maturity = MATURITY_STABLE;

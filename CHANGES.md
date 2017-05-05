@@ -4,7 +4,8 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unpublished
+### v3.2-r6
+
 * 2017-05-05 - Improve README.md
 * 2017-02-15 - Minor code improvement, no functionality change
 
