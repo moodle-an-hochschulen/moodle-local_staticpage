@@ -22,22 +22,22 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Include config.php
+// Include config.php.
 require_once(dirname(__FILE__).'/../../config.php');
 
-// Include adminlib.php
+// Include adminlib.php.
 require_once($CFG->libdir.'/adminlib.php');
 
-// Include lib.php
+// Include lib.php.
 require_once(dirname(__FILE__) . '/lib.php');
 
 global $CFG, $PAGE, $OUTPUT;
 
-// Set up external admin page
+// Set up external admin page.
 admin_externalpage_setup('local_staticpage_pagelist');
 
 
-// Prepare page
+// Prepare page.
 $title = get_string('settingspagelist', 'local_staticpage');
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
@@ -46,108 +46,116 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
 
 
-// Initialize HTML output
+// Initialize HTML output.
 $html = '';
 
-// Fetch context
+// Fetch context.
 $context = \context_system::instance();
 
-// Get filearea
+// Get filearea.
 $fs = get_file_storage();
 
-// If no file is found, quit with notification
+// If no file is found, quit with notification.
 if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
-    // Output notification
-    $html .= $OUTPUT->box(get_string('settingspagelistnofiles', 'local_staticpage', '/admin/settings.php?section=local_staticpage_documents'), 'alert alert-warning');
-}
+    // Output notification.
+    $html .= $OUTPUT->box(
+            get_string('settingspagelistnofiles', 'local_staticpage', '/admin/settings.php?section=local_staticpage_documents'),
+            'alert alert-warning');
+    // Otherwise start page list.
+} else {
+    // Output instruction.
+    $html .= $OUTPUT->box(
+            get_string('settingspagelistinstruction', 'local_staticpage', '/admin/settings.php?section=local_staticpage_documents'),
+            'alert alert-info');
 
-// Otherwise start page list
-else {
-    // Output instruction
-    $html .= $OUTPUT->box(get_string('settingspagelistinstruction', 'local_staticpage', '/admin/settings.php?section=local_staticpage_documents'), 'alert alert-info');
-
-    // Start page list
+    // Start page list.
     $html .= html_writer::start_tag('ul');
 
-    // Fetch all files
+    // Fetch all files.
     $pages = $fs->get_area_files($context->id, 'local_staticpage', 'documents', false, 'filename', false);
 
-    // Get plugin config
-    $local_staticpage_config = get_config('local_staticpage');
+    // Get plugin config.
+    $localstaticpageconfig = get_config('local_staticpage');
 
-    // Output each page as a page list entry
+    // Output each page as a page list entry.
     foreach ($pages as $page) {
 
-        // Collect information about the page
-        $page_filename = $page->get_filename();
-        $page_extension = pathinfo($page_filename, PATHINFO_EXTENSION);
-        $page_pagename = pathinfo($page_filename, PATHINFO_FILENAME);
+        // Collect information about the page.
+        $pagefilename = $page->get_filename();
+        $pageextension = pathinfo($pagefilename, PATHINFO_EXTENSION);
+        $pagepagename = pathinfo($pagefilename, PATHINFO_FILENAME);
 
-        // If this is not .html file, skip it
-        if ($page_extension != 'html') {
+        // If this is not .html file, skip it.
+        if ($pageextension != 'html') {
             continue;
         }
 
-        // Start page list entry
+        // Start page list entry.
         $html .= html_writer::start_tag('li');
 
-            // Print basic information about the page
-            $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', $page_filename));
-            $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $page_pagename));
+        // Print basic information about the page.
+        $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', $pagefilename));
+        $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $pagepagename));
 
-            // Print normal static page URL - Do only if apache rewrite isn't forced
-            if (!$local_staticpage_config->apacherewrite) {
-                // Check availability
-                $page_url_standard = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$page_pagename;
-                $page_url_standard_available = local_staticpage_check_availability($page_url_standard);
+        // Print normal static page URL - Do only if apache rewrite isn't forced.
+        if (!$localstaticpageconfig->apacherewrite) {
+            // Check availability.
+            $pageurlstandard = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$pagepagename;
+            $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
 
-                // Show if document is available
-                if ($page_url_standard_available) {
-                    $html .= html_writer::tag('p',
-                        get_string('settingspagelistentrystandardsuccess', 'local_staticpage',
-                        html_writer::link($page_url_standard, html_writer::tag('span', get_string('available', 'local_staticpage'), array('class' => 'label label-success')).'&nbsp;'.$page_url_standard))
-                    );
-                }
-                // Otherwise
-                else {
-                    $html .= html_writer::tag('p',
-                        get_string('settingspagelistentrystandardfail', 'local_staticpage',
-                        html_writer::link($page_url_standard, html_writer::tag('span', get_string('notavailable', 'local_staticpage'), array('class' => 'label label-important')).'&nbsp;'.$page_url_standard))
-                    );
-                }
+            // Show if document is available.
+            if ($pageurlstandardavailable) {
+                $html .= html_writer::tag('p',
+                    get_string('settingspagelistentrystandardsuccess', 'local_staticpage',
+                    html_writer::link($pageurlstandard,
+                        html_writer::tag('span',
+                            get_string('available', 'local_staticpage'),
+                            array('class' => 'label label-success')).'&nbsp;'.$pageurlstandard)));
+                // Otherwise.
+            } else {
+                $html .= html_writer::tag('p',
+                    get_string('settingspagelistentrystandardfail', 'local_staticpage',
+                    html_writer::link($pageurlstandard,
+                        html_writer::tag('span',
+                            get_string('notavailable', 'local_staticpage'),
+                            array('class' => 'label label-important')).'&nbsp;'.$pageurlstandard)));
             }
+        }
 
-            // Print rewritten static page URL
-                // Check availability
-                $page_url_rewrite = rtrim($CFG->wwwroot, '/').'/static/'.$page_pagename.'.html';
-                $page_url_rewrite_available = local_staticpage_check_availability($page_url_rewrite);
+        // Print rewritten static page URL.
+        // Check availability.
+        $pageurlrewrite = rtrim($CFG->wwwroot, '/').'/static/'.$pagepagename.'.html';
+        $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
 
-                // Show if document is available
-                if ($page_url_rewrite_available) {
-                    $html .= html_writer::tag('p',
-                        get_string('settingspagelistentryrewritesuccess', 'local_staticpage',
-                        html_writer::link($page_url_rewrite, html_writer::tag('span', get_string('available', 'local_staticpage'), array('class' => 'label label-success')).'&nbsp;'.$page_url_rewrite))
-                    );
-                }
-                // Otherwise
-                else {
-                    $html .= html_writer::tag('p',
-                        get_string('settingspagelistentryrewritefail', 'local_staticpage',
-                        html_writer::link($page_url_rewrite, html_writer::tag('span', get_string('notavailable', 'local_staticpage'), array('class' => 'label label-warning')).'&nbsp;'.$page_url_rewrite))
-                    );
-                }
+        // Show if document is available.
+        if ($pageurlrewriteavailable) {
+            $html .= html_writer::tag('p',
+                get_string('settingspagelistentryrewritesuccess', 'local_staticpage',
+                html_writer::link($pageurlrewrite,
+                    html_writer::tag('span',
+                        get_string('available', 'local_staticpage'),
+                        array('class' => 'label label-success')).'&nbsp;'.$pageurlrewrite)));
+            // Otherwise.
+        } else {
+            $html .= html_writer::tag('p',
+                get_string('settingspagelistentryrewritefail', 'local_staticpage',
+                html_writer::link($pageurlrewrite,
+                    html_writer::tag('span',
+                        get_string('notavailable', 'local_staticpage'),
+                        array('class' => 'label label-warning')).'&nbsp;'.$pageurlrewrite)));
+        }
 
-        // Finish page list entry
+        // Finish page list entry.
         $html .= html_writer::end_tag('li');
 
     }
 
-    // Finish page list
+    // Finish page list.
     $html .= html_writer::end_tag('ul');
 }
 
-// Output HTML
+// Output HTML.
 echo $html;
 
-// Finish page
+// Finish page.
 echo $OUTPUT->footer();

@@ -22,154 +22,145 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Include config.php
+// Include config.php.
 require_once('../../config.php');
 
-// Include lib.php
+// Include lib.php.
 require_once(dirname(__FILE__) . '/lib.php');
 
-// Globals
+// Globals.
 global $PAGE;
 
-// Get plugin config
-$local_staticpage_config = get_config('local_staticpage');
+// Get plugin config.
+$localstaticpageconfig = get_config('local_staticpage');
 
-// Require login if the plugin or Moodle is configured to force login
-if ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_YES || ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
+// Require login if the plugin or Moodle is configured to force login.
+if ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_YES ||
+        ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
     require_login();
 }
 
-// View only with /static/ URL
-if ($local_staticpage_config->apacherewrite == true) {
+// View only with /static/ URL.
+if ($localstaticpageconfig->apacherewrite == true) {
     if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
         die;
     }
 }
 
 
-// Get requested page's name
+// Get requested page's name.
 $page = required_param('page', PARAM_ALPHANUMEXT);
 
-// Put together document file names
+// Put together document file names.
 $filename = "$page.html";
 
-// Fetch context
+// Fetch context.
 $context = \context_system::instance();
 
-// Get filearea
+// Get filearea.
 $fs = get_file_storage();
 
-// Get document from filearea
+// Get document from filearea.
 $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
 
-// If no file is found, quit with error message
+// If no file is found, quit with error message.
 if (!$file) {
     print_error('pagenotfound', 'local_staticpage');
 }
 
-// Get file content
+// Get file content.
 $filecontents = $file->get_content();
 
-// Import the document, load DOM
+// Import the document, load DOM.
 $staticdoc = new DOMDocument();
 $staticdoc->loadHTML($filecontents);
 
-// Extract page's first h1 (if present)
+// Extract page's first h1 (if present).
 if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
     $firsth1 = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
-}
-else {
+} else {
     $firsth1 = $page;
 }
 
-// Extract page title (if present)
+// Extract page title (if present).
 if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
     $title = $staticdoc->getElementsByTagName('title')->item(0)->nodeValue;
-}
-else {
+} else {
     $title = $page;
 }
 
-// Extract style tag in head (if present) and insert into HTML head
+// Extract style tag in head (if present) and insert into HTML head.
 if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
     $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
     $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
 }
 
-// Set page url
-if ($local_staticpage_config->apacherewrite == true) {
+// Set page url.
+if ($localstaticpageconfig->apacherewrite == true) {
     $PAGE->set_url('/static/'.$page.'.html');
-}
-else {
+} else {
     $PAGE->set_url('/local/staticpage/view.php?page='.$page);
 }
 
-// Set page context
+// Set page context.
 $PAGE->set_context(context_system::instance());
 
 
-// Set page layout
+// Set page layout.
 $PAGE->set_pagelayout('standard');
 
 
-// Set page title
-if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_H1) {
+// Set page title.
+if ($localstaticpageconfig->documenttitlesource == STATICPAGE_TITLE_H1) {
     $PAGE->set_title($firsth1);
-}
-else if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_HEAD) {
+} else if ($localstaticpageconfig->documenttitlesource == STATICPAGE_TITLE_HEAD) {
     $PAGE->set_title($title);
-}
-else {
+} else {
     $PAGE->set_title($title);
 }
 
-// Set page heading
-if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
+// Set page heading.
+if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($firsth1);
-}
-else if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
+} else if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($title);
-}
-else {
+} else {
     $PAGE->set_heading($title);
 }
 
-// Set page navbar
-if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_H1) {
+// Set page navbar.
+if ($localstaticpageconfig->documentnavbarsource == STATICPAGE_TITLE_H1) {
     $PAGE->navbar->add($firsth1);
-}
-else if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
+} else if ($localstaticpageconfig->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
     $PAGE->navbar->add($title);
-}
-else {
+} else {
     $PAGE->navbar->add($title);
 }
 
 echo $OUTPUT->header();
 
-// Get html code
+// Get html code.
 $html = $staticdoc->saveHTML();
 
-// Remove everything except body tag content from html
+// Remove everything except body tag content from html.
 $startcut = strpos($html, '<body>') + 6;
 $stopcut = strpos($html, '</body>') - $startcut;
 $html = substr($html, $startcut, $stopcut);
 
-// Print html code
-if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+// Print html code.
+if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
     echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => true));
-}
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
     echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => true));
-}
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
     echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => false));
-}
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
     echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => false));
-}
-// This should not happen
-else {
+} else { // This should not happen.
     echo $html;
 }
 

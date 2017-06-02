@@ -24,81 +24,135 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include lib.php
+// Include lib.php.
 require_once(dirname(__FILE__) . '/lib.php');
 
 global $CFG, $PAGE;
 
 if ($hassiteconfig) {
-    // Add new category to site admin navigation tree
-    $ADMIN->add('root', new admin_category('local_staticpage', get_string('pluginname', 'local_staticpage', null, true)));
+    // Add new category to site admin navigation tree.
+    $ADMIN->add('root', new admin_category('local_staticpage',
+            get_string('pluginname', 'local_staticpage', null, true)));
 
 
-    // Create new documents page
-    $page = new admin_settingpage('local_staticpage_documents', get_string('documents', 'local_staticpage', null, true));
+    // Create new documents page.
+    $page = new admin_settingpage('local_staticpage_documents',
+            get_string('documents', 'local_staticpage', null, true));
 
     if ($ADMIN->fulltree) {
-        // Create document filearea widget
-        $page->add(new \local_staticpage\admin_setting_staticpagestoredfile('local_staticpage/documents', get_string('documents', 'local_staticpage', null, true), get_string('documents_desc', 'local_staticpage', null, true), 'documents', 0, array('maxfiles' => -1, 'accepted_types' => '.html')));
+        // Create document filearea widget.
+        $page->add(new \local_staticpage\admin_setting_staticpagestoredfile('local_staticpage/documents',
+                get_string('documents', 'local_staticpage', null, true),
+                get_string('documents_desc', 'local_staticpage', null, true),
+                'documents',
+                0,
+                array('maxfiles' => -1, 'accepted_types' => '.html')));
     }
 
-    // Add documents page to navigation category
+    // Add documents page to navigation category.
     $ADMIN->add('local_staticpage', $page);
 
 
-    // Create new settings page
-    $page = new admin_settingpage('local_staticpage_settings', get_string('settings', 'core', null, true));
+    // Create new settings page.
+    $page = new admin_settingpage('local_staticpage_settings',
+            get_string('settings', 'core', null, true));
 
     if ($ADMIN->fulltree) {
-        // Document title source
-        $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading', get_string('documenttitlesource', 'local_staticpage', null, true), ''));
+        // Document title source.
+        $page->add(new admin_setting_heading('local_staticpage/documenttitlesourceheading',
+                get_string('documenttitlesource', 'local_staticpage', null, true),
+                ''));
 
-        // Create document title source widget
-        $titlesource[STATICPAGE_TITLE_H1] = get_string('documenttitlesourceh1', 'local_staticpage', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
+        // Create document title source widget.
+        $titlesource[STATICPAGE_TITLE_H1] = get_string('documenttitlesourceh1', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
         $titlesource[STATICPAGE_TITLE_HEAD] = get_string('documenttitlesourcehead', 'local_staticpage', null, true);
-        $page->add(new admin_setting_configselect('local_staticpage/documenttitlesource', get_string('documenttitlesource', 'local_staticpage', null, true), get_string('documenttitlesource_desc', 'local_staticpage', null, true), STATICPAGE_TITLE_H1, $titlesource));
-        $page->add(new admin_setting_configselect('local_staticpage/documentheadingsource', get_string('documentheadingsource', 'local_staticpage', null, true), get_string('documentheadingsource_desc', 'local_staticpage', null, true), STATICPAGE_TITLE_H1, $titlesource));
-        $page->add(new admin_setting_configselect('local_staticpage/documentnavbarsource', get_string('documentnavbarsource', 'local_staticpage', null, true), get_string('documentnavbarsource_desc', 'local_staticpage', null, true), STATICPAGE_TITLE_H1, $titlesource));
+        $page->add(new admin_setting_configselect('local_staticpage/documenttitlesource',
+                get_string('documenttitlesource', 'local_staticpage', null, true),
+                get_string('documenttitlesource_desc', 'local_staticpage', null, true),
+                STATICPAGE_TITLE_H1,
+                $titlesource));
+        $page->add(new admin_setting_configselect('local_staticpage/documentheadingsource',
+                get_string('documentheadingsource', 'local_staticpage', null, true),
+                get_string('documentheadingsource_desc', 'local_staticpage', null, true),
+                STATICPAGE_TITLE_H1,
+                $titlesource));
+        $page->add(new admin_setting_configselect('local_staticpage/documentnavbarsource',
+                get_string('documentnavbarsource', 'local_staticpage', null, true),
+                get_string('documentnavbarsource_desc', 'local_staticpage', null, true),
+                STATICPAGE_TITLE_H1,
+                $titlesource));
 
 
-        // Apache rewrite
-        $page->add(new admin_setting_heading('local_staticpage/apacherewriteheading', get_string('apacherewrite', 'local_staticpage', null, true), ''));
+        // Apache rewrite.
+        $page->add(new admin_setting_heading('local_staticpage/apacherewriteheading',
+                get_string('apacherewrite', 'local_staticpage', null, true),
+                ''));
 
-        // Create apache rewrite control widget
-        $page->add(new admin_setting_configcheckbox('local_staticpage/apacherewrite', get_string('apacherewrite', 'local_staticpage', null, true), get_string('apacherewrite_desc', 'local_staticpage', null, true), 0));
+        // Create apache rewrite control widget.
+        $page->add(new admin_setting_configcheckbox('local_staticpage/apacherewrite',
+                get_string('apacherewrite', 'local_staticpage', null, true),
+                get_string('apacherewrite_desc', 'local_staticpage', null, true),
+                0));
 
 
-        // Force login
-        $page->add(new admin_setting_heading('local_staticpage/forceloginheading', get_string('forcelogin', 'local_staticpage', null, true), ''));
+        // Force login.
+        $page->add(new admin_setting_heading('local_staticpage/forceloginheading',
+                get_string('forcelogin', 'local_staticpage', null, true),
+                ''));
 
-        // Create force login widget
+        // Create force login widget.
         $forceloginmodes[STATICPAGE_FORCELOGIN_YES] = get_string('yes', 'core', null, true);
         $forceloginmodes[STATICPAGE_FORCELOGIN_NO] = get_string('no', 'core', null, true);
-        $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL] = get_string('forceloginglobal', 'local_staticpage', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
-        $page->add(new admin_setting_configselect('local_staticpage/forcelogin', get_string('forcelogin', 'local_staticpage', null, true), get_string('forcelogin_desc', 'local_staticpage', null, true), $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL], $forceloginmodes));
+        $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL] = get_string('forceloginglobal', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
+        $page->add(new admin_setting_configselect('local_staticpage/forcelogin',
+                get_string('forcelogin', 'local_staticpage', null, true),
+                get_string('forcelogin_desc', 'local_staticpage', null, true),
+                $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL],
+                $forceloginmodes));
 
 
-        // Process content
-        $page->add(new admin_setting_heading('local_staticpage/processcontentheading', get_string('processcontent', 'local_staticpage', null, true), ''));
+        // Process content.
+        $page->add(new admin_setting_heading('local_staticpage/processcontentheading',
+                get_string('processcontent', 'local_staticpage', null, true),
+                ''));
 
-        // Create process filters widget
-        $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES] = get_string('processfiltersyes', 'local_staticpage', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
+        // Create process filters widget.
+        $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES] = get_string('processfiltersyes', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
         $processfiltersmodes[STATICPAGE_PROCESSFILTERS_NO] = get_string('processfiltersno', 'local_staticpage', null, true);
-        $page->add(new admin_setting_configselect('local_staticpage/processfilters', get_string('processfilters', 'local_staticpage', null, true), get_string('processfilters_desc', 'local_staticpage', null, true), $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES], $processfiltersmodes));
+        $page->add(new admin_setting_configselect('local_staticpage/processfilters',
+                get_string('processfilters', 'local_staticpage', null, true),
+                get_string('processfilters_desc', 'local_staticpage', null, true),
+                $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES],
+                $processfiltersmodes));
 
-        // Create clean HTML widget
-        $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES] = get_string('cleanhtmlyes', 'local_staticpage', null, false); // Don't use string lazy loading here because the string will be directly used and would produce a PHP warning otherwise
+        // Create clean HTML widget.
+        $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES] = get_string('cleanhtmlyes', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
         $cleanhtmlmodes[STATICPAGE_CLEANHTML_NO] = get_string('cleanhtmlno', 'local_staticpage', null, true);
-        $page->add(new admin_setting_configselect('local_staticpage/cleanhtml', get_string('cleanhtml', 'local_staticpage', null, true), get_string('cleanhtml_desc', 'local_staticpage', null, true), $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES], $cleanhtmlmodes));
+        $page->add(new admin_setting_configselect('local_staticpage/cleanhtml',
+                get_string('cleanhtml', 'local_staticpage', null, true),
+                get_string('cleanhtml_desc', 'local_staticpage', null, true),
+                $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES],
+                $cleanhtmlmodes));
     }
 
-    // Add settings page to navigation category
+    // Add settings page to navigation category.
     $ADMIN->add('local_staticpage', $page);
 
 
-    // Create new external pagelist page
-    $page = new admin_externalpage('local_staticpage_pagelist', get_string('settingspagelist', 'local_staticpage', null, true), new moodle_url('/local/staticpage/settings_pagelist.php'), 'moodle/site:config');
+    // Create new external pagelist page.
+    $page = new admin_externalpage('local_staticpage_pagelist',
+            get_string('settingspagelist', 'local_staticpage', null, true),
+            new moodle_url('/local/staticpage/settings_pagelist.php'),
+            'moodle/site:config');
 
-    // Add pagelist page to navigation category
+    // Add pagelist page to navigation category.
     $ADMIN->add('local_staticpage', $page);
 }

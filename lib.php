@@ -45,26 +45,26 @@ define('STATICPAGE_CLEANHTML_NO', 2);
  * @return bool
  */
 function local_staticpage_check_availability($url) {
-    // Prepare cURL request
+    // Prepare cURL request.
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_NOBODY, true);
-    if (!ini_get('open_basedir') && !ini_get('safe_mode')) {
+    if (!ini_get('open_basedir')) {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     }
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // We need that to prevent false errors with self-signed certificates on webserver.
+    // We need that to prevent false errors with self-signed certificates on webserver.
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-    // Run cURL request
+    // Run cURL request.
     $ret = curl_exec($ch);
     $ret = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Return true if static page was available (HTTP 200)
+    // Return true if static page was available (HTTP 200).
     if ($ret == 200) {
         return true;
-    }
-    // Return false in all other cases
-    else {
+        // Return false in all other cases.
+    } else {
         return false;
     }
 }

@@ -26,11 +26,20 @@ namespace local_staticpage;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class used for uploading the staticpage files into file storage, inherits quite everything from \admin_setting_configstoredfile.
+ *
+ * @package    local_staticpage
+ * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile {
 
     /**
      * This function renames .htm files to .html (if any files with this extension exist) when the filepicker is saved
      * and calls the parent function to retain its functionality
+     * @param array $data - The data submitted from the form or null to set the default value for new installs.
+     * @return bool - true if successful.
      */
     public function write_setting($data) {
         $now = time() - 1;
@@ -45,7 +54,13 @@ class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile
             return $response;
         }
 
-        $files = $fs->get_area_files($options['context']->id, $component, $this->filearea, $this->itemid, 'sortorder,filepath,filename', false, $now);
+        $files = $fs->get_area_files($options['context']->id,
+                $component,
+                $this->filearea,
+                $this->itemid,
+                'sortorder,filepath,filename',
+                false,
+                $now);
 
         foreach ($files as $file) {
             $existingname = $file->get_filename();
