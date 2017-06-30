@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.2-r7
 
 * 2017-05-29 - Add Travis CI support
 
