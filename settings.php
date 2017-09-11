@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Include lib.php.
-require_once(dirname(__FILE__) . '/lib.php');
+require_once(__DIR__ . '/lib.php');
 
 global $CFG, $PAGE;
 

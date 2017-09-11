@@ -26,11 +26,11 @@
 // @codingStandardsIgnoreStart
 // Let codechecker ignore the next line because otherwise it would complain about a missing login check
 // after requiring config.php which is really not needed.
-require_once('../../config.php');
+require(__DIR__ . '/../../config.php');
 // @codingStandardsIgnoreEnd
 
 // Include lib.php.
-require_once(dirname(__FILE__) . '/lib.php');
+require_once(__DIR__ . '/lib.php');
 
 // Globals.
 global $PAGE;

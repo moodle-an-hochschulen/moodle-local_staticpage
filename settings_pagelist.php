@@ -23,13 +23,13 @@
  */
 
 // Include config.php.
-require_once(dirname(__FILE__).'/../../config.php');
+require(__DIR__ . '/../../config.php');
 
 // Include adminlib.php.
 require_once($CFG->libdir.'/adminlib.php');
 
 // Include lib.php.
-require_once(dirname(__FILE__) . '/lib.php');
+require_once(__DIR__ . '/lib.php');
 
 global $CFG, $PAGE, $OUTPUT;
 
