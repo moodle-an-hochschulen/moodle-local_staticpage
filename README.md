@@ -92,7 +92,8 @@ Creating static page documents
 
 As local_staticpage's HTML reader (DOM parser) is quite dumb, there is a proposed structure for the html documents:
 
-`<html>
+```
+<html>
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Imprint</title>
@@ -101,7 +102,8 @@ As local_staticpage's HTML reader (DOM parser) is quite dumb, there is a propose
         <h1>Imprint</h1>
         [Your content goes here]
 </body>
-</html>`
+</html>
+```
 
 
 Please note that the `<meta>` tag is neccessary if you want to use UTF-8 characters in your html document, otherwise they will become crippled when the document is parsed by local_staticpage.

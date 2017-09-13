@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2017-09-13 - Escape proposed HTML structure in README
 * 2017-09-13 - Escape HTML code in language pack - Credits to Carson Tam
 
 ### v3.2-r7
