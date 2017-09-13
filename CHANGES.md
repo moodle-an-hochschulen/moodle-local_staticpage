@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2017-09-13 - Escape HTML code in language pack - Credits to Carson Tam
+
 ### v3.2-r7
 
 * 2017-05-29 - Add Travis CI support
