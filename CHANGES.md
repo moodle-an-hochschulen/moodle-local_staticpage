@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.2-r8
 
 * 2017-09-13 - Escape proposed HTML structure and Apache configuration in README
 * 2017-09-13 - Escape HTML code in language pack - Credits to Carson Tam
