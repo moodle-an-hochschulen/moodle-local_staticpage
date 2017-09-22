@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2017-09-22 - Bugfix: Boost seems not to process filters for our breadcrumb element anymore
+
 ### v3.2-r8
 
 * 2017-09-13 - Escape proposed HTML structure and Apache configuration in README

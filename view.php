@@ -79,25 +79,6 @@ $filecontents = $file->get_content();
 $staticdoc = new DOMDocument();
 $staticdoc->loadHTML($filecontents);
 
-// Extract page's first h1 (if present).
-if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
-    $firsth1 = $staticdoc->getElementsByTagName('h1')->item(0)->nodeValue;
-} else {
-    $firsth1 = $page;
-}
-
-// Extract page title (if present).
-if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
-    $title = $staticdoc->getElementsByTagName('title')->item(0)->nodeValue;
-} else {
-    $title = $page;
-}
-
-// Extract style tag in head (if present) and insert into HTML head.
-if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
-    $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
-    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
-}
 
 // Set page url.
 if ($localstaticpageconfig->apacherewrite == true) {
@@ -109,9 +90,29 @@ if ($localstaticpageconfig->apacherewrite == true) {
 // Set page context.
 $PAGE->set_context(context_system::instance());
 
-
 // Set page layout.
 $PAGE->set_pagelayout('standard');
+
+
+// Extract page's first h1 (if present).
+if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
+    $firsth1 = format_string($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue);
+} else {
+    $firsth1 = $page;
+}
+
+// Extract page title (if present).
+if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
+    $title = format_string($staticdoc->getElementsByTagName('title')->item(0)->nodeValue);
+} else {
+    $title = $page;
+}
+
+// Extract style tag in head (if present) and insert into HTML head.
+if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
+    $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
+    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
+}
 
 
 // Set page title.
