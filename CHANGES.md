@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2017-11-08 - Updated travis.yml to use newer node version for fixing TravisCI error.
+
 ### v3.2-r9
 
 * 2017-09-22 - Bugfix: Boost seems not to process filters for our breadcrumb element anymore
