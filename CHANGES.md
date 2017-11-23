@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2017-11-23 - Check compatibility for Moodle 3.3, no functionality change.
 * 2017-11-08 - Updated travis.yml to use newer node version for fixing TravisCI error.
 
 ### v3.2-r9

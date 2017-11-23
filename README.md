@@ -9,7 +9,7 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 3.2+
+This plugin requires Moodle 3.3+
 
 
 Motivation for this plugin
@@ -300,9 +300,8 @@ If you want to use this plugin with a RTL language and it doesn't work as-is, yo
 PHP7 Support
 ------------
 
-Since Moodle 3.0, Moodle core basically supports PHP7.
-Please note that PHP7 support is on our roadmap for this plugin, but it has not yet been thoroughly tested for PHP7 support and we are still running it in production on PHP5.
-If you encounter any success or failure with this plugin and PHP7, please let us know.
+Moodle core recommends PHP7. Starting with the Moodle 3.3 release of this plugin, we are developing and testing it for PHP7 only.
+If you are still running this plugin on PHP5, please think about upgrading to PHP7.
 
 
 Copyright
