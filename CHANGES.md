@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.3-r1
 
 * 2017-11-23 - Check compatibility for Moodle 3.3, no functionality change.
 * 2017-11-08 - Updated travis.yml to use newer node version for fixing TravisCI error.
