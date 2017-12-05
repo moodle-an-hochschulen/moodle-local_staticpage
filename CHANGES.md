@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2017-12-05 - Added Workaround to travis.yml for fixing Behat tests with TravisCI.
+
 ### v3.3-r1
 
 * 2017-11-23 - Check compatibility for Moodle 3.3, no functionality change.

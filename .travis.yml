@@ -1,6 +1,9 @@
 language: php
 
-sudo: false
+# Workaround for fixing that Selenium server is not running and therefore Behat tests not working
+sudo: required
+# ORIGINAL:
+# sudo: false
 
 addons:
   firefox: "47.0.1"
