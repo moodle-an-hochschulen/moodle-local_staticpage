@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2017-12-14 - Check compatibility for Moodle 3.4, no functionality change.
 * 2017-12-05 - Added Workaround to travis.yml for fixing Behat tests with TravisCI.
 
 ### v3.3-r1
