@@ -47,6 +47,7 @@ $string['forcelogin_desc'] = 'Serve static pages only to logged in users or also
 $string['forceloginglobal'] = 'Respect the global setting $CFG->forcelogin';
 $string['notavailable'] = 'Not available';
 $string['pagenotfound'] = 'Page not found';
+$string['privacy:metadata'] = 'The static pages plugin provides extended functionality to Moodle admins, but does not store any personal data.';
 $string['processcontent'] = 'Process content';
 $string['processfilters'] = 'Process filters';
 $string['processfilters_desc'] = 'Configure if Moodle filters (especially the multilanguage filter) should be processed when serving the static page\'s content. See README for details.';
