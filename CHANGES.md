@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.5-r1
 
 * 2018-06-29 - Check compatibility for Moodle 3.5, no functionality change.
 
