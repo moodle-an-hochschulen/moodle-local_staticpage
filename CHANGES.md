@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.5-r2
 
 * 2018-09-26 - Bugfix: Forcing apache rewrite wasn't possible for Moodle installations in subdirectories.
 
