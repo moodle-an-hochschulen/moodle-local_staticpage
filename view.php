@@ -46,7 +46,10 @@ if ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_YES ||
 
 // View only with /static/ URL.
 if ($localstaticpageconfig->apacherewrite == true) {
-    if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
+    if (strpos($_SERVER['REQUEST_URI'], '/static/') === false) { /* We used to check if /static/ is at the beginning of the
+                                                                    REQUEST_URI, but this would break on Moodle subdirectory
+                                                                    installations. And there is no better check available in
+                                                                    core, so we just accept this rather loose check. */
         die;
     }
 }
