@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2018-12-05 - Changed travis.yml due to upstream changes.
+
 ### v3.5-r2
 
 * 2018-09-26 - Bugfix: Forcing apache rewrite wasn't possible for Moodle installations in subdirectories.

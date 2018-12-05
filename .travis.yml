@@ -7,11 +7,14 @@ sudo: required
 
 addons:
   firefox: "47.0.1"
-  postgresql: "9.3"
+  postgresql: "9.4"
   apt:
     packages:
-      - oracle-java8-installer
-      - oracle-java8-set-default
+# Workaround for fixing that Java could not be downloaded from Oracle website.
+      - openjdk-8-jre-headless
+# ORIGINAL:
+#     - oracle-java8-installer
+#     - oracle-java8-set-default
 
 cache:
   directories:
@@ -34,7 +37,7 @@ before_install:
   - nvm install 8.9
   - nvm use 8.9
   - cd ../..
-  - composer create-project -n --no-dev --prefer-dist moodlerooms/moodle-plugin-ci ci ^2
+  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
 
 install:
