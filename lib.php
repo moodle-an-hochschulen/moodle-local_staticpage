@@ -54,6 +54,8 @@ function local_staticpage_check_availability($url) {
     }
     // We need that to prevent false errors with self-signed certificates on webserver.
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // Ensure curl doesn't wait forever and prevent the page from loading
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
     // Run cURL request.
     $ret = curl_exec($ch);
