@@ -141,6 +141,32 @@ if ($hassiteconfig) {
                 get_string('cleanhtml_desc', 'local_staticpage', null, true),
                 $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES],
                 $cleanhtmlmodes));
+
+        // Check availability
+        $page->add(new admin_setting_heading('local_staticpage/checkavailabilityheading',
+            get_string('checkavailability', 'local_staticpage', null, true),
+            ''));
+
+        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_YES] = get_string('checkavailabilityyes', 'local_staticpage', null, false);
+        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_NO] = get_string('checkavailabilityno', 'local_staticpage', null, true);
+        $page->add(new admin_setting_configselect('local_staticpage/checkavailability',
+            get_string('checkavailability', 'local_staticpage', null, true),
+            get_string('checkavailability_desc', 'local_staticpage', null, true),
+            $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_YES],
+            $checkavailabilitymodes));
+
+        $page->add(new admin_setting_configtext('local_staticpage/checkavailabilityconnecttimeout',
+            get_string('checkavailabilityconnecttimeout', 'local_staticpage', null, true),
+            get_string('checkavailabilityconnecttimeout_desc', 'local_staticpage', null, true),
+            0,
+            PARAM_INT,
+            20));
+        $page->add(new admin_setting_configtext('local_staticpage/checkavailabilitytimeout',
+            get_string('checkavailabilitytimeout', 'local_staticpage', null, true),
+            get_string('checkavailabilitytimeout_desc', 'local_staticpage', null, true),
+            0,
+            PARAM_INT,
+            20));
     }
 
     // Add settings page to navigation category.
