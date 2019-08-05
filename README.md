@@ -9,7 +9,7 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 3.6+
+This plugin requires Moodle 3.7+
 
 
 Motivation for this plugin
@@ -219,8 +219,8 @@ There isn't any magic about the mechanisms of this plugin. To access a static pa
 Theme support
 -------------
 
-It has been developed on and tested only with Moodle Core's Boost theme.
-While this plugin should also work with Moodle Core's legacy Clean theme or third party themes, we can't support any other theme than Boost.
+This plugin is developed and tested on Moodle Core's Boost theme.
+It should also work with Boost child themes, including Moodle Core's Classic theme. However, we can't support any other theme than Boost.
 
 
 Theme support (Expert level)
@@ -307,6 +307,5 @@ Copyright
 ---------
 
 Ulm University
-kiz - Media Department
-Team Web & Teaching Support
+Communication and Information Centre (kiz)
 Alexander Bias
