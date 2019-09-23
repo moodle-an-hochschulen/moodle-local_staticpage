@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-09-23 - Add admin setting to check availability on list of static pages or not - Credits to Arief Wibowo.
 * 2019-08-05 - Prepare compatibility for Moodle 3.7.
 
 ### v3.6-r1

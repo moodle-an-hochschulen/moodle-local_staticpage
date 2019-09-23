@@ -110,15 +110,15 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-important',
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-important',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => '',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
                 ]
             );
             $html .= html_writer::tag('p',
-                get_string("settingspagelistentrystandard$pageurlstandardavailable", 'local_staticpage',
+                get_string('settingspagelistentrystandard'.$pageurlstandardavailable, 'local_staticpage',
                 html_writer::link($pageurlstandard,
                     html_writer::tag('span',
-                        get_string("checkavailabilityresponse$pageurlstandardavailable", 'local_staticpage'),
-                        array('class' => "label $statuslabelvariant")).'&nbsp;'.$pageurlstandard)));
+                        get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
+                        array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlstandard)));
         }
 
         // Print rewritten static page URL.
@@ -133,15 +133,15 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-warning',
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-warning',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => '',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
             ]
         );
         $html .= html_writer::tag('p',
-            get_string("settingspagelistentryrewrite$pageurlrewriteavailable", 'local_staticpage',
+            get_string('settingspagelistentryrewrite'.$pageurlrewriteavailable, 'local_staticpage',
             html_writer::link($pageurlrewrite,
                 html_writer::tag('span',
-                    get_string("checkavailabilityresponse$pageurlrewriteavailable", 'local_staticpage'),
-                    array('class' => "label $statuslabelvariant")).'&nbsp;'.$pageurlrewrite)));
+                    get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
+                    array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlrewrite)));
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');

@@ -52,6 +52,7 @@ define('STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED', 'disabled');
  * @return bool
  */
 function local_staticpage_check_availability($url) {
+    // If the availability check is disabled, we are already done.
     if (STATICPAGE_CHECKAVAILABILITY_NO == get_config('local_staticpage', 'checkavailability')) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED;
     }
@@ -66,18 +67,28 @@ function local_staticpage_check_availability($url) {
     // We need that to prevent false errors with self-signed certificates on webserver.
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
+    // Add the configured timeouts to the cURL request.
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, get_config('local_staticpage', 'checkavailabilityconnecttimeout'));
     curl_setopt($ch, CURLOPT_TIMEOUT, get_config('local_staticpage', 'checkavailabilitytimeout'));
 
     // Run cURL request.
     curl_exec($ch);
-    if (CURLE_OK !== curl_errno($ch)) {
+
+    // Check cURL result and return if there was a general problem.
+    if (curl_errno($ch) !== CURLE_OK) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR;
     }
 
+    // Get cURL return code and close the connetion.
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Return true if static page was available (HTTP 200).
-    return 200 <= $code && $code < 300 ? STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS : STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL;
+    // Return a success if the static page was available (HTTP 200).
+    if ($code >= 200 && $code < 300) {
+        return STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS;
+
+        // Otherwise return a failure.
+    } else {
+        return STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL;
+    }
 }
