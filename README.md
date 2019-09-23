@@ -80,6 +80,10 @@ In this section, you can configure if Moodle filters should be processed when se
 
 In this section, you can also configure if the static page's HTML code should be cleaned. If this setting is set to yes, local_staticpage will use a Moodle library function to remove unclean HTML code and special tags like `<iframe>`. If this setting is set to no, local_staticpage will trust the HTML code in your static page's file and will just pass it on to the browser.
 
+#### 2.5. Check availability
+
+In this section, you can configure if Moodle should check for static file availability on the list of static pages or not.
+
 ### 3. List of static pages
 
 On this page, there is a list which shows all static pages which have been uploaded into the static pages document area and their URLs.
