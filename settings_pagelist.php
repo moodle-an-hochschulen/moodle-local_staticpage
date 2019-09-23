@@ -104,22 +104,21 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
 
             // Show if document is available.
-            if ($pageurlstandardavailable) {
-                $html .= html_writer::tag('p',
-                    get_string('settingspagelistentrystandardsuccess', 'local_staticpage',
-                    html_writer::link($pageurlstandard,
-                        html_writer::tag('span',
-                            get_string('available', 'local_staticpage'),
-                            array('class' => 'label label-success')).'&nbsp;'.$pageurlstandard)));
-                // Otherwise.
-            } else {
-                $html .= html_writer::tag('p',
-                    get_string('settingspagelistentrystandardfail', 'local_staticpage',
-                    html_writer::link($pageurlstandard,
-                        html_writer::tag('span',
-                            get_string('notavailable', 'local_staticpage'),
-                            array('class' => 'label label-important')).'&nbsp;'.$pageurlstandard)));
-            }
+            $statuslabelvariant = strtr(
+                $pageurlstandardavailable,
+                [
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-important',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-important',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
+                ]
+            );
+            $html .= html_writer::tag('p',
+                get_string('settingspagelistentrystandard'.$pageurlstandardavailable, 'local_staticpage',
+                html_writer::link($pageurlstandard,
+                    html_writer::tag('span',
+                        get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
+                        array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlstandard)));
         }
 
         // Print rewritten static page URL.
@@ -128,22 +127,21 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
 
         // Show if document is available.
-        if ($pageurlrewriteavailable) {
-            $html .= html_writer::tag('p',
-                get_string('settingspagelistentryrewritesuccess', 'local_staticpage',
-                html_writer::link($pageurlrewrite,
-                    html_writer::tag('span',
-                        get_string('available', 'local_staticpage'),
-                        array('class' => 'label label-success')).'&nbsp;'.$pageurlrewrite)));
-            // Otherwise.
-        } else {
-            $html .= html_writer::tag('p',
-                get_string('settingspagelistentryrewritefail', 'local_staticpage',
-                html_writer::link($pageurlrewrite,
-                    html_writer::tag('span',
-                        get_string('notavailable', 'local_staticpage'),
-                        array('class' => 'label label-warning')).'&nbsp;'.$pageurlrewrite)));
-        }
+        $statuslabelvariant = strtr(
+            $pageurlrewriteavailable,
+            [
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-warning',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-warning',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
+            ]
+        );
+        $html .= html_writer::tag('p',
+            get_string('settingspagelistentryrewrite'.$pageurlrewriteavailable, 'local_staticpage',
+            html_writer::link($pageurlrewrite,
+                html_writer::tag('span',
+                    get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
+                    array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlrewrite)));
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');
