@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.7-r1
 
 * 2019-09-27 - Added behat tests.
 * 2019-09-23 - Add admin setting to check availability on list of static pages or not - Credits to Arief Wibowo.
