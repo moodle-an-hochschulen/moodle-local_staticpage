@@ -142,16 +142,18 @@ if ($hassiteconfig) {
                 $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES],
                 $cleanhtmlmodes));
 
-        // Check availability
+        // Check availability.
         $page->add(new admin_setting_heading('local_staticpage/checkavailabilityheading',
                 get_string('checkavailability', 'local_staticpage', null, true),
                 ''));
 
         // Create checkavailability widget.
-        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_YES] = get_string('checkavailabilityyes', 'local_staticpage', null, false);
+        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_YES] =
+                get_string('checkavailabilityyes', 'local_staticpage', null, false);
                 // Don't use string lazy loading here because the string will be directly used and
                 // would produce a PHP warning otherwise.
-        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_NO] = get_string('checkavailabilityno', 'local_staticpage', null, true);
+        $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_NO] =
+                get_string('checkavailabilityno', 'local_staticpage', null, true);
         $page->add(new admin_setting_configselect('local_staticpage/checkavailability',
                 get_string('checkavailability', 'local_staticpage', null, true),
                 get_string('checkavailability_desc', 'local_staticpage', null, true),
