@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2019-10-24 - Improvement: Add @_file_upload tag to fix failing behat tests.
+
 ### v3.7-r1
 
 * 2019-09-27 - Added behat tests.

@@ -1,4 +1,4 @@
-@local @local_staticpage @javascript
+@local @local_staticpage @javascript @_file_upload
 # @javascript is only used for the background but cannot be added selectively to it.
 Feature: Using static pages
   In order to be able to use the static pages
