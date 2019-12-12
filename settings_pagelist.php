@@ -59,13 +59,15 @@ $fs = get_file_storage();
 if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
     // Output notification.
     $html .= $OUTPUT->box(
-            get_string('settingspagelistnofiles', 'local_staticpage', rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
+            get_string('settingspagelistnofiles', 'local_staticpage',
+                    rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
             'alert alert-warning');
     // Otherwise start page list.
 } else {
     // Output instruction.
     $html .= $OUTPUT->box(
-            get_string('settingspagelistinstruction', 'local_staticpage', rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
+            get_string('settingspagelistinstruction', 'local_staticpage',
+                    rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
             'alert alert-info');
 
     // Start page list.
