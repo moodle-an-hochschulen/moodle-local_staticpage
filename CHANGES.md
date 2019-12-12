@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2019-12-12 - Bugfix: List of static pages link broken when moodle is installed in subdirectory - Credits to wuzhuoqing.
 * 2019-10-24 - Improvement: Add @_file_upload tag to fix failing behat tests.
 
 ### v3.7-r1
