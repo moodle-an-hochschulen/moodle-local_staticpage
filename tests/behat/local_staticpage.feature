@@ -8,10 +8,7 @@ Feature: Using static pages
   Background:
     When I log in as "admin"
     And I navigate to "Static Pages" in site administration
-    # This step should be I upload "local/staticpage/tests/fixtures/example.html" file to "Documents" filemanager
-    # but the filemanager will somehow not be found. So we use the empty string here. With this the code looks for the first
-    # filemanager on the page. As this page has only one the step works.
-    And I upload "local/staticpage/tests/fixtures/example.html" file to "" filemanager
+    And I upload "local/staticpage/tests/fixtures/example.html" file to "Documents" filemanager
     And I press "Save changes"
     And I log out
 

@@ -4,6 +4,11 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2019-12-18 - Improved behat test for fileupload because MDL-60975 was fixed.
+               PLEASE NOTE: For all scenarios to pass, the Moodle version 3.7.3+ (Build: 20191212) is needed.
+
 ### v3.7-r2
 
 * 2019-12-12 - Bugfix: List of static pages link broken when moodle is installed in subdirectory - Credits to wuzhuoqing.
