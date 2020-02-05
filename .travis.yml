@@ -2,15 +2,17 @@ language: php
 
 sudo: true
 
-services:
-  - mysql
-
 addons:
-  firefox: "47.0.1"
+  chrome: stable
   postgresql: "9.4"
   apt:
     packages:
       - openjdk-8-jre-headless
+      - chromium-chromedriver
+
+services:
+ - mysql
+ - postgresql
 
 cache:
   directories:
@@ -34,8 +36,9 @@ before_install:
   - nvm install 8.9
   - nvm use 8.9
   - cd ../..
-  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci ^2
+  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci dev-master
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://127.0.0.1 &
 
 install:
   - moodle-plugin-ci install
@@ -51,4 +54,4 @@ script:
   - moodle-plugin-ci grunt
   - moodle-plugin-ci phpdoc
   - moodle-plugin-ci phpunit
-  - moodle-plugin-ci behat --dump
+  - moodle-plugin-ci behat --profile chrome --dump
