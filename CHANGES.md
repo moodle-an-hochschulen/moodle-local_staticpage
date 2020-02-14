@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.8-r1
 
 * 2020-02-14 - Prepare compatibility for Moodle 3.8.
 * 2019-12-18 - Improved behat test for fileupload because MDL-60975 was fixed.
