@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-02-14 - Prepare compatibility for Moodle 3.8.
 * 2019-12-18 - Improved behat test for fileupload because MDL-60975 was fixed.
                PLEASE NOTE: For all scenarios to pass, the Moodle version 3.7.3+ (Build: 20191212) is needed.
 
