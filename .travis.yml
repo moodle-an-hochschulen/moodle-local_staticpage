@@ -1,18 +1,12 @@
 language: php
 
-sudo: true
-
 addons:
-  chrome: stable
   postgresql: "9.4"
-  apt:
-    packages:
-      - openjdk-8-jre-headless
-      - chromium-chromedriver
 
 services:
- - mysql
- - postgresql
+  - mysql
+  - postgresql
+  - docker
 
 cache:
   directories:
@@ -20,16 +14,16 @@ cache:
     - $HOME/.npm
 
 php:
- - 7.1
- - 7.2
- - 7.3
+  - 7.1
+  - 7.2
+  - 7.3
 
 env:
- global:
-  - MOODLE_BRANCH=MOODLE_38_STABLE
- matrix:
-  - DB=pgsql
-  - DB=mysqli
+  global:
+    - MOODLE_BRANCH=MOODLE_38_STABLE
+  matrix:
+    - DB=pgsql
+    - DB=mysqli
 
 before_install:
   - phpenv config-rm xdebug.ini
@@ -38,7 +32,7 @@ before_install:
   - cd ../..
   - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci dev-master
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://127.0.0.1 &
+  - docker run -d -p 127.0.0.1:4444:4444 --net=host -v /dev/shm:/dev/shm selenium/standalone-chrome:3
 
 install:
   - moodle-plugin-ci install
