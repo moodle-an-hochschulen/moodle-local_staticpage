@@ -92,8 +92,17 @@ if ($localstaticpageconfig->apacherewrite == true) {
 }
 
 // Set page context.
-$PAGE->set_context(context_system::instance());
 
+// Set page context.
+// abertranb allow set course context
+//$PAGE->set_context(context_system::instance());
+
+$course_id = optional_param('course_id',0, PARAM_INT);
+if ($course_id > 0) {
+    $PAGE->set_context( context_course::instance($course_id) );
+} else {
+    $PAGE->set_context( context_system::instance() );
+}
 // Set page layout.
 $PAGE->set_pagelayout('standard');
 
