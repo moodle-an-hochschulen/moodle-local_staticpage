@@ -30,7 +30,8 @@ require(__DIR__ . '/../../config.php');
 // @codingStandardsIgnoreEnd
 
 // Include lib.php.
-require_once(__DIR__ . '/lib.php');
+require_once($CFG->dirroot . '/local/staticpage/lib.php');
+
 
 // Globals.
 global $PAGE;
