@@ -1,7 +1,7 @@
 language: php
 
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
 
 services:
   - mysql
@@ -14,25 +14,22 @@ cache:
     - $HOME/.npm
 
 php:
-  - 7.2
-  - 7.3
-  - 7.4
+ - 7.2
+ - 7.3
+ - 7.4
 
 env:
-  global:
-    - MOODLE_BRANCH=MOODLE_39_STABLE
-  matrix:
-    - DB=pgsql
-    - DB=mysqli
+ global:
+  - MOODLE_BRANCH=MOODLE_39_STABLE
+ matrix:
+  - DB=pgsql
+  - DB=mysqli
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - nvm install 14 # moodle-plugin-ci still uses 8.9, but Moodle core switched to 14 in MDL-66109.
-  - nvm use 14
   - cd ../..
-  - composer create-project -n --no-dev --prefer-dist blackboard-open-source/moodle-plugin-ci ci dev-master
+  - composer create-project -n --no-dev --prefer-dist moodlehq/moodle-plugin-ci ci ^3
   - export PATH="$(cd ci/bin; pwd):$(cd ci/vendor/bin; pwd):$PATH"
-  - docker run -d -p 127.0.0.1:4444:4444 --net=host -v /dev/shm:/dev/shm selenium/standalone-chrome:3
 
 install:
   - moodle-plugin-ci install
@@ -48,4 +45,4 @@ script:
   - moodle-plugin-ci grunt
   - moodle-plugin-ci phpdoc
   - moodle-plugin-ci phpunit
-  - moodle-plugin-ci behat --profile chrome --dump
+  - moodle-plugin-ci behat --dump
