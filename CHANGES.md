@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2020-11-25 - Improvement: Improve require_once calls which require the plugin's library - Credits to Antoni Bertran.
 * 2020-11-25 - Prepare compatibility for Moodle 3.9.
 
 ### v3.8-r1

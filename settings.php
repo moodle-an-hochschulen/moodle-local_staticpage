@@ -24,10 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include lib.php.
-require_once(__DIR__ . '/lib.php');
-
+// Globals.
 global $CFG, $PAGE;
+
+// Include lib.php.
+require_once($CFG->dirroot.'/local/staticpage/lib.php');
+
 
 if ($hassiteconfig) {
     // Add new category to site admin navigation tree.

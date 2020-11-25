@@ -29,11 +29,11 @@
 require(__DIR__ . '/../../config.php');
 // @codingStandardsIgnoreEnd
 
-// Include lib.php.
-require_once(__DIR__ . '/lib.php');
-
 // Globals.
-global $PAGE;
+global $CFG, $PAGE;
+
+// Include lib.php.
+require_once($CFG->dirroot.'/local/staticpage/lib.php');
 
 // Get plugin config.
 $localstaticpageconfig = get_config('local_staticpage');
