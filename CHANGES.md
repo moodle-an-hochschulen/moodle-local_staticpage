@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2020-11-25 - Prepare compatibility for Moodle 3.9.
+
 ### v3.8-r1
 
 * 2020-02-14 - Prepare compatibility for Moodle 3.8.
