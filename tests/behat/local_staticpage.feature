@@ -33,9 +33,16 @@ Feature: Using static pages
     Given the following config values are set as admin:
       | config         | value | plugin           |
       | processfilters | 1     | local_staticpage |
+# Please note:
+# The short notation for the settings like
+#     And the following "users" exist:
+#      | username | lang |
+#      | student1 | de   |
+# does not work since Moodle 3.9 anymore for a currently unknown reason,
+# so the language is set manually after the student has logged in.
     And the following "users" exist:
-      | username | lang |
-      | student1 | de   |
+      | username |
+      | student1 |
     When I log in as "admin"
     And the "multilang" filter is "on"
     And the "multilang" filter applies to "content and headings"
@@ -50,6 +57,10 @@ Feature: Using static pages
     And I press "Save changes"
     And I log out
     And I log in as "student1"
+    And I follow "Preferences" in the user menu
+    And I click on "Preferred language" "link"
+    And I set the field "Preferred language" to "Deutsch ‎(de)‎"
+    And I press "Save changes"
     And I am on site homepage
     And I click on "Example Page" "link"
     Then I should see "Dies ist eine h2 Überschrift"
