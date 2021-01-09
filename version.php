@@ -28,4 +28,5 @@ $plugin->component = 'local_staticpage';
 $plugin->version = 2020112500;
 $plugin->release = 'v3.9-r1';
 $plugin->requires = 2020061500;
+$plugin->supported = [39, 39];
 $plugin->maturity = MATURITY_STABLE;

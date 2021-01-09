@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2021-01-06 - Improvement: Declare which major stable version of Moodle this plugin supports (see MDL-59562 for details).
+
 ### v3.9-r1
 
 * 2020-11-25 - Improvement: Improve require_once calls which require the plugin's library - Credits to Antoni Bertran.
