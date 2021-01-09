@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.10-r1
 
 * 2021-01-09 - Change Bootstrap labels to badges to comply with Bootstrap 4 standards
 * 2021-01-09 - Fix a small language pack flaw for the admin setting page.
