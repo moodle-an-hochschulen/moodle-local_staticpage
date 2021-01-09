@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.9-r2
 
 * 2021-01-06 - Change in Moodle release support:
                For the time being, this plugin is maintained for the most recent LTS release of Moodle as well as the most recent major release of Moodle.
