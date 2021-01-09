@@ -107,13 +107,13 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
 
             // Show if document is available.
-            $statuslabelvariant = strtr(
+            $statusbadgevariant = strtr(
                 $pageurlstandardavailable,
                 [
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-important',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-important',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-danger',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-danger',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
                 ]
             );
             $html .= html_writer::tag('p',
@@ -121,7 +121,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                 html_writer::link($pageurlstandard,
                     html_writer::tag('span',
                         get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
-                        array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlstandard)));
+                        array('class' => 'badge '.$statusbadgevariant)).'&nbsp;'.$pageurlstandard)));
         }
 
         // Print rewritten static page URL.
@@ -130,13 +130,13 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
 
         // Show if document is available.
-        $statuslabelvariant = strtr(
+        $statusbadgevariant = strtr(
             $pageurlrewriteavailable,
             [
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'label-success',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'label-warning',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'label-warning',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'label-info',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-warning',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-warning',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
             ]
         );
         $html .= html_writer::tag('p',
@@ -144,7 +144,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             html_writer::link($pageurlrewrite,
                 html_writer::tag('span',
                     get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
-                    array('class' => 'label '.$statuslabelvariant)).'&nbsp;'.$pageurlrewrite)));
+                    array('class' => 'badge '.$statusbadgevariant)).'&nbsp;'.$pageurlrewrite)));
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');
