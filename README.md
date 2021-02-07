@@ -1,7 +1,7 @@
 moodle-local_staticpage
 =======================
 
-[![Build Status](https://travis-ci.com/moodleuulm/moodle-local_staticpage.svg?branch=master)](https://travis-ci.com/moodleuulm/moodle-local_staticpage)
+[![Moodle Plugin CI](https://github.com/moodleuulm/moodle-local_staticpage/workflows/Moodle%20Plugin%20CI/badge.svg?branch=MOODLE_39_STABLE)](https://github.com/moodleuulm/moodle-local_staticpage/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3AMOODLE_39_STABLE)
 
 Moodle plugin which displays static information pages which exist outside any course, imprint or faq pages for example, complete with Moodle navigation and theme
 

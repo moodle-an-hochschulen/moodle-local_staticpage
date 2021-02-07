@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2021-02-05 - Move Moodle Plugin CI from Travis CI to Github actions
+
 ### v3.9-r2
 
 * 2021-01-06 - Change in Moodle release support:
