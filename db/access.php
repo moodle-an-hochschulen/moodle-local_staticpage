@@ -15,18 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "staticpage" - Version file
+ * Local plugin "staticpage" - Capabilities
  *
  * @package    local_staticpage
- * @copyright  2013 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @copyright  2021 Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_staticpage';
-$plugin->version = 2021010601;
-$plugin->release = 'v3.9-r2';
-$plugin->requires = 2020061500;
-$plugin->supported = [39, 39];
-$plugin->maturity = MATURITY_STABLE;
+$capabilities = array(
+        // This capability, in conjunction with moodle/site:configview, allows a user to manage static page documents,
+        // but not the static page plugin settings.
+        // Additionally, users with moodle/site:config are also allowed to manage the static page documents
+        // _and_ the static page plugin settings without needing to have local/staticpages:managedocuments themselves.
+        'local/staticpage:managedocuments' => array(
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_SYSTEM
+        ),
+);

@@ -221,3 +221,67 @@ Feature: Using static pages
     And I press "Save changes"
     And I click on "Example Page" "link"
     Then "//section[@id='region-main']//div//iframe" "xpath_element" should not exist
+
+  Scenario: Check if the static pages can be managed by non-admins with moodle/site:config
+    Given the following "roles" exist:
+      | name                       | shortname      |
+      | Non-admin with site config | nonadminconfig |
+    And I log in as "admin"
+    And I set the following system permissions of "Non-admin with site config" role:
+      | capability             | permission |
+      | moodle/site:config     | Allow      |
+      | moodle/site:configview | Allow      |
+    And the following "users" exist:
+      | username  | firstname | lastname | email                |
+      | nonadmin  | Non       | Admin    | nonadmin@example.com |
+    And the following "system role assigns" exist:
+      | user           | role           | contextlevel |
+      | nonadmin       | nonadminconfig | System       |
+    And I log out
+    When I log in as "nonadmin"
+    And I navigate to "Static Pages" in site administration
+    Then I should see "example.html" in the "#admin-documents" "css_element"
+    And I upload "local/staticpage/tests/fixtures/nonadmin.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I log out
+    And I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "HTML" block
+    And I configure the "(new HTML block)" block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=nonadmin'>Non-Admin Page</a></p>"
+    And I press "Save changes"
+    And I click on "Non-Admin Page" "link"
+    Then I should see "This is the non-admin test page"
+
+  Scenario: Check if the static pages can be managed by non-admins with local/staticpage:managedocuments
+    Given the following "roles" exist:
+      | name                            | shortname         |
+      | Non-admin with manage documents | nonadmindocuments |
+    And I log in as "admin"
+    And I set the following system permissions of "Non-admin with manage documents" role:
+      | capability                       | permission |
+      | local/staticpage:managedocuments | Allow      |
+      | moodle/site:configview           | Allow      |
+    And the following "users" exist:
+      | username  | firstname | lastname | email                |
+      | nonadmin  | Non       | Admin    | nonadmin@example.com |
+    And the following "system role assigns" exist:
+      | user           | role              | contextlevel |
+      | nonadmin       | nonadmindocuments | System       |
+    And I log out
+    When I log in as "nonadmin"
+    And I navigate to "Static Pages" in site administration
+    Then I should see "example.html" in the "#admin-documents" "css_element"
+    And I upload "local/staticpage/tests/fixtures/nonadmin.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I log out
+    And I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "HTML" block
+    And I configure the "(new HTML block)" block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=nonadmin'>Non-Admin Page</a></p>"
+    And I press "Save changes"
+    And I click on "Non-Admin Page" "link"
+    Then I should see "This is the non-admin test page"
