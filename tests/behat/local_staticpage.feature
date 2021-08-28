@@ -222,6 +222,17 @@ Feature: Using static pages
     And I click on "Example Page" "link"
     Then "//section[@id='region-main']//div//iframe" "xpath_element" should not exist
 
+  Scenario: Check if the page name is added as a body class
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "HTML" block
+    And I configure the "(new HTML block)" block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then the "class" attribute of "body" "css_element" should contain "local-staticpage-example"
+
   Scenario: Check if the static pages can be managed by non-admins with moodle/site:config
     Given the following "roles" exist:
       | name                       | shortname      |
