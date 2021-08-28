@@ -129,6 +129,8 @@ Styling static pages
 
 If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
 
+Additionally, there is a CSS class in the `<body>` which contains the page name of the static page shown, for example `<body class="local-staticpage-imprint [...]">`. With this CSS class, you can style static pages individually in your theme's global CSS code.
+
 
 Adding images to static pages
 -----------------------------

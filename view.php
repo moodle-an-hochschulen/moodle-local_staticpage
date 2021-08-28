@@ -96,6 +96,8 @@ $PAGE->set_context(context_system::instance());
 // Set page layout.
 $PAGE->set_pagelayout('standard');
 
+// Add page name as body class.
+$PAGE->add_body_class('local-staticpage-'.$page);
 
 // Extract page's first h1 (if present).
 if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
