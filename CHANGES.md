@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.9-r3
 
 * 2021-08-28 - Feature: Add a body class which contains the page name of the static page shown
 * 2021-08-28 - Bugfix: Fix incorrect setting defaults when installing the plugin - Thanks to Davo Smith
