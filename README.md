@@ -91,6 +91,17 @@ On this page, there is a list which shows all static pages which have been uploa
 Additionally, the page list checks each static page if a browser is actually able to download and view it. If this isn't possible, the static page is marked with an error message in the page list.
 
 
+Capabilities
+------------
+This plugin also introduces a new capability:
+
+### local/staticpage:managedocuments
+
+By default, Moodle administrators and Moodle users with the moodle/site:config capability are allowed to manage static page documents and the static page plugin settings.
+
+As administrator, you can selectively grant users the ability to manage static page documents (but not to manage the static page plugin settings) by adding the local/staticpage:managedocuments capability in conjunction with the moodle/site:configview capability to an appropriate Moodle role.
+
+
 Creating static page documents
 ------------------------------
 

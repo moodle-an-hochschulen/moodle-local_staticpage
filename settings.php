@@ -30,8 +30,21 @@ global $CFG, $PAGE;
 // Include lib.php.
 require_once($CFG->dirroot.'/local/staticpage/lib.php');
 
+// Check if this user has the right to manage static page documents.
+$hasmanagedocuments = has_capability('local/staticpage:managedocuments', context_system::instance());
 
-if ($hassiteconfig) {
+// The 'Documents' settings page and the 'List of static pages' settings page should be accessible for users
+// with either the moodle/site:config or the local/staticpage:managedocuments capability.
+// As there is no possibility to attach multiple capabilities with an OR rule to a settings page,
+// we pick the capability to use here and pass it to the page later.
+if ($hasmanagedocuments) {
+    $capabilityrequiredforpage = 'local/staticpage:managedocuments';
+} else {
+    $capabilityrequiredforpage = 'moodle/site:config';
+}
+
+// Require one of these capabilities.
+if ($hassiteconfig || $hasmanagedocuments) {
     // Add new category to site admin navigation tree.
     $ADMIN->add('root', new admin_category('local_staticpage',
             get_string('pluginname', 'local_staticpage', null, true)));
@@ -39,7 +52,8 @@ if ($hassiteconfig) {
 
     // Create new documents page.
     $page = new admin_settingpage('local_staticpage_documents',
-            get_string('documents', 'local_staticpage', null, true));
+            get_string('documents', 'local_staticpage', null, true),
+            $capabilityrequiredforpage);
 
     if ($ADMIN->fulltree) {
         // Create document filearea widget.
@@ -187,7 +201,7 @@ if ($hassiteconfig) {
     $page = new admin_externalpage('local_staticpage_pagelist',
             get_string('settingspagelist', 'local_staticpage', null, true),
             new moodle_url('/local/staticpage/settings_pagelist.php'),
-            'moodle/site:config');
+            $capabilityrequiredforpage);
 
     // Add pagelist page to navigation category.
     $ADMIN->add('local_staticpage', $page);
