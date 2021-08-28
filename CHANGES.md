@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2021-08-28 - Bugfix: Fix incorrect setting defaults when installing the plugin - Thanks to Davo Smith
 * 2021-08-28 - Replace the deprecated print_error() function with a Moodle exception
 * 2021-08-28 - Feature: Allow non-admins to manage static page documents by introducing the local/staticpage:managedocuments capability
 * 2021-02-05 - Move Moodle Plugin CI from Travis CI to Github actions
