@@ -127,7 +127,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
         $page->add(new admin_setting_configselect('local_staticpage/forcelogin',
                 get_string('forcelogin', 'local_staticpage', null, true),
                 get_string('forcelogin_desc', 'local_staticpage', null, true),
-                $forceloginmodes[STATICPAGE_FORCELOGIN_GLOBAL],
+                STATICPAGE_FORCELOGIN_GLOBAL,
                 $forceloginmodes));
 
 
@@ -144,7 +144,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
         $page->add(new admin_setting_configselect('local_staticpage/processfilters',
                 get_string('processfilters', 'local_staticpage', null, true),
                 get_string('processfilters_desc', 'local_staticpage', null, true),
-                $processfiltersmodes[STATICPAGE_PROCESSFILTERS_YES],
+                STATICPAGE_PROCESSFILTERS_YES,
                 $processfiltersmodes));
 
         // Create clean HTML widget.
@@ -155,7 +155,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
         $page->add(new admin_setting_configselect('local_staticpage/cleanhtml',
                 get_string('cleanhtml', 'local_staticpage', null, true),
                 get_string('cleanhtml_desc', 'local_staticpage', null, true),
-                $cleanhtmlmodes[STATICPAGE_CLEANHTML_YES],
+                STATICPAGE_CLEANHTML_YES,
                 $cleanhtmlmodes));
 
         // Check availability.
@@ -173,7 +173,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
         $page->add(new admin_setting_configselect('local_staticpage/checkavailability',
                 get_string('checkavailability', 'local_staticpage', null, true),
                 get_string('checkavailability_desc', 'local_staticpage', null, true),
-                $checkavailabilitymodes[STATICPAGE_CHECKAVAILABILITY_YES],
+                STATICPAGE_CHECKAVAILABILITY_YES,
                 $checkavailabilitymodes));
 
         // Create connect timeout widget.
