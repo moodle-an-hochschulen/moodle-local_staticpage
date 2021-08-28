@@ -72,7 +72,7 @@ $file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $fi
 
 // If no file is found, quit with error message.
 if (!$file) {
-    print_error('pagenotfound', 'local_staticpage');
+    throw new \moodle_exception('pagenotfound', 'local_staticpage');
 }
 
 // Get file content.
