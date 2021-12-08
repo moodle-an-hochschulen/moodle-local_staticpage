@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2021-12-08 - Prepare compatibility for Moodle 3.11.
+
 ### v3.10-r2
 
 * 2021-08-28 - Feature: Add a body class which contains the page name of the static page shown
