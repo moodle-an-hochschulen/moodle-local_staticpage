@@ -24,8 +24,6 @@
 
 namespace local_staticpage;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class used for uploading the staticpage files into file storage, inherits quite everything from \admin_setting_configstoredfile.
  *
