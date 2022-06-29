@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2022-06-26 - Add UPGRADE.md as internal upgrade documentation
 * 2022-06-26 - Update maintainers and copyrights in README.md.
 
 ### v3.10-r2
