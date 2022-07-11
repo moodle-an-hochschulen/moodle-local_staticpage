@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2022-07-10 - Add Visual checks section to UPGRADE.md
+
 ### v3.10-r3
 
 * 2022-06-26 - Make codechecker happy again
