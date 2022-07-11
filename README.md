@@ -93,12 +93,12 @@ Additionally, the page list checks each static page if a browser is actually abl
 
 Capabilities
 ------------
-This plugin also introduces a new capability:
+
+This plugin also introduces these additional capabilities:
 
 ### local/staticpage:managedocuments
 
 By default, Moodle administrators and Moodle users with the moodle/site:config capability are allowed to manage static page documents and the static page plugin settings.
-
 As administrator, you can selectively grant users the ability to manage static page documents (but not to manage the static page plugin settings) by adding the local/staticpage:managedocuments capability in conjunction with the moodle/site:configview capability to an appropriate Moodle role.
 
 
