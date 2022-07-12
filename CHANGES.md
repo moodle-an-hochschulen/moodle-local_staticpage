@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2022-07-11 - Add links to README to the language pack, solves #61
 * 2022-07-10 - Add Visual checks section to UPGRADE.md
 
 ### v3.9-r4
