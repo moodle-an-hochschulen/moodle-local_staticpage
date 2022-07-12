@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v3.9-r5
 
 * 2022-07-11 - Bugfix: Static page was crippled if the HTML code did not contain a plain body tag, solves #64 and several older issues.
 * 2022-07-11 - Add links to README to the language pack, solves #61
