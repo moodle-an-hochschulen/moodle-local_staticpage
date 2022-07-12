@@ -149,29 +149,27 @@ if ($localstaticpageconfig->documentnavbarsource == STATICPAGE_TITLE_H1) {
 
 echo $OUTPUT->header();
 
-// Get html code.
-$html = $staticdoc->saveHTML();
+// Get body tag.
+$body = $staticdoc->getElementsByTagName('body')->item(0);
 
-// Remove everything except body tag content from html.
-$startcut = strpos($html, '<body>') + 6;
-$stopcut = strpos($html, '</body>') - $startcut;
-$html = substr($html, $startcut, $stopcut);
+// Get page content from body tag.
+$pagecontent = $staticdoc->saveHTML($body);
 
-// Print html code.
+// Print page content.
 if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
         $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
-    echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => true));
+    echo format_text($pagecontent, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => true));
 } else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
         $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
-    echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => true));
+    echo format_text($pagecontent, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => true));
 } else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
         $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
-    echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => false));
+    echo format_text($pagecontent, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => false));
 } else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
         $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
-    echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => false));
+    echo format_text($pagecontent, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => false));
 } else { // This should not happen.
-    echo $html;
+    echo $pagecontent;
 }
 
 echo $OUTPUT->footer();
