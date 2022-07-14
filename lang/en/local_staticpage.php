@@ -35,8 +35,6 @@ $string['documents'] = 'Documents';
 $string['documents_desc'] = 'The .html files with the static pages\' HTML code. See the <a href="https://github.com/moodle-an-hochschulen/moodle-local_staticpage/blob/master/README.md#1-documents">plugin documentation on Github</a> for details.';
 $string['documentheadingsource'] = 'Data source of document heading';
 $string['documentheadingsource_desc'] = 'The data source of the static page\'s document heading';
-$string['documentnavbarsource'] = 'Data source of breadcrumb item title';
-$string['documentnavbarsource_desc'] = 'The data source of the static page\'s breadcrumb item title (used in the Moodle "Navbar")';
 $string['documenttitlesource'] = 'Data source of document title';
 $string['documenttitlesource_desc'] = 'The data source of the static page\'s document title (used in the browser titlebar)';
 $string['documenttitlesourceh1'] = 'First h1 tag in HTML code (usually located shortly after opening the body tag)';

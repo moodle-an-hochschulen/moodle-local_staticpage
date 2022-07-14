@@ -138,20 +138,6 @@ Feature: Using static pages
     And I click on "Example Page" "link"
     Then I should see "This is a h1 heading" in the ".page-header-headings" "css_element"
 
-  Scenario: Check if h1 tag is used for the breadcrumb item title
-    Given the following config values are set as admin:
-      | config               | value | plugin           |
-      | documentnavbarsource | 1     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//li[contains(text(),'This is a h1 heading')]" "xpath_element" should exist
-
   Scenario: Check if title tag is used for the document title
     Given the following config values are set as admin:
       | config              | value | plugin           |
@@ -179,20 +165,6 @@ Feature: Using static pages
     And I press "Save changes"
     And I click on "Example Page" "link"
     Then I should see "This is a title" in the ".page-header-headings" "css_element"
-
-  Scenario: Check if h1 tag is used for the breadcrumb item title
-    Given the following config values are set as admin:
-      | config               | value | plugin           |
-      | documentnavbarsource | 2     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//li[contains(text(),'This is a title')]" "xpath_element" should exist
 
   Scenario: Check setting "Don't clean HTML code"
     Given the following config values are set as admin:

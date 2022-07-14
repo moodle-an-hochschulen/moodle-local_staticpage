@@ -59,7 +59,7 @@ On this page, you can configure several aspects of local_staticpage's behaviour.
 
 #### 2.1. Data source of document title
 
-By default, local_staticpage will use the first `<h1>` tag as document title, document heading and breadcrumb item title of the resulting static page.
+By default, local_staticpage will use the first `<h1>` tag as document title and document heading of the resulting static page.
 In this section, you can change this behaviour to using the first `<title>` tag for each of these.
 
 Please note that if local_staticpage doesn't find the configured (`<h1>` or `<title>`) tag, it will derive the document title from the document filename.

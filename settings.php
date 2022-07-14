@@ -94,11 +94,6 @@ if ($hassiteconfig || $hasmanagedocuments) {
                 get_string('documentheadingsource_desc', 'local_staticpage', null, true),
                 STATICPAGE_TITLE_H1,
                 $titlesource));
-        $page->add(new admin_setting_configselect('local_staticpage/documentnavbarsource',
-                get_string('documentnavbarsource', 'local_staticpage', null, true),
-                get_string('documentnavbarsource_desc', 'local_staticpage', null, true),
-                STATICPAGE_TITLE_H1,
-                $titlesource));
 
 
         // Apache rewrite.

@@ -82,5 +82,13 @@ function xmldb_local_staticpage_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2016020309, 'local', 'staticpage');
     }
 
+    if ($oldversion < 2021120803) {
+        // Remove documentnavbarsource setting because it was removed from the plugin.
+        unset_config('documentnavbarsource', 'local_staticpage');
+
+        // Remember upgrade savepoint.
+        upgrade_plugin_savepoint(true, 2021120803, 'local', 'staticpage');
+    }
+
     return true;
 }

@@ -138,15 +138,6 @@ if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($title);
 }
 
-// Set page navbar.
-if ($localstaticpageconfig->documentnavbarsource == STATICPAGE_TITLE_H1) {
-    $PAGE->navbar->add($firsth1);
-} else if ($localstaticpageconfig->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
-    $PAGE->navbar->add($title);
-} else {
-    $PAGE->navbar->add($title);
-}
-
 echo $OUTPUT->header();
 
 // Get body tag.
