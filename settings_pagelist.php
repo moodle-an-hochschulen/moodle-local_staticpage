@@ -31,8 +31,9 @@ global $CFG, $PAGE, $OUTPUT;
 // Include adminlib.php.
 require_once($CFG->libdir.'/adminlib.php');
 
-// Include lib.php.
+// Include plugin libraries.
 require_once($CFG->dirroot.'/local/staticpage/lib.php');
+require_once($CFG->dirroot.'/local/staticpage/locallib.php');
 
 // Set up external admin page.
 admin_externalpage_setup('local_staticpage_pagelist');
