@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v4.0-r1
 
 * 2022-07-12 - Improve lib.php, solves #62.
 * 2022-07-12 - Remove the 'documentnavbarsource' setting as static pages do not have a navbar anymore on Moodle 4.0.
