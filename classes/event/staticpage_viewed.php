@@ -2,7 +2,7 @@
 /**
  * Staticpage viewed event class.
  *
- * @package    core_staticpage
+ * @package    local_staticpage
  * @since      Moodle 4.1
  * @copyright  2023 Bright Alley
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
