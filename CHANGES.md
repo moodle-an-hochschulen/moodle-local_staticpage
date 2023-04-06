@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2024-08-11 - Added static page view even, credits to Jeroen de Bruijn.
 * 2024-01-08 - Improve the installation and usage of language packs in Behat tests.
 
 ### v4.3-r1
