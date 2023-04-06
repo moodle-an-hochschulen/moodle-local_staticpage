@@ -30,7 +30,7 @@ require(__DIR__ . '/../../config.php');
 // @codingStandardsIgnoreEnd
 
 // Globals.
-global $CFG, $PAGE;
+global $CFG, $PAGE, $USER;
 
 // Include lib.php.
 require_once($CFG->dirroot.'/local/staticpage/lib.php');
@@ -162,5 +162,16 @@ if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
 } else { // This should not happen.
     echo $pagecontent;
 }
+
+// Log this view.
+$logevent = \local_staticpage\event\staticpage_viewed::create([
+    'userid' => $USER->id,
+    'context' => $context,
+    'other' => [
+        'title' => $title,
+        'page' => $page
+    ]
+]);
+$logevent->trigger();
 
 echo $OUTPUT->footer();
