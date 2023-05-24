@@ -132,6 +132,13 @@ if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
     $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
 }
 
+// Extract link tags in head (if present) and insert into HTML head.
+if (!empty($staticdoc->getElementsByTagName('link'))) {
+    $linkNodes = $staticdoc->getElementsByTagName('link');
+    foreach ($linkNodes as $linkNode) {
+        $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linkNode);
+    }
+}
 
 // Set page title.
 if ($localstaticpageconfig->documenttitlesource == STATICPAGE_TITLE_H1) {
