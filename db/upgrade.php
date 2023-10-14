@@ -34,9 +34,9 @@ function xmldb_local_staticpage_upgrade($oldversion) {
         // Prepare filearea.
         $context = \context_system::instance();
         $fs = get_file_storage();
-        $filerecord = array('component' => 'local_staticpage', 'filearea' => 'documents',
+        $filerecord = ['component' => 'local_staticpage', 'filearea' => 'documents',
                             'contextid' => $context->id, 'itemid' => 0, 'filepath' => '/',
-                            'filename' => '');
+                            'filename' => '', ];
 
         // Prepare documents directory.
         $documentsdirectory = get_config('local_staticpage', 'documentdirectory');
@@ -44,7 +44,7 @@ function xmldb_local_staticpage_upgrade($oldversion) {
 
         if ($handle) {
             // Array to remember file to be deleted from documents directory.
-            $todelete = array();
+            $todelete = [];
 
             // Fetch all files from documents directory.
             while (false !== ($file = readdir($handle))) {
@@ -72,7 +72,7 @@ function xmldb_local_staticpage_upgrade($oldversion) {
 
             // Show an info message that documents directory is no longer needed.
             $message = get_string('upgrade_notice_2016020307', 'local_staticpage', $documentsdirectory);
-            echo html_writer::tag('div', $message, array('class' => 'alert alert-info'));
+            echo html_writer::tag('div', $message, ['class' => 'alert alert-info']);
         }
 
         // Remove documents directory setting because it is not needed anymore.

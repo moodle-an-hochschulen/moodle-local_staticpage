@@ -122,7 +122,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                 html_writer::link($pageurlstandard,
                     html_writer::tag('span',
                         get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
-                        array('class' => 'badge '.$statusbadgevariant)).'&nbsp;'.$pageurlstandard)));
+                        ['class' => 'badge '.$statusbadgevariant]).'&nbsp;'.$pageurlstandard)));
         }
 
         // Print rewritten static page URL.
@@ -145,7 +145,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             html_writer::link($pageurlrewrite,
                 html_writer::tag('span',
                     get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
-                    array('class' => 'badge '.$statusbadgevariant)).'&nbsp;'.$pageurlrewrite)));
+                    ['class' => 'badge '.$statusbadgevariant]).'&nbsp;'.$pageurlrewrite)));
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');

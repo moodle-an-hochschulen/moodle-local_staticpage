@@ -62,7 +62,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
                 get_string('documents_desc', 'local_staticpage', null, true),
                 'documents',
                 0,
-                array('maxfiles' => -1, 'accepted_types' => '.html')));
+                ['maxfiles' => -1, 'accepted_types' => '.html']));
     }
 
     // Add documents page to navigation category.

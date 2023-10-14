@@ -24,13 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
+$capabilities = [
         // This capability, in conjunction with moodle/site:configview, allows a user to manage static page documents,
         // but not the static page plugin settings.
         // Additionally, users with moodle/site:config are also allowed to manage the static page documents
         // _and_ the static page plugin settings without needing to have local/staticpages:managedocuments themselves.
-        'local/staticpage:managedocuments' => array(
+        'local/staticpage:managedocuments' => [
                 'captype' => 'write',
-                'contextlevel' => CONTEXT_SYSTEM
-        ),
-);
+                'contextlevel' => CONTEXT_SYSTEM,
+        ],
+];
