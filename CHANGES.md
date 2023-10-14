@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2023-10-10 - Updated Moodle Plugin CI to latest upstream recommendations
 * 2022-11-28 - Updated Moodle Plugin CI to latest upstream recommendations
 
 ### v4.0-r1
