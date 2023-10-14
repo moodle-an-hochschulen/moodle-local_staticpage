@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2023-10-14 - Add automated release to moodle.org/plugins
 * 2023-10-14 - Make codechecker happy again
 * 2023-10-10 - Updated Moodle Plugin CI to latest upstream recommendations
 * 2023-04-30 - Tests: Updated Moodle Plugin CI to use PHP 8.1 and Postgres 13 from Moodle 4.1 on.
