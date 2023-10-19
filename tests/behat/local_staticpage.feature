@@ -16,8 +16,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -51,8 +50,7 @@ Feature: Using static pages
     And I press "Install selected language pack(s)"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I log out
@@ -82,8 +80,7 @@ Feature: Using static pages
     And I press "Install selected language pack(s)"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I log out
@@ -117,8 +114,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -131,8 +127,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -145,8 +140,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -159,8 +153,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -173,8 +166,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -187,8 +179,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -198,8 +189,7 @@ Feature: Using static pages
     When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
@@ -230,8 +220,7 @@ Feature: Using static pages
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=nonadmin'>Non-Admin Page</a></p>"
     And I press "Save changes"
     And I click on "Non-Admin Page" "link"
@@ -262,8 +251,7 @@ Feature: Using static pages
     And I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
-    And I add the "Text" block
-    And I configure the "(new text block)" block
+    And I add the "Text..." block
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=nonadmin'>Non-Admin Page</a></p>"
     And I press "Save changes"
     And I click on "Non-Admin Page" "link"
