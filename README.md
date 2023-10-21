@@ -9,7 +9,7 @@ Moodle plugin which displays static information pages which exist outside any co
 Requirements
 ------------
 
-This plugin requires Moodle 4.2+
+This plugin requires Moodle 4.3+
 
 
 Motivation for this plugin
