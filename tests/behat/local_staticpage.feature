@@ -28,26 +28,20 @@ Feature: Using static pages
 #    And I navigate to "List of static pages" in site administration
 #    Then I should see "example.html"
 
+  @testme
   Scenario: Check if multilang filters are processed
-    Given the following config values are set as admin:
-      | config         | value | plugin           |
-      | processfilters | 1     | local_staticpage |
-# Please note:
-# The short notation for the settings like
-#     And the following "users" exist:
-#      | username | lang |
-#      | student1 | de   |
-# does not work since Moodle 3.9 anymore for a currently unknown reason,
-# so the language is set manually after the student has logged in.
-    And the following "users" exist:
-      | username |
-      | student1 |
-    When I log in as "admin"
+    Given the following "language packs" exist:
+      | language |
+      | de       |
     And the "multilang" filter is "on"
     And the "multilang" filter applies to "content and headings"
-    And I navigate to "Language > Language packs" in site administration
-    And I set the field "Available language packs" to "de"
-    And I press "Install selected language pack(s)"
+    And the following config values are set as admin:
+      | config         | value | plugin           |
+      | processfilters | 1     | local_staticpage |
+    And the following "users" exist:
+     | username | lang |
+     | student1 | de   |
+    When I log in as "admin"
     And I am on site homepage
     And I turn editing mode on
     And I add the "Text..." block
@@ -55,10 +49,6 @@ Feature: Using static pages
     And I press "Save changes"
     And I log out
     And I log in as "student1"
-    And I follow "Preferences" in the user menu
-    And I click on "Preferred language" "link"
-    And I set the field "Preferred language" to "Deutsch ‎(de)‎"
-    And I press "Save changes"
     And I am on site homepage
     And I click on "Example Page" "link"
     Then I should see "Dies ist eine h2 Überschrift"
@@ -66,18 +56,18 @@ Feature: Using static pages
 
   # Counter check previous scenario
   Scenario: Check if multilang filters are not processed
-    Given the following config values are set as admin:
+    Given the following "language packs" exist:
+      | language |
+      | de       |
+    And the "multilang" filter is "on"
+    And the "multilang" filter applies to "content and headings"
+    And the following config values are set as admin:
       | config         | value | plugin           |
       | processfilters | 2     | local_staticpage |
     And the following "users" exist:
       | username | lang |
       | student1 | de   |
     When I log in as "admin"
-    And the "multilang" filter is "on"
-    And the "multilang" filter applies to "content and headings"
-    And I navigate to "Language > Language packs" in site administration
-    And I set the field "Available language packs" to "de"
-    And I press "Install selected language pack(s)"
     And I am on site homepage
     And I turn editing mode on
     And I add the "Text..." block
