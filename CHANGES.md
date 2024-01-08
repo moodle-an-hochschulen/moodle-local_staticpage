@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2024-01-08 - Improve the installation and usage of language packs in Behat tests.
+
 ### v4.1-r2
 
 * 2023-10-14 - Add automated release to moodle.org/plugins
