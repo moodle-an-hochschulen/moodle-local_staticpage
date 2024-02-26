@@ -39,6 +39,7 @@ $string['documenttitlesource'] = 'Data source of document title';
 $string['documenttitlesource_desc'] = 'The data source of the static page\'s document title (used in the browser titlebar)';
 $string['documenttitlesourceh1'] = 'First h1 tag in HTML code (usually located shortly after opening the body tag)';
 $string['documenttitlesourcehead'] = 'First title tag in HTML code (usually located within the head tag)';
+$string['eventstaticpageviewed'] = 'Static page viewed';
 $string['forcelogin'] = 'Force login';
 $string['forcelogin_desc'] = 'Serve static pages only to logged in users or also to non-logged in visitors. This behaviour can be set specifically for static pages or can be set to respect Moodle\'s global forcelogin setting. See the <a href="https://github.com/moodle-an-hochschulen/moodle-local_staticpage/blob/master/README.md#23-force-login">plugin documentation on Github</a> for details.';
 $string['forceloginglobal'] = 'Respect the global setting $CFG->forcelogin';
