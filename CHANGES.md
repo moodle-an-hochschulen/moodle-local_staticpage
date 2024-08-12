@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2024-08-11 - Add section for scheduled tasks to README
 * 2024-08-11 - Updated Moodle Plugin CI to latest upstream recommendations
 * 2024-08-11 - Preserve <link> tags in head of static page document by moving it to the Moodle <head> element, credits to Peter Keijsers.
 * 2024-08-11 - Added static page view even, credits to Jeroen de Bruijn.
