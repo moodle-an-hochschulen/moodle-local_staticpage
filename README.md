@@ -102,6 +102,12 @@ By default, Moodle administrators and Moodle users with the moodle/site:config c
 As administrator, you can selectively grant users the ability to manage static page documents (but not to manage the static page plugin settings) by adding the local/staticpage:managedocuments capability in conjunction with the moodle/site:configview capability to an appropriate Moodle role.
 
 
+Scheduled Tasks
+---------------
+
+This plugin does not add any additional scheduled tasks.
+
+
 Creating static page documents
 ------------------------------
 
