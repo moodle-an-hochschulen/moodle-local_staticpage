@@ -176,8 +176,8 @@ $logevent = \local_staticpage\event\staticpage_viewed::create([
     'context' => $context,
     'other' => [
         'title' => $title,
-        'page' => $page
-    ]
+        'page' => $page,
+    ],
 ]);
 $logevent->trigger();
 
