@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v4.1-r3
 
 * 2024-08-11 - Add section for scheduled tasks to README
 * 2024-08-11 - Updated Moodle Plugin CI to latest upstream recommendations
