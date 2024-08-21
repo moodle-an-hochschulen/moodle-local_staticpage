@@ -111,18 +111,20 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             $statusbadgevariant = strtr(
                 $pageurlstandardavailable,
                 [
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-danger',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-danger',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'bg-success text-light',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-danger text-light',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-danger text-light',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
                 ]
             );
             $html .= html_writer::tag('p',
                 get_string('settingspagelistentrystandard'.$pageurlstandardavailable, 'local_staticpage',
-                html_writer::link($pageurlstandard,
                     html_writer::tag('span',
                         get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
-                        ['class' => 'badge '.$statusbadgevariant]).'&nbsp;'.$pageurlstandard)));
+                            ['class' => 'badge mr-2 '.$statusbadgevariant]).
+                            html_writer::link($pageurlstandard, $pageurlstandard)
+                )
+            );
         }
 
         // Print rewritten static page URL.
@@ -134,18 +136,20 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $statusbadgevariant = strtr(
             $pageurlrewriteavailable,
             [
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-warning',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-warning',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'bg-success text-light',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-warning text-dark',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-warning text-dark',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
             ]
         );
         $html .= html_writer::tag('p',
             get_string('settingspagelistentryrewrite'.$pageurlrewriteavailable, 'local_staticpage',
-            html_writer::link($pageurlrewrite,
                 html_writer::tag('span',
                     get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
-                    ['class' => 'badge '.$statusbadgevariant]).'&nbsp;'.$pageurlrewrite)));
+                        ['class' => 'badge mr-2 '.$statusbadgevariant]).
+                        html_writer::link($pageurlrewrite, $pageurlrewrite)
+            )
+        );
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');
