@@ -29,7 +29,6 @@ Feature: Using static pages
 #    And I navigate to "List of static pages" in site administration
 #    Then I should see "example.html"
 
-  @testme
   Scenario: Check if multilang filters are processed
     Given the following "language packs" exist:
       | language |
