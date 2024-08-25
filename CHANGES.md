@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v4.4-r1
 
 * 2024-08-24 - Development: Rename master branch to main, please update your clones.
 * 2024-08-20 - Upgrade: Update Bootstrap classes for Moodle 4.4.
