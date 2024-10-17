@@ -65,6 +65,7 @@ $string['processfiltersyes'] = 'Yes, process filters';
 $string['settingspagelist'] = 'List of static pages';
 $string['settingspagelistentryfilename'] = 'The following document file was found:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrypagename'] = 'From the document file\'s filename, Moodle derived the following pagename:<br /><strong>{$a}</strong>';
+$string['settingspagelistentrypagelanguages'] = 'Translations found:<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewritedisabled'] = 'The static page should be available at the following clean URL, but is not verified because checking availability is disabled:<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewriteerror'] = 'The static page should be available at the following clean URL, but actually a browser won\'t be able to download and view it either because of connection error or responding slower than checkavailabilitytimeout config (perhaps there is something wrong with your webserver or mod_rewrite configuration):<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewritefail'] = 'The static page should be available at the following clean URL, but actually a browser won\'t be able to download and view it due to a non-2xx HTTP status code (perhaps there is something wrong with your webserver or mod_rewrite configuration):<br /><strong>{$a}</strong>';
