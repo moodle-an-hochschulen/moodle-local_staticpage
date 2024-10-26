@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2024-10-07 - Prepare compatibility for Moodle 4.5.
+
 ### v4.4-r1
 
 * 2024-08-24 - Development: Rename master branch to main, please update your clones.
