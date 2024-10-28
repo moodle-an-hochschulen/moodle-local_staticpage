@@ -195,7 +195,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
     // Create new external pagelist page.
     $page = new admin_externalpage('local_staticpage_pagelist',
             get_string('settingspagelist', 'local_staticpage', null, true),
-            new moodle_url('/local/staticpage/settings_pagelist.php'),
+            new \core\url('/local/staticpage/settings_pagelist.php'),
             $capabilityrequiredforpage);
 
     // Add pagelist page to navigation category.

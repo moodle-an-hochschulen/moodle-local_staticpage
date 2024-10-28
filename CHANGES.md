@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2024-10-14 - Upgrade: Adopt changes from MDL-81960 and use new \core\url class
 * 2024-10-14 - Upgrade: Adopt changes from MDL-81818 to remove old bootstrap classes
 * 2024-10-07 - Prepare compatibility for Moodle 4.5.
 

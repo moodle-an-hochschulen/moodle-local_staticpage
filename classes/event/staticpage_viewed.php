@@ -62,9 +62,9 @@ class staticpage_viewed extends \core\event\base {
     /**
      * Get url related to the action.
      *
-     * @return \moodle_url
+     * @return \core\url
      */
     public function get_url() {
-        return new \moodle_url('/local/staticpage/view.php', ['page' => $this->other['page']]);
+        return new \core\url('/local/staticpage/view.php', ['page' => $this->other['page']]);
     }
 }
