@@ -66,16 +66,16 @@ $context = \context_system::instance();
 // Get filearea.
 $fs = get_file_storage();
 
-// Get current language
+// Get current language.
 $lang = current_language();
 
-// Get translated file
-$filename_traslated = "$page--$lang.html";
-$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename_traslated);
+// Get translated file.
+$filenametranslated = "$page--$lang.html";
+$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filenametranslated);
 
-// If translated file exists replace default filename
+// If translated file exists replace default filename.
 if ($file) {
-    $filename = $filename_traslated;
+    $filename = $filenametranslated;
 }
 
 // Get document from filearea.

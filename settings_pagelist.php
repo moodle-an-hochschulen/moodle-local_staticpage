@@ -83,26 +83,26 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
     // Get plugin config.
     $localstaticpageconfig = get_config('local_staticpage');
 
-    // Initialize page and language variables
-    $pageLanguages = [];
-    $pageName = '';
+    // Initialize page and language variables.
+    $pagelanguages = [];
+    $pagename = '';
 
-    // Preprocess $pages array to remove translations from the list
+    // Preprocess $pages array to remove translations from the list.
     foreach ($pages as $key => $page) {
 
         // Collect information about the page.
-        $fileName = $page->get_filename();
-        $pageName = pathinfo($fileName, PATHINFO_FILENAME);
+        $filename = $page->get_filename();
+        $pagename = pathinfo($filename, PATHINFO_FILENAME);
 
         // Check if the page is a translation.
-        if (preg_match('/--[a-zA-Z]{2}$/', $pageName, $matches)) {
+        if (preg_match('/--[a-zA-Z]{2}$/', $pagename, $matches)) {
             // Get the language code.
             $language = substr($matches[0], 2);
-            // Get the default page name
-            $defaultPageName = substr($pageName, 0, -4);
+            // Get the default page name.
+            $defaultpagename = substr($pagename, 0, -4);
             // Add the language to the list.
-            $pageLanguages[$defaultPageName][] = $language;
-            // Remove the translation from the list
+            $pagelanguages[$defaultpagename][] = $language;
+            // Remove the translation from the list.
             unset($pages[$key]);
         }
     }
@@ -127,8 +127,8 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', $pagefilename));
         $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $pagepagename));
 
-        if (array_key_exists($pagepagename, $pageLanguages)) {
-            $html .= html_writer::tag('p', get_string('settingspagelistentrypagelanguages', 'local_staticpage', implode(', ', $pageLanguages[$pagepagename])));
+        if (array_key_exists($pagepagename, $pagelanguages)) {
+            $html .= html_writer::tag('p', get_string('settingspagelistentrypagelanguages', 'local_staticpage', implode(', ', $pagelanguages[$pagepagename])));
         }
 
         // Print normal static page URL - Do only if apache rewrite isn't forced.
