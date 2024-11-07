@@ -128,7 +128,8 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $pagepagename));
 
         if (array_key_exists($pagepagename, $pagelanguages)) {
-            $html .= html_writer::tag('p', get_string('settingspagelistentrypagelanguages', 'local_staticpage', implode(', ', $pagelanguages[$pagepagename])));
+            $html .= html_writer::tag('p', get_string('settingspagelistentrypagelanguages', 'local_staticpage',
+                implode(', ', $pagelanguages[$pagepagename])));
         }
 
         // Print normal static page URL - Do only if apache rewrite isn't forced.
