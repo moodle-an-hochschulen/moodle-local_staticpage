@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2025-05-06 - Tests: Fix Behat failures due to MDL-67683, resolves #76
+
 ### v4.4-r1
 
 * 2024-08-24 - Development: Rename master branch to main, please update your clones.
