@@ -159,7 +159,7 @@ Feature: Using static pages
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
-    Then "//section[@id='region-main']//div//iframe" "xpath_element" should exist
+    Then "//div[@id='region-main']//div//iframe" "xpath_element" should exist
 
   Scenario: Check setting "Clean HTML code"
     Given the following config values are set as admin:
@@ -172,7 +172,7 @@ Feature: Using static pages
     And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
     And I press "Save changes"
     And I click on "Example Page" "link"
-    Then "//section[@id='region-main']//div//iframe" "xpath_element" should not exist
+    Then "//div[@id='region-main']//div//iframe" "xpath_element" should not exist
 
   Scenario: Check if the page name is added as a body class
     When I log in as "admin"
