@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2025-05-06 - Tests: Fix Behat failures due to MDL-67683, resolves #76
+
 ### v4.5-r1
 
 * 2024-10-14 - Upgrade: Adopt changes from MDL-82183 and use new \core\output\html_writer
