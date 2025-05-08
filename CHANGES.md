@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2025-04-14 - Prepare compatibility for Moodle 5.0.
+
 ### v4.5-r2
 
 * 2025-05-06 - Tests: Fix Behat failures due to MDL-67683, resolves #76
