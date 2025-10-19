@@ -31,11 +31,11 @@ require(__DIR__ . '/../../config.php');
 global $CFG, $PAGE, $OUTPUT;
 
 // Include adminlib.php.
-require_once($CFG->libdir.'/adminlib.php');
+require_once($CFG->libdir . '/adminlib.php');
 
 // Include plugin libraries.
-require_once($CFG->dirroot.'/local/staticpage/lib.php');
-require_once($CFG->dirroot.'/local/staticpage/locallib.php');
+require_once($CFG->dirroot . '/local/staticpage/lib.php');
+require_once($CFG->dirroot . '/local/staticpage/locallib.php');
 
 // Set up external admin page.
 admin_externalpage_setup('local_staticpage_pagelist');
@@ -63,16 +63,24 @@ $fs = get_file_storage();
 if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
     // Output notification.
     $html .= $OUTPUT->box(
-            get_string('settingspagelistnofiles', 'local_staticpage',
-                    rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
-            'alert alert-warning');
+        get_string(
+            'settingspagelistnofiles',
+            'local_staticpage',
+            rtrim($CFG->wwwroot, '/') . '/admin/settings.php?section=local_staticpage_documents'
+        ),
+        'alert alert-warning'
+    );
     // Otherwise start page list.
 } else {
     // Output instruction.
     $html .= $OUTPUT->box(
-            get_string('settingspagelistinstruction', 'local_staticpage',
-                    rtrim($CFG->wwwroot, '/').'/admin/settings.php?section=local_staticpage_documents'),
-            'alert alert-info');
+        get_string(
+            'settingspagelistinstruction',
+            'local_staticpage',
+            rtrim($CFG->wwwroot, '/') . '/admin/settings.php?section=local_staticpage_documents'
+        ),
+        'alert alert-info'
+    );
 
     // Start page list.
     $html .= html_writer::start_tag('ul');
@@ -85,7 +93,6 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
 
     // Output each page as a page list entry.
     foreach ($pages as $page) {
-
         // Collect information about the page.
         $pagefilename = $page->get_filename();
         $pageextension = pathinfo($pagefilename, PATHINFO_EXTENSION);
@@ -106,7 +113,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         // Print normal static page URL - Do only if apache rewrite isn't forced.
         if (!$localstaticpageconfig->apacherewrite) {
             // Check availability.
-            $pageurlstandard = rtrim($CFG->wwwroot, '/').'/local/staticpage/view.php?page='.$pagepagename;
+            $pageurlstandard = rtrim($CFG->wwwroot, '/') . '/local/staticpage/view.php?page=' . $pagepagename;
             $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
 
             // Show if document is available.
@@ -119,11 +126,16 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
                 ]
             );
-            $html .= html_writer::tag('p',
-                get_string('settingspagelistentrystandard'.$pageurlstandardavailable, 'local_staticpage',
-                    html_writer::tag('span',
-                        get_string('checkavailabilityresponse'.$pageurlstandardavailable, 'local_staticpage'),
-                            ['class' => 'badge me-2 '.$statusbadgevariant]).
+            $html .= html_writer::tag(
+                'p',
+                get_string(
+                    'settingspagelistentrystandard' . $pageurlstandardavailable,
+                    'local_staticpage',
+                    html_writer::tag(
+                        'span',
+                        get_string('checkavailabilityresponse' . $pageurlstandardavailable, 'local_staticpage'),
+                        ['class' => 'badge me-2 ' . $statusbadgevariant]
+                    ) .
                             html_writer::link($pageurlstandard, $pageurlstandard)
                 )
             );
@@ -131,7 +143,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
 
         // Print rewritten static page URL.
         // Check availability.
-        $pageurlrewrite = rtrim($CFG->wwwroot, '/').'/static/'.$pagepagename.'.html';
+        $pageurlrewrite = rtrim($CFG->wwwroot, '/') . '/static/' . $pagepagename . '.html';
         $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
 
         // Show if document is available.
@@ -144,18 +156,22 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
             ]
         );
-        $html .= html_writer::tag('p',
-            get_string('settingspagelistentryrewrite'.$pageurlrewriteavailable, 'local_staticpage',
-                html_writer::tag('span',
-                    get_string('checkavailabilityresponse'.$pageurlrewriteavailable, 'local_staticpage'),
-                        ['class' => 'badge me-2 '.$statusbadgevariant]).
+        $html .= html_writer::tag(
+            'p',
+            get_string(
+                'settingspagelistentryrewrite' . $pageurlrewriteavailable,
+                'local_staticpage',
+                html_writer::tag(
+                    'span',
+                    get_string('checkavailabilityresponse' . $pageurlrewriteavailable, 'local_staticpage'),
+                    ['class' => 'badge me-2 ' . $statusbadgevariant]
+                ) .
                         html_writer::link($pageurlrewrite, $pageurlrewrite)
             )
         );
 
         // Finish page list entry.
         $html .= html_writer::end_tag('li');
-
     }
 
     // Finish page list.
