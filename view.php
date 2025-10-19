@@ -32,14 +32,16 @@ require(__DIR__ . '/../../config.php');
 global $CFG, $PAGE, $USER;
 
 // Include lib.php.
-require_once($CFG->dirroot.'/local/staticpage/lib.php');
+require_once($CFG->dirroot . '/local/staticpage/lib.php');
 
 // Get plugin config.
 $localstaticpageconfig = get_config('local_staticpage');
 
 // Require login if the plugin or Moodle is configured to force login.
-if ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_YES ||
-        ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
+if (
+    $localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_YES ||
+        ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)
+) {
     require_login();
 }
 
@@ -84,9 +86,9 @@ $staticdoc->loadHTML($filecontents);
 
 // Set page url.
 if ($localstaticpageconfig->apacherewrite == true) {
-    $PAGE->set_url('/static/'.$page.'.html');
+    $PAGE->set_url('/static/' . $page . '.html');
 } else {
-    $PAGE->set_url('/local/staticpage/view.php?page='.$page);
+    $PAGE->set_url('/local/staticpage/view.php?page=' . $page);
 }
 
 // Set page context.
@@ -96,7 +98,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 
 // Add page name as body class.
-$PAGE->add_body_class('local-staticpage-'.$page);
+$PAGE->add_body_class('local-staticpage-' . $page);
 
 // Extract page's first h1 (if present).
 if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
@@ -115,7 +117,7 @@ if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
 // Extract style tag in head (if present) and insert into HTML head.
 if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
     $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
-    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead.'<style>'.$style.'</style>';
+    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead . '<style>' . $style . '</style>';
 }
 
 // Extract link tags in head (if present) and insert into HTML head.
@@ -153,17 +155,25 @@ $body = $staticdoc->getElementsByTagName('body')->item(0);
 $pagecontent = $staticdoc->saveHTML($body);
 
 // Print page content.
-if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+if (
+    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
+) {
     echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => true]);
-} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+} else if (
+    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
+) {
     echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => true]);
-} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+} else if (
+    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
+) {
     echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => false]);
-} else if ($localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+} else if (
+    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
+        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
+) {
     echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => false]);
 } else { // This should not happen.
     echo $pagecontent;
