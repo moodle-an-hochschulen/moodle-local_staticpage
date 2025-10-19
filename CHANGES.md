@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2025-10-15 - Tests: Switch Github actions workflows to reusable workflows by Moodle an Hochschulen e.V.
+
 ### v4.5-r2
 
 * 2025-05-06 - Tests: Fix Behat failures due to MDL-67683, resolves #76
