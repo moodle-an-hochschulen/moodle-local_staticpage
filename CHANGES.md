@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2025-10-31 - Improvement: Replace the usage of $_SERVER with $FULLME, resolves #77
+
 ### v5.0-r2
 
 * 2025-10-15 - Make codechecker happy again
