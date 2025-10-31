@@ -29,7 +29,7 @@
 require(__DIR__ . '/../../config.php');
 
 // Globals.
-global $CFG, $PAGE, $USER;
+global $CFG, $PAGE, $USER, $FULLME;
 
 // Include lib.php.
 require_once($CFG->dirroot . '/local/staticpage/lib.php');
@@ -47,10 +47,10 @@ if (
 
 // View only with /static/ URL.
 if ($localstaticpageconfig->apacherewrite == true) {
-    if (strpos($_SERVER['REQUEST_URI'], '/static/') === false) { /* We used to check if /static/ is at the beginning of the
-                                                                    REQUEST_URI, but this would break on Moodle subdirectory
-                                                                    installations. And there is no better check available in
-                                                                    core, so we just accept this rather loose check. */
+    if (strpos($FULLME, '/static/') === false) { /* We used to check if /static/ is at the beginning of the
+                                                    REQUEST_URI, but this would break on Moodle subdirectory
+                                                    installations. And there is no better check available in
+                                                    core, so we just accept this rather loose check. */
         die;
     }
 }
