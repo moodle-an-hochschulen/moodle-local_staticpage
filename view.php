@@ -93,6 +93,10 @@ if ($localstaticpageconfig->apacherewrite == true) {
 
 // Set page context.
 $PAGE->set_context(context_system::instance());
+// Explicit pagetype (optional but recommended for clarity).
+$PAGE->set_pagetype('local-staticpage-view');
+// IMPORTANT: distinguish each static page.
+$PAGE->set_subpage($page);
 
 // Set page layout.
 $PAGE->set_pagelayout('standard');
