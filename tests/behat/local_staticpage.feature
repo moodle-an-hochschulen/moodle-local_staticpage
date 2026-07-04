@@ -6,6 +6,9 @@ Feature: Using static pages
   I need to be able to configure the local_staticpage plugin
 
   Background:
+    Given the following config values are set as admin:
+      | enablemyhome | 1 |
+      | forcelogin   | 0 |
     When I log in as "admin"
     And I navigate to "Static Pages" in site administration
     And I upload "local/staticpage/tests/fixtures/example.html" file to "Documents" filemanager
