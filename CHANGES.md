@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v5.3-r1
 
 * 2026-10-05 - Prepare compatibility for Moodle 5.3.
 
