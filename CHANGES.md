@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-01 - Improvement: Use the Moodle cURL wrapper instead of PHP's native cURL functions for the static page availability check.
 * 2026-11-01 - Improvement: Only use the <title> and <style> tags from the <head> element of the static page document.
 * 2026-11-01 - Improvement: Only use <link> tags from the <head> element of the static page document, clean them before inserting them into the Moodle <head> element if the HTML code should be cleaned, mark the local/staticpage:managedocuments capability with RISK_XSS and point out the admin's responsibility in the 'Clean HTML code' setting description.
 
