@@ -69,3 +69,37 @@ function local_staticpage_check_availability($url) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL;
     }
 }
+
+/**
+ * Rebuild a stylesheet link tag from a static page document with a limited set of safe attributes only.
+ *
+ * This is used if the static page's HTML code should be cleaned. The link tags are inserted into Moodle's HTML head
+ * and do not pass format_text() there, so they have to be cleaned separately.
+ *
+ * @param DOMElement $linknode The link node from the static page document.
+ * @return string The rebuilt link tag or an empty string if the link tag is not allowed.
+ */
+function local_staticpage_clean_link_tag(DOMElement $linknode): string {
+    // Only accept stylesheets and alternate stylesheets as this is what is needed to style a static page.
+    $reltokens = preg_split('/\s+/', core_text::strtolower(trim($linknode->getAttribute('rel'))), -1, PREG_SPLIT_NO_EMPTY);
+    sort($reltokens);
+    if ($reltokens !== ['stylesheet'] && $reltokens !== ['alternate', 'stylesheet']) {
+        return '';
+    }
+
+    // Only accept properly formatted relative URLs and absolute http(s) URLs.
+    $href = clean_param(trim($linknode->getAttribute('href')), PARAM_URL);
+    if ($href === '') {
+        return '';
+    }
+
+    // Copy the remaining harmless attributes, but nothing else (especially no event handler attributes).
+    $attributes = ['rel' => implode(' ', $reltokens), 'href' => $href];
+    foreach (['type', 'media', 'crossorigin', 'integrity', 'title'] as $attributename) {
+        if ($linknode->hasAttribute($attributename)) {
+            $attributes[$attributename] = $linknode->getAttribute($attributename);
+        }
+    }
+
+    return html_writer::empty_tag('link', $attributes);
+}

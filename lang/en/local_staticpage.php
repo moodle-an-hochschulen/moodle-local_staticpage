@@ -39,7 +39,7 @@ $string['checkavailabilitytimeout'] = 'Timeout';
 $string['checkavailabilitytimeout_desc'] = 'Configure the maximum number of seconds to allow cURL functions to execute during the availability check. Use 0 to allow indefinite execution time.';
 $string['checkavailabilityyes'] = 'Yes, check availability';
 $string['cleanhtml'] = 'Clean HTML code';
-$string['cleanhtml_desc'] = 'Configure if the static page\'s HTML code should be cleaned (and thereby special tags like &lt;iframe&gt; being removed). See the <a href="https://github.com/moodle-an-hochschulen/moodle-local_staticpage/blob/main/README.md#24-process-content">plugin documentation on Github</a> for details.';
+$string['cleanhtml_desc'] = 'Configure if the static page\'s HTML code should be cleaned. If set to yes, unsafe HTML code and special tags like &lt;iframe&gt; are removed from the page content and &lt;link&gt; tags are only taken over into the HTML head with a limited set of safe attributes. If set to no, the HTML code of the static page documents is passed on to the browser as it is, including any JavaScript code.<br /><strong>Please note: If you change this setting to no, you are responsible yourself for making sure that all static page documents are clean and safe.</strong> This also applies to documents which are uploaded by users who are only allowed to manage the static page documents. See the <a href="https://github.com/moodle-an-hochschulen/moodle-local_staticpage/blob/main/README.md#24-process-content">plugin documentation on Github</a> for details.';
 $string['cleanhtmlno'] = 'No, don\'t clean HTML code';
 $string['cleanhtmlyes'] = 'Yes, clean HTML code';
 $string['documentheadingsource'] = 'Data source of document heading';
