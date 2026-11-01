@@ -33,8 +33,8 @@ namespace local_staticpage;
  */
 class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile {
     /**
-     * This function renames .htm files to .html (if any files with this extension exist) when the filepicker is saved
-     * and calls the parent function to retain its functionality
+     * This function renames .htm, .HTM and .HTML files to .html (if any files with these extensions exist) when the filepicker
+     * is saved and calls the parent function to retain its functionality
      * @param array $data - The data submitted from the form or null to set the default value for new installs.
      * @return bool - true if successful.
      */
@@ -63,7 +63,7 @@ class admin_setting_staticpagestoredfile extends \admin_setting_configstoredfile
 
         foreach ($files as $file) {
             $existingname = $file->get_filename();
-            $newname = preg_replace('/.htm$/', '.html', $existingname);
+            $newname = preg_replace('/\.html?$/i', '.html', $existingname);
 
             if ($newname != $existingname) {
                 try {
