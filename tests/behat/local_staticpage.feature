@@ -174,6 +174,39 @@ Feature: Using static pages
     And I click on "Example Page" "link"
     Then "//div[@id='region-main']//div//iframe" "xpath_element" should not exist
 
+  Scenario: Check setting "Don't clean HTML code" with link tags in the HTML head
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 2     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=linktest"
+    Then "//head/link[@href='linktest-safe.css']" "xpath_element" should exist
+    And "//head/link[@href='linktest-onload.css' and @onload]" "xpath_element" should exist
+    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
+    And "//head/link[@href='javascript:void(0)']" "xpath_element" should exist
+    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should exist
+    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
+
+  Scenario: Check setting "Clean HTML code" with link tags in the HTML head
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=linktest"
+    Then "//head/link[@rel='stylesheet' and @href='linktest-safe.css' and @media='screen']" "xpath_element" should exist
+    And "//head/link[@href='linktest-onload.css']" "xpath_element" should exist
+    And "//head/link[@onload]" "xpath_element" should not exist
+    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
+    And "//head/link[@href='javascript:void(0)']" "xpath_element" should not exist
+    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should not exist
+    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
+
   Scenario: Check if the page name is added as a body class
     When I log in as "admin"
     And I am on site homepage
