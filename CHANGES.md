@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-01 - Improvement: Fall back to cleaning the HTML code and processing filters when outputting the static page content if the 'Clean HTML code' or 'Process filters' settings contain an unexpected value instead of outputting the content unprocessed.
 * 2026-11-01 - Bugfix: Escape the dot in the regular expression which renames uploaded .htm documents to .html and rename .HTM and .HTML documents to .html as well, as documents with these uppercase extensions were accepted by the filemanager but could not be delivered as static pages.
 * 2026-11-01 - Bugfix: Render non-ASCII characters in UTF-8 encoded static page documents correctly even if the document does not declare its charset, declares it too late, declares an unsupported charset or starts with a byte order mark.
 * 2026-11-01 - Improvement: Suppress the libxml warnings which are raised by the HTML parser for HTML5 tags and minor markup issues in static page documents.
