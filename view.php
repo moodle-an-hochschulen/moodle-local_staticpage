@@ -34,6 +34,9 @@ global $CFG, $PAGE, $USER, $FULLME;
 // Include lib.php.
 require_once($CFG->dirroot . '/local/staticpage/lib.php');
 
+// Include locallib.php.
+require_once($CFG->dirroot . '/local/staticpage/locallib.php');
+
 // Get plugin config.
 $localstaticpageconfig = get_config('local_staticpage');
 
@@ -45,19 +48,20 @@ if (
     require_login();
 }
 
-// View only with /static/ URL.
-if ($localstaticpageconfig->apacherewrite == true) {
-    if (strpos($FULLME, '/static/') === false) { /* We used to check if /static/ is at the beginning of the
-                                                    REQUEST_URI, but this would break on Moodle subdirectory
-                                                    installations. And there is no better check available in
-                                                    core, so we just accept this rather loose check. */
-        die;
-    }
-}
-
-
 // Get requested page's name.
 $page = required_param('page', PARAM_ALPHANUMEXT);
+
+// View only with the canonical /static/<page>.html URL.
+if ($localstaticpageconfig->apacherewrite == true) {
+    // Compare only the path component of the requested URL with the expected path, respecting Moodle subdirectory
+    // installations. This way, the check is neither fooled by query parameters nor by a mismatching page parameter.
+    $requestpath = parse_url($FULLME, PHP_URL_PATH) ?? '';
+    $wwwrootpath = rtrim(parse_url($CFG->wwwroot, PHP_URL_PATH) ?? '', '/');
+    $canonicalpath = '/static/' . $page . '.html';
+    if ($requestpath !== $wwwrootpath . $canonicalpath) {
+        redirect(new \moodle_url($canonicalpath));
+    }
+}
 
 // Put together document file names.
 $filename = "$page.html";
@@ -79,10 +83,28 @@ if (!$file) {
 // Get file content.
 $filecontents = $file->get_content();
 
-// Import the document, load DOM.
-$staticdoc = new DOMDocument();
-$staticdoc->loadHTML($filecontents);
+// Remove the UTF-8 byte order mark (if present).
+// This is an invisible marker (the bytes EF BB BF) which some editors put at the beginning of UTF-8 files.
+// Otherwise, it would end up behind the charset meta tag which is prepended below.
+// There, libxml would treat it as text content and would move all following head elements into the body.
+$filecontents = preg_replace('/^\xEF\xBB\xBF/', '', $filecontents);
 
+// If the document is UTF-8 encoded, prepend a charset meta tag.
+// Without this, libxml would parse the document as ISO-8859-1 if the document does not declare its charset,
+// declares it too late or declares an unsupported charset, and would garble all non-ASCII characters.
+// Documents which are not UTF-8 encoded are left untouched to let libxml detect their encoding itself.
+if (mb_check_encoding($filecontents, 'UTF-8')) {
+    $filecontents = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $filecontents;
+}
+
+// Import the document, load DOM.
+// The libxml warnings are suppressed as libxml's HTML4 parser complains about HTML5 tags and minor markup issues
+// and these warnings would otherwise be printed before the page output.
+$staticdoc = new DOMDocument();
+$libxmlinternalerrors = libxml_use_internal_errors(true);
+$staticdoc->loadHTML($filecontents);
+libxml_clear_errors();
+libxml_use_internal_errors($libxmlinternalerrors);
 
 // Set page url.
 if ($localstaticpageconfig->apacherewrite == true) {
@@ -107,24 +129,34 @@ if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
     $firsth1 = $page;
 }
 
-// Extract page title (if present).
-if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
-    $title = format_string($staticdoc->getElementsByTagName('title')->item(0)->nodeValue);
+// Get head tag.
+$head = $staticdoc->getElementsByTagName('head')->item(0);
+
+// Extract page title in head (if present).
+if ($head !== null && !empty($head->getElementsByTagName('title')->item(0)->nodeValue)) {
+    $title = format_string($head->getElementsByTagName('title')->item(0)->nodeValue);
 } else {
     $title = $page;
 }
 
 // Extract style tag in head (if present) and insert into HTML head.
-if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
-    $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
+if ($head !== null && !empty($head->getElementsByTagName('style')->item(0)->nodeValue)) {
+    $style = $head->getElementsByTagName('style')->item(0)->nodeValue;
     $CFG->additionalhtmlhead = $CFG->additionalhtmlhead . '<style>' . $style . '</style>';
 }
 
 // Extract link tags in head (if present) and insert into HTML head.
-if (!empty($staticdoc->getElementsByTagName('link'))) {
-    $linknodes = $staticdoc->getElementsByTagName('link');
-    foreach ($linknodes as $linknode) {
-        $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linknode);
+if ($head !== null) {
+    foreach ($head->getElementsByTagName('link') as $linknode) {
+        if ($localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+            // The HTML code should not be cleaned, i.e. the admin trusts the static page documents.
+            // Thus, the link tag is passed on as it is.
+            $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linknode);
+        } else {
+            // The HTML code should be cleaned.
+            // Thus, the link tag is rebuilt with a limited set of safe attributes.
+            $CFG->additionalhtmlhead .= local_staticpage_clean_link_tag($linknode);
+        }
     }
 }
 
@@ -140,7 +172,7 @@ if ($localstaticpageconfig->documenttitlesource == STATICPAGE_TITLE_H1) {
 // Set page heading.
 if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($firsth1);
-} else if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
+} else if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_HEAD) {
     $PAGE->set_heading($title);
 } else {
     $PAGE->set_heading($title);
@@ -155,29 +187,14 @@ $body = $staticdoc->getElementsByTagName('body')->item(0);
 $pagecontent = $staticdoc->saveHTML($body);
 
 // Print page content.
-if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => true]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => true]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => false]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => false]);
-} else { // This should not happen.
-    echo $pagecontent;
-}
+// Any unexpected setting value falls back to the safe default (clean HTML code and process filters).
+$cleanhtml = ($localstaticpageconfig->cleanhtml != STATICPAGE_CLEANHTML_NO);
+$processfilters = ($localstaticpageconfig->processfilters != STATICPAGE_PROCESSFILTERS_NO);
+echo format_text($pagecontent, FORMAT_HTML, [
+    'trusted' => !$cleanhtml,
+    'noclean' => !$cleanhtml,
+    'filter' => $processfilters,
+]);
 
 // Log this view.
 $logevent = \local_staticpage\event\staticpage_viewed::create([

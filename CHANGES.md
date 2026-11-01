@@ -4,6 +4,18 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2026-11-01 - Improvement: If the 'Force Apache mod_rewrite' setting is enabled, check the path of the requested URL strictly against the canonical /static/<page>.html URL and redirect all other requests to this URL instead of only looking for /static/ anywhere in the URL and showing a blank page otherwise.
+* 2026-11-01 - Cleanup: Check for the correct constant when evaluating the 'Data source of document heading' setting, the duplicated check for the first h1 tag did not have any functional impact as the fallback used the title tag as well.
+* 2026-11-01 - Improvement: Fall back to cleaning the HTML code and processing filters when outputting the static page content if the 'Clean HTML code' or 'Process filters' settings contain an unexpected value instead of outputting the content unprocessed.
+* 2026-11-01 - Bugfix: Escape the dot in the regular expression which renames uploaded .htm documents to .html and rename .HTM and .HTML documents to .html as well, as documents with these uppercase extensions were accepted by the filemanager but could not be delivered as static pages.
+* 2026-11-01 - Bugfix: Render non-ASCII characters in UTF-8 encoded static page documents correctly even if the document does not declare its charset, declares it too late, declares an unsupported charset or starts with a byte order mark.
+* 2026-11-01 - Improvement: Suppress the libxml warnings which are raised by the HTML parser for HTML5 tags and minor markup issues in static page documents.
+* 2026-11-01 - Improvement: Use the Moodle cURL wrapper instead of PHP's native cURL functions for the static page availability check.
+* 2026-11-01 - Improvement: Only use the <title> and <style> tags from the <head> element of the static page document.
+* 2026-11-01 - Improvement: Only use <link> tags from the <head> element of the static page document, clean them before inserting them into the Moodle <head> element if the HTML code should be cleaned, mark the local/staticpage:managedocuments capability with RISK_XSS and point out the admin's responsibility in the 'Clean HTML code' setting description.
+
 ### v5.3-r1
 
 * 2026-10-05 - Prepare compatibility for Moodle 5.3.
