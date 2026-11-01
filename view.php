@@ -186,29 +186,14 @@ $body = $staticdoc->getElementsByTagName('body')->item(0);
 $pagecontent = $staticdoc->saveHTML($body);
 
 // Print page content.
-if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => true]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_YES &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => true]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_YES
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => false, 'noclean' => false, 'filter' => false]);
-} else if (
-    $localstaticpageconfig->processfilters == STATICPAGE_PROCESSFILTERS_NO &&
-        $localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO
-) {
-    echo format_text($pagecontent, FORMAT_HTML, ['trusted' => true, 'noclean' => true, 'filter' => false]);
-} else { // This should not happen.
-    echo $pagecontent;
-}
+// Any unexpected setting value falls back to the safe default (clean HTML code and process filters).
+$cleanhtml = ($localstaticpageconfig->cleanhtml != STATICPAGE_CLEANHTML_NO);
+$processfilters = ($localstaticpageconfig->processfilters != STATICPAGE_PROCESSFILTERS_NO);
+echo format_text($pagecontent, FORMAT_HTML, [
+    'trusted' => !$cleanhtml,
+    'noclean' => !$cleanhtml,
+    'filter' => $processfilters,
+]);
 
 // Log this view.
 $logevent = \local_staticpage\event\staticpage_viewed::create([
