@@ -171,7 +171,7 @@ if ($localstaticpageconfig->documenttitlesource == STATICPAGE_TITLE_H1) {
 // Set page heading.
 if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
     $PAGE->set_heading($firsth1);
-} else if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_H1) {
+} else if ($localstaticpageconfig->documentheadingsource == STATICPAGE_TITLE_HEAD) {
     $PAGE->set_heading($title);
 } else {
     $PAGE->set_heading($title);
