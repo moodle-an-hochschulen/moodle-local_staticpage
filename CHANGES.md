@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-01 - Bugfix: Escape the dot in the regular expression which renames uploaded .htm documents to .html and rename .HTM and .HTML documents to .html as well, as documents with these uppercase extensions were accepted by the filemanager but could not be delivered as static pages.
 * 2026-11-01 - Bugfix: Render non-ASCII characters in UTF-8 encoded static page documents correctly even if the document does not declare its charset, declares it too late, declares an unsupported charset or starts with a byte order mark.
 * 2026-11-01 - Improvement: Suppress the libxml warnings which are raised by the HTML parser for HTML5 tags and minor markup issues in static page documents.
 * 2026-11-01 - Improvement: Use the Moodle cURL wrapper instead of PHP's native cURL functions for the static page availability check.
