@@ -278,3 +278,23 @@ Feature: Using static pages
     And I press "Save changes"
     And I click on "Non-Admin Page" "link"
     Then I should see "This is the non-admin test page"
+
+  Scenario Outline: Check if non-ASCII characters are rendered correctly regardless of the document's charset declaration
+    Given the following config values are set as admin:
+      | config                | value | plugin           |
+      | documenttitlesource   | 2     | local_staticpage |
+      | documentheadingsource | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/<page>.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=<page>"
+    Then "//title[contains(text(),'Titel mit Umlauten äöüß')]" "xpath_element" should exist
+    And I should see "Überschrift mit Umlauten äöüß" in the ".page-header-headings" "css_element"
+    And I should see "Grüße mit Sonderzeichen ® €" in the "#region-main" "css_element"
+
+    Examples:
+      | page              |
+      | encodingnometa    |
+      | encodingbom       |
+      | encodingbogusmeta |
