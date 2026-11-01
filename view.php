@@ -48,19 +48,20 @@ if (
     require_login();
 }
 
-// View only with /static/ URL.
-if ($localstaticpageconfig->apacherewrite == true) {
-    if (strpos($FULLME, '/static/') === false) { /* We used to check if /static/ is at the beginning of the
-                                                    REQUEST_URI, but this would break on Moodle subdirectory
-                                                    installations. And there is no better check available in
-                                                    core, so we just accept this rather loose check. */
-        die;
-    }
-}
-
-
 // Get requested page's name.
 $page = required_param('page', PARAM_ALPHANUMEXT);
+
+// View only with the canonical /static/<page>.html URL.
+if ($localstaticpageconfig->apacherewrite == true) {
+    // Compare only the path component of the requested URL with the expected path, respecting Moodle subdirectory
+    // installations. This way, the check is neither fooled by query parameters nor by a mismatching page parameter.
+    $requestpath = parse_url($FULLME, PHP_URL_PATH) ?? '';
+    $wwwrootpath = rtrim(parse_url($CFG->wwwroot, PHP_URL_PATH) ?? '', '/');
+    $canonicalpath = '/static/' . $page . '.html';
+    if ($requestpath !== $wwwrootpath . $canonicalpath) {
+        redirect(new \moodle_url($canonicalpath));
+    }
+}
 
 // Put together document file names.
 $filename = "$page.html";

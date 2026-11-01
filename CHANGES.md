@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-01 - Improvement: If the 'Force Apache mod_rewrite' setting is enabled, check the path of the requested URL strictly against the canonical /static/<page>.html URL and redirect all other requests to this URL instead of only looking for /static/ anywhere in the URL and showing a blank page otherwise.
 * 2026-11-01 - Cleanup: Check for the correct constant when evaluating the 'Data source of document heading' setting, the duplicated check for the first h1 tag did not have any functional impact as the fallback used the title tag as well.
 * 2026-11-01 - Improvement: Fall back to cleaning the HTML code and processing filters when outputting the static page content if the 'Clean HTML code' or 'Process filters' settings contain an unexpected value instead of outputting the content unprocessed.
 * 2026-11-01 - Bugfix: Escape the dot in the regular expression which renames uploaded .htm documents to .html and rename .HTM and .HTML documents to .html as well, as documents with these uppercase extensions were accepted by the filemanager but could not be delivered as static pages.
