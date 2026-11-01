@@ -298,3 +298,17 @@ Feature: Using static pages
       | encodingnometa    |
       | encodingbom       |
       | encodingbogusmeta |
+
+  Scenario Outline: Check if documents with a .htm, .HTM or .HTML extension are renamed to .html
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/<file>" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=<page>"
+    Then I should see "This is the <page> test page"
+
+    Examples:
+      | file                 | page            |
+      | renamehtm.htm        | renamehtm       |
+      | renamehtmupper.HTM   | renamehtmupper  |
+      | renamehtmlupper.HTML | renamehtmlupper |
