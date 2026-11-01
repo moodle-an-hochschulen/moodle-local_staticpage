@@ -34,6 +34,9 @@ global $CFG, $PAGE, $USER, $FULLME;
 // Include lib.php.
 require_once($CFG->dirroot . '/local/staticpage/lib.php');
 
+// Include locallib.php.
+require_once($CFG->dirroot . '/local/staticpage/locallib.php');
+
 // Get plugin config.
 $localstaticpageconfig = get_config('local_staticpage');
 
@@ -107,24 +110,34 @@ if (!empty($staticdoc->getElementsByTagName('h1')->item(0)->nodeValue)) {
     $firsth1 = $page;
 }
 
-// Extract page title (if present).
-if (!empty($staticdoc->getElementsByTagName('title')->item(0)->nodeValue)) {
-    $title = format_string($staticdoc->getElementsByTagName('title')->item(0)->nodeValue);
+// Get head tag.
+$head = $staticdoc->getElementsByTagName('head')->item(0);
+
+// Extract page title in head (if present).
+if ($head !== null && !empty($head->getElementsByTagName('title')->item(0)->nodeValue)) {
+    $title = format_string($head->getElementsByTagName('title')->item(0)->nodeValue);
 } else {
     $title = $page;
 }
 
 // Extract style tag in head (if present) and insert into HTML head.
-if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
-    $style = $staticdoc->getElementsByTagName('style')->item(0)->nodeValue;
+if ($head !== null && !empty($head->getElementsByTagName('style')->item(0)->nodeValue)) {
+    $style = $head->getElementsByTagName('style')->item(0)->nodeValue;
     $CFG->additionalhtmlhead = $CFG->additionalhtmlhead . '<style>' . $style . '</style>';
 }
 
 // Extract link tags in head (if present) and insert into HTML head.
-if (!empty($staticdoc->getElementsByTagName('link'))) {
-    $linknodes = $staticdoc->getElementsByTagName('link');
-    foreach ($linknodes as $linknode) {
-        $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linknode);
+if ($head !== null) {
+    foreach ($head->getElementsByTagName('link') as $linknode) {
+        if ($localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+            // The HTML code should not be cleaned, i.e. the admin trusts the static page documents.
+            // Thus, the link tag is passed on as it is.
+            $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linknode);
+        } else {
+            // The HTML code should be cleaned.
+            // Thus, the link tag is rebuilt with a limited set of safe attributes.
+            $CFG->additionalhtmlhead .= local_staticpage_clean_link_tag($linknode);
+        }
     }
 }
 

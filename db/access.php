@@ -30,6 +30,7 @@ $capabilities = [
         // Additionally, users with moodle/site:config are also allowed to manage the static page documents
         // _and_ the static page plugin settings without needing to have local/staticpages:managedocuments themselves.
         'local/staticpage:managedocuments' => [
+                'riskbitmask' => RISK_XSS,
                 'captype' => 'write',
                 'contextlevel' => CONTEXT_SYSTEM,
         ],
