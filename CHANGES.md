@@ -6,6 +6,8 @@ Changes
 
 ### Unreleased
 
+* 2026-11-01 - Bugfix: Render non-ASCII characters in UTF-8 encoded static page documents correctly even if the document does not declare its charset, declares it too late, declares an unsupported charset or starts with a byte order mark.
+* 2026-11-01 - Improvement: Suppress the libxml warnings which are raised by the HTML parser for HTML5 tags and minor markup issues in static page documents.
 * 2026-11-01 - Improvement: Use the Moodle cURL wrapper instead of PHP's native cURL functions for the static page availability check.
 * 2026-11-01 - Improvement: Only use the <title> and <style> tags from the <head> element of the static page document.
 * 2026-11-01 - Improvement: Only use <link> tags from the <head> element of the static page document, clean them before inserting them into the Moodle <head> element if the HTML code should be cleaned, mark the local/staticpage:managedocuments capability with RISK_XSS and point out the admin's responsibility in the 'Clean HTML code' setting description.

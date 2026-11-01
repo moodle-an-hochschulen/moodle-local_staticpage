@@ -82,10 +82,28 @@ if (!$file) {
 // Get file content.
 $filecontents = $file->get_content();
 
-// Import the document, load DOM.
-$staticdoc = new DOMDocument();
-$staticdoc->loadHTML($filecontents);
+// Remove the UTF-8 byte order mark (if present).
+// This is an invisible marker (the bytes EF BB BF) which some editors put at the beginning of UTF-8 files.
+// Otherwise, it would end up behind the charset meta tag which is prepended below.
+// There, libxml would treat it as text content and would move all following head elements into the body.
+$filecontents = preg_replace('/^\xEF\xBB\xBF/', '', $filecontents);
 
+// If the document is UTF-8 encoded, prepend a charset meta tag.
+// Without this, libxml would parse the document as ISO-8859-1 if the document does not declare its charset,
+// declares it too late or declares an unsupported charset, and would garble all non-ASCII characters.
+// Documents which are not UTF-8 encoded are left untouched to let libxml detect their encoding itself.
+if (mb_check_encoding($filecontents, 'UTF-8')) {
+    $filecontents = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $filecontents;
+}
+
+// Import the document, load DOM.
+// The libxml warnings are suppressed as libxml's HTML4 parser complains about HTML5 tags and minor markup issues
+// and these warnings would otherwise be printed before the page output.
+$staticdoc = new DOMDocument();
+$libxmlinternalerrors = libxml_use_internal_errors(true);
+$staticdoc->loadHTML($filecontents);
+libxml_clear_errors();
+libxml_use_internal_errors($libxmlinternalerrors);
 
 // Set page url.
 if ($localstaticpageconfig->apacherewrite == true) {
