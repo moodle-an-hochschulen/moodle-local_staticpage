@@ -26,39 +26,47 @@
  * Check if static page is available and downloadable on given URL
  *
  * @param string $url Static page URL
- * @return bool
+ * @return string
  */
 function local_staticpage_check_availability($url) {
+    global $CFG;
+
     // If the availability check is disabled, we are already done.
     if (STATICPAGE_CHECKAVAILABILITY_NO == get_config('local_staticpage', 'checkavailability')) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED;
     }
 
+    // Require filelib for the Moodle cURL wrapper.
+    require_once($CFG->libdir . '/filelib.php');
+
     // Prepare cURL request.
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    if (!ini_get('open_basedir')) {
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    }
-    // We need that to prevent false errors with self-signed certificates on webserver.
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    // We ignore the cURL security helper here as the URL is always built from $CFG->wwwroot and the
+    // security helper's default blocklist (private IP ranges, localhost, non-web ports) would otherwise
+    // block the request on all sites which resolve their own hostname to an internal address.
+    // The Moodle cURL wrapper also does not verify the SSL peer by default which we need to prevent false errors
+    // with self-signed certificates on the webserver.
+    $curl = new \curl(['ignoresecurity' => true]);
 
     // Add the configured timeouts to the cURL request.
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, get_config('local_staticpage', 'checkavailabilityconnecttimeout'));
-    curl_setopt($ch, CURLOPT_TIMEOUT, get_config('local_staticpage', 'checkavailabilitytimeout'));
+    $options = [
+        'CURLOPT_CONNECTTIMEOUT' => (int) get_config('local_staticpage', 'checkavailabilityconnecttimeout'),
+        'CURLOPT_TIMEOUT' => (int) get_config('local_staticpage', 'checkavailabilitytimeout'),
+    ];
 
     // Run cURL request.
-    curl_exec($ch);
+    // We use a GET request instead of a HEAD request here even though we are not interested in the response body.
+    // The reason is that the Moodle cURL wrapper does only follow HTTP 303 redirects for GET requests and
+    // Moodle's redirect() function (which is used by require_login() for example) sends HTTP 303 redirects.
+    $curl->get($url, null, $options);
 
     // Check cURL result and return if there was a general problem.
-    if (curl_errno($ch) !== CURLE_OK) {
+    if ($curl->get_errno() !== CURLE_OK) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR;
     }
 
-    // Get cURL return code and close the connetion.
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
+    // Get cURL return code.
+    $info = $curl->get_info();
+    $code = isset($info['http_code']) ? (int) $info['http_code'] : 0;
 
     // Return a success if the static page was available (HTTP 200).
     if ($code >= 200 && $code < 300) {
@@ -68,4 +76,38 @@ function local_staticpage_check_availability($url) {
     } else {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL;
     }
+}
+
+/**
+ * Rebuild a stylesheet link tag from a static page document with a limited set of safe attributes only.
+ *
+ * This is used if the static page's HTML code should be cleaned. The link tags are inserted into Moodle's HTML head
+ * and do not pass format_text() there, so they have to be cleaned separately.
+ *
+ * @param DOMElement $linknode The link node from the static page document.
+ * @return string The rebuilt link tag or an empty string if the link tag is not allowed.
+ */
+function local_staticpage_clean_link_tag(DOMElement $linknode): string {
+    // Only accept stylesheets and alternate stylesheets as this is what is needed to style a static page.
+    $reltokens = preg_split('/\s+/', core_text::strtolower(trim($linknode->getAttribute('rel'))), -1, PREG_SPLIT_NO_EMPTY);
+    sort($reltokens);
+    if ($reltokens !== ['stylesheet'] && $reltokens !== ['alternate', 'stylesheet']) {
+        return '';
+    }
+
+    // Only accept properly formatted relative URLs and absolute http(s) URLs.
+    $href = clean_param(trim($linknode->getAttribute('href')), PARAM_URL);
+    if ($href === '') {
+        return '';
+    }
+
+    // Copy the remaining harmless attributes, but nothing else (especially no event handler attributes).
+    $attributes = ['rel' => implode(' ', $reltokens), 'href' => $href];
+    foreach (['type', 'media', 'crossorigin', 'integrity', 'title'] as $attributename) {
+        if ($linknode->hasAttribute($attributename)) {
+            $attributes[$attributename] = $linknode->getAttribute($attributename);
+        }
+    }
+
+    return html_writer::empty_tag('link', $attributes);
 }
