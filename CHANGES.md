@@ -4,7 +4,7 @@ moodle-local_staticpage
 Changes
 -------
 
-### Unreleased
+### v5.3-r2
 
 * 2026-11-01 - Improvement: If the 'Force Apache mod_rewrite' setting is enabled, check the path of the requested URL strictly against the canonical /static/<page>.html URL and redirect all other requests to this URL instead of only looking for /static/ anywhere in the URL and showing a blank page otherwise.
 * 2026-11-01 - Cleanup: Check for the correct constant when evaluating the 'Data source of document heading' setting, the duplicated check for the first h1 tag did not have any functional impact as the fallback used the title tag as well.
