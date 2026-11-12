@@ -107,8 +107,25 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         $html .= html_writer::start_tag('li');
 
         // Print basic information about the page.
-        $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', $pagefilename));
-        $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $pagepagename));
+        // The filename is escaped explicitly even though the file storage cleans all filenames with PARAM_FILE already.
+        $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', s($pagefilename)));
+
+        // If the pagename would be rejected by view.php, show a warning instead of URLs which would not work anyway.
+        if (clean_param($pagepagename, PARAM_ALPHANUMEXT) !== $pagepagename) {
+            $html .= html_writer::tag(
+                'p',
+                html_writer::tag(
+                    'span',
+                    get_string('settingspagelistentryinvalidpagenamebadge', 'local_staticpage'),
+                    ['class' => 'badge me-2 bg-danger text-light']
+                ) .
+                        get_string('settingspagelistentryinvalidpagename', 'local_staticpage', s($pagepagename))
+            );
+            $html .= html_writer::end_tag('li');
+            continue;
+        }
+
+        $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', s($pagepagename)));
 
         // Print normal static page URL - Do only if apache rewrite isn't forced.
         if (!$localstaticpageconfig->apacherewrite) {
@@ -136,7 +153,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                         get_string('checkavailabilityresponse' . $pageurlstandardavailable, 'local_staticpage'),
                         ['class' => 'badge me-2 ' . $statusbadgevariant]
                     ) .
-                            html_writer::link($pageurlstandard, $pageurlstandard)
+                            html_writer::link($pageurlstandard, s($pageurlstandard))
                 )
             );
         }
@@ -166,7 +183,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                     get_string('checkavailabilityresponse' . $pageurlrewriteavailable, 'local_staticpage'),
                     ['class' => 'badge me-2 ' . $statusbadgevariant]
                 ) .
-                        html_writer::link($pageurlrewrite, $pageurlrewrite)
+                        html_writer::link($pageurlrewrite, s($pageurlrewrite))
             )
         );
 

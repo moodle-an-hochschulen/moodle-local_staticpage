@@ -315,3 +315,26 @@ Feature: Using static pages
       | renamehtm.htm        | renamehtm       |
       | renamehtmupper.HTM   | renamehtmupper  |
       | renamehtmlupper.HTML | renamehtmlupper |
+
+  Scenario Outline: Check if documents with an invalid pagename are marked as invalid in the list of static pages
+    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 2     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/<page>.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I navigate to "List of static pages" in site administration
+    Then I should see "Invalid pagename" in the "//*[@id='region-main']//li[contains(., '<page>.html')]" "xpath_element"
+    And I should see "This pagename contains characters which are not supported in pagenames" in the "//*[@id='region-main']//li[contains(., '<page>.html')]" "xpath_element"
+    And I should not see "/local/staticpage/view.php?page=<page>" in the "#region-main" "css_element"
+    And I should not see "/static/<page>.html" in the "#region-main" "css_element"
+    And I should not see "Invalid pagename" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
+    And I should see "/local/staticpage/view.php?page=example" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
+    And I should see "/static/example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
+
+    Examples:
+      | page             |
+      | invalid pagename |
+      | invalid.pagename |
