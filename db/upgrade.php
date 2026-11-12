@@ -45,9 +45,6 @@ function xmldb_local_staticpage_upgrade($oldversion) {
         $handle = @opendir($documentsdirectory);
 
         if ($handle) {
-            // Array to remember file to be deleted from documents directory.
-            $todelete = [];
-
             // Fetch all files from documents directory.
             while (false !== ($file = readdir($handle))) {
                 // Only process .html files.
@@ -62,15 +59,10 @@ function xmldb_local_staticpage_upgrade($oldversion) {
 
                 // Put file into filearea.
                 $fs->create_file_from_pathname($filerecord, $fullpath);
-
-                // Remember file to be deleted.
-                $todelete[] = $fullpath;
             }
 
             // Close documents directory.
-            if ($handle) {
-                closedir($handle);
-            }
+            closedir($handle);
 
             // Show an info message that documents directory is no longer needed.
             $message = get_string('upgrade_notice_2016020307', 'local_staticpage', $documentsdirectory);
