@@ -4,6 +4,10 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2026-11-12 - Cleanup: Remove the unused $todelete array and a redundant check of the directory handle from the legacy upgrade step 2016020309.
+
 ### v5.3-r2
 
 * 2026-11-01 - Improvement: If the 'Force Apache mod_rewrite' setting is enabled, check the path of the requested URL strictly against the canonical /static/<page>.html URL and redirect all other requests to this URL instead of only looking for /static/ anywhere in the URL and showing a blank page otherwise.
