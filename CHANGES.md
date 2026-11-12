@@ -6,6 +6,8 @@ Changes
 
 ### Unreleased
 
+* 2026-11-12 - Improvement: Show a warning instead of non-working URLs on the list of static pages for documents whose filename contains characters which are not supported in pagenames (e.g. spaces or umlauts).
+* 2026-11-12 - Cleanup: Escape the document filename, the pagename and the URLs explicitly on the list of static pages, even though the file storage already cleans all filenames.
 * 2026-11-12 - Cleanup: Remove the unused $todelete array and a redundant check of the directory handle from the legacy upgrade step 2016020309.
 
 ### v5.3-r2
