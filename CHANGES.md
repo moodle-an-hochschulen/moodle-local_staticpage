@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-13 - Improvement: Remove the duplicate heading on the 'list of static pages' page
 * 2026-11-13 - Improvement: Skip the remaining availability checks on the list of static pages as soon as one check fails with a connection error or a timeout, as the site most probably can't reach its own URL at all in this case and each further check would just wait for the timeout again.
 * 2026-11-13 - Improvement: Use a default of 5 seconds for the 'Connect timeout' and 10 seconds for the 'Timeout' setting of the availability check instead of 0 which let the list of static pages hang for a long time if the site can't reach its own URL.\
                Please note: On existing installations, a value of 0 in these settings is replaced with the new defaults during the upgrade.
