@@ -6,6 +6,9 @@ Changes
 
 ### Unreleased
 
+* 2026-11-13 - Improvement: Skip the remaining availability checks on the list of static pages as soon as one check fails with a connection error or a timeout, as the site most probably can't reach its own URL at all in this case and each further check would just wait for the timeout again.
+* 2026-11-13 - Improvement: Use a default of 5 seconds for the 'Connect timeout' and 10 seconds for the 'Timeout' setting of the availability check instead of 0 which let the list of static pages hang for a long time if the site can't reach its own URL.\
+               Please note: On existing installations, a value of 0 in these settings is replaced with the new defaults during the upgrade.
 * 2026-11-13 - Improvement: Add separate settings to control if the <style> tag and the <link> tags in the <head> element of the static page documents are used, the 'Clean HTML code' setting does now only apply to the page content. Existing installations keep their previous rendering behaviour.
 * 2026-11-12 - Improvement: Show a warning instead of non-working URLs on the list of static pages for documents whose filename contains characters which are not supported in pagenames (e.g. spaces or umlauts).
 * 2026-11-12 - Cleanup: Escape the document filename, the pagename and the URLs explicitly on the list of static pages, even though the file storage already cleans all filenames.

@@ -29,11 +29,12 @@ $string['apacherewrite_desc'] = 'Serve static pages only with a clean URL, rewri
 $string['checkavailability'] = 'Check availability';
 $string['checkavailability_desc'] = 'Configure if Moodle should check for static file availability on the list of static pages or not.';
 $string['checkavailabilityconnecttimeout'] = 'Connect timeout';
-$string['checkavailabilityconnecttimeout_desc'] = 'Configure the maximum number of seconds to wait while trying to connect during the availability check. Use 0 to wait indefinitely.';
+$string['checkavailabilityconnecttimeout_desc'] = 'Configure the maximum number of seconds to wait while trying to connect during the availability check. Use 0 to fall back to the built-in default of cURL which is 300 seconds.';
 $string['checkavailabilityno'] = 'No, don\'t check availability';
 $string['checkavailabilityresponsedisabled'] = 'Not checked';
 $string['checkavailabilityresponseerror'] = 'Not available - Error';
 $string['checkavailabilityresponsefail'] = 'Not available - Non-2xx';
+$string['checkavailabilityresponseskipped'] = 'Not checked - Skipped';
 $string['checkavailabilityresponsesuccess'] = 'Available';
 $string['checkavailabilitytimeout'] = 'Timeout';
 $string['checkavailabilitytimeout_desc'] = 'Configure the maximum number of seconds to allow cURL functions to execute during the availability check. Use 0 to allow indefinite execution time.';
@@ -75,10 +76,12 @@ $string['settingspagelistentrypagename'] = 'From the document file\'s filename, 
 $string['settingspagelistentryrewritedisabled'] = 'The static page should be available at the following clean URL, but is not verified because checking availability is disabled:<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewriteerror'] = 'The static page should be available at the following clean URL, but actually a browser won\'t be able to download and view it either because of connection error or responding slower than checkavailabilitytimeout config (perhaps there is something wrong with your webserver or mod_rewrite configuration):<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewritefail'] = 'The static page should be available at the following clean URL, but actually a browser won\'t be able to download and view it due to a non-2xx HTTP status code (perhaps there is something wrong with your webserver or mod_rewrite configuration):<br /><strong>{$a}</strong>';
+$string['settingspagelistentryrewriteskipped'] = 'The static page should be available at the following clean URL, but is not checked because the availability check of a previous URL on this list already failed with a connection error or a timeout and the remaining checks were skipped to prevent this list from loading for a long time:<br /><strong>{$a}</strong>';
 $string['settingspagelistentryrewritesuccess'] = 'The static page is available and can be linked to at the following clean URL:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrystandarddisabled'] = 'The static page should be available at the following standard URL, but is not checked because checking availability is disabled:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrystandarderror'] = 'The static page should be available at the following standard URL, but actually a browser won\'t be able to download and view it either because of connection error or responding slower than checkavailabilitytimeout config (perhaps there is something wrong with your webserver configuration):<br /><strong>{$a}</strong>';
 $string['settingspagelistentrystandardfail'] = 'The static page should be available at the following standard URL, but actually a browser won\'t be able to download and view it due to a non-2xx HTTP status code (perhaps there is something wrong with your webserver configuration):<br /><strong>{$a}</strong>';
+$string['settingspagelistentrystandardskipped'] = 'The static page should be available at the following standard URL, but is not checked because the availability check of a previous URL on this list already failed with a connection error or a timeout and the remaining checks were skipped to prevent this list from loading for a long time:<br /><strong>{$a}</strong>';
 $string['settingspagelistentrystandardsuccess'] = 'The static page is available and can be linked to at the following standard URL:<br /><strong>{$a}</strong>';
 $string['settingspagelistinstruction'] = 'This list shows all static pages which have been uploaded into the <a href="{$a}">static pages document area</a> and their URLs';
 $string['settingspagelistnofiles'] = 'There are no .html files in the <a href="{$a}">static pages document area</a>, therefore there are no static pages to be delivered. See the <a href="https://github.com/moodle-an-hochschulen/moodle-local_staticpage/blob/main/README.md#1-documents">plugin documentation on Github</a> for details.';
