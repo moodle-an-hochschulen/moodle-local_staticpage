@@ -139,21 +139,26 @@ if ($head !== null && !empty($head->getElementsByTagName('title')->item(0)->node
     $title = $page;
 }
 
-// Extract style tag in head (if present) and insert into HTML head.
-if ($head !== null && !empty($head->getElementsByTagName('style')->item(0)->nodeValue)) {
+// Extract style tag in head (if present) and insert into HTML head if this is enabled.
+// Any unexpected setting value falls back to not using the style tag.
+if (
+    $head !== null && $localstaticpageconfig->styletag == STATICPAGE_STYLETAG_YES &&
+    !empty($head->getElementsByTagName('style')->item(0)->nodeValue)
+) {
     $style = $head->getElementsByTagName('style')->item(0)->nodeValue;
-    $CFG->additionalhtmlhead = $CFG->additionalhtmlhead . '<style>' . $style . '</style>';
+    $CFG->additionalhtmlhead .= '<style>' . $style . '</style>';
 }
 
-// Extract link tags in head (if present) and insert into HTML head.
-if ($head !== null) {
+// Extract link tags in head (if present) and insert into HTML head if this is enabled.
+if ($head !== null && $localstaticpageconfig->linktags != STATICPAGE_LINKTAGS_NO) {
     foreach ($head->getElementsByTagName('link') as $linknode) {
-        if ($localstaticpageconfig->cleanhtml == STATICPAGE_CLEANHTML_NO) {
-            // The HTML code should not be cleaned, i.e. the admin trusts the static page documents.
+        if ($localstaticpageconfig->linktags == STATICPAGE_LINKTAGS_ASIS) {
+            // The admin trusts the link tags in the static page documents.
             // Thus, the link tag is passed on as it is.
             $CFG->additionalhtmlhead .= $staticdoc->saveHTML($linknode);
         } else {
-            // The HTML code should be cleaned.
+            // The link tags should be cleaned.
+            // Any unexpected setting value falls back to this mode as well.
             // Thus, the link tag is rebuilt with a limited set of safe attributes.
             $CFG->additionalhtmlhead .= local_staticpage_clean_link_tag($linknode);
         }
