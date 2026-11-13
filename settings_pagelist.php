@@ -91,6 +91,12 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
     // Get plugin config.
     $localstaticpageconfig = get_config('local_staticpage');
 
+    // Remember if an availability check failed with a connection error or a timeout.
+    // In this case, the site most probably can't reach its own URL at all (e.g. because of a firewall, DNS or
+    // hairpin NAT issue) and each further check would just wait for the timeout again.
+    // Thus, the remaining checks are skipped to prevent this list from loading for a long time.
+    $checkavailabilityconnectionerror = false;
+
     // Output each page as a page list entry.
     foreach ($pages as $page) {
         // Collect information about the page.
@@ -131,7 +137,14 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         if (!$localstaticpageconfig->apacherewrite) {
             // Check availability.
             $pageurlstandard = rtrim($CFG->wwwroot, '/') . '/local/staticpage/view.php?page=' . $pagepagename;
-            $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
+            if ($checkavailabilityconnectionerror) {
+                $pageurlstandardavailable = STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED;
+            } else {
+                $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
+                if ($pageurlstandardavailable == STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR) {
+                    $checkavailabilityconnectionerror = true;
+                }
+            }
 
             // Show if document is available.
             $statusbadgevariant = strtr(
@@ -141,6 +154,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-danger text-light',
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-danger text-light',
                     STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
+                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'bg-secondary text-light',
                 ]
             );
             $html .= html_writer::tag(
@@ -161,7 +175,14 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         // Print rewritten static page URL.
         // Check availability.
         $pageurlrewrite = rtrim($CFG->wwwroot, '/') . '/static/' . $pagepagename . '.html';
-        $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
+        if ($checkavailabilityconnectionerror) {
+            $pageurlrewriteavailable = STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED;
+        } else {
+            $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
+            if ($pageurlrewriteavailable == STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR) {
+                $checkavailabilityconnectionerror = true;
+            }
+        }
 
         // Show if document is available.
         $statusbadgevariant = strtr(
@@ -171,6 +192,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-warning text-dark',
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-warning text-dark',
                 STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
+                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'bg-secondary text-light',
             ]
         );
         $html .= html_writer::tag(

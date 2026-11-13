@@ -235,7 +235,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
             'local_staticpage/checkavailabilityconnecttimeout',
             get_string('checkavailabilityconnecttimeout', 'local_staticpage', null, true),
             get_string('checkavailabilityconnecttimeout_desc', 'local_staticpage', null, true),
-            0,
+            STATICPAGE_CHECKAVAILABILITY_CONNECTTIMEOUT_DEFAULT,
             PARAM_INT,
             4
         ));
@@ -245,7 +245,7 @@ if ($hassiteconfig || $hasmanagedocuments) {
             'local_staticpage/checkavailabilitytimeout',
             get_string('checkavailabilitytimeout', 'local_staticpage', null, true),
             get_string('checkavailabilitytimeout_desc', 'local_staticpage', null, true),
-            0,
+            STATICPAGE_CHECKAVAILABILITY_TIMEOUT_DEFAULT,
             PARAM_INT,
             4
         ));

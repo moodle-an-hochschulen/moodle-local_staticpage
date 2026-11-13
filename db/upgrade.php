@@ -104,5 +104,28 @@ function xmldb_local_staticpage_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2026100502, 'local', 'staticpage');
     }
 
+    if ($oldversion < 2026100503) {
+        // The availability check timeouts got non-zero defaults as a timeout of 0 lets the availability check
+        // (and thereby the list of static pages) hang for a long time if the site can't reach its own URL.
+        // Replace the previous default of 0 with the new defaults.
+        // As it is not possible to distinguish the previous default from a value of 0 which was set deliberately,
+        // this also affects sites which have set the value to 0 deliberately.
+        $connecttimeout = get_config('local_staticpage', 'checkavailabilityconnecttimeout');
+        if ($connecttimeout !== false && (int) $connecttimeout === 0) {
+            set_config(
+                'checkavailabilityconnecttimeout',
+                STATICPAGE_CHECKAVAILABILITY_CONNECTTIMEOUT_DEFAULT,
+                'local_staticpage'
+            );
+        }
+        $timeout = get_config('local_staticpage', 'checkavailabilitytimeout');
+        if ($timeout !== false && (int) $timeout === 0) {
+            set_config('checkavailabilitytimeout', STATICPAGE_CHECKAVAILABILITY_TIMEOUT_DEFAULT, 'local_staticpage');
+        }
+
+        // Remember upgrade savepoint.
+        upgrade_plugin_savepoint(true, 2026100503, 'local', 'staticpage');
+    }
+
     return true;
 }
