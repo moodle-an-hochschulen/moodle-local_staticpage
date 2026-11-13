@@ -98,6 +98,8 @@ On this page, there is a list which shows all static pages which have been uploa
 
 Additionally, the page list checks each static page if a browser is actually able to download and view it. If this isn't possible, the static page is marked with an error message in the page list.
 
+If one of these checks fails with a connection error or a timeout, the site most probably can't reach its own URL at all. In this case, the remaining checks are skipped and the remaining static pages are marked as not checked to prevent the page list from loading for a long time.
+
 
 Capabilities
 ------------
