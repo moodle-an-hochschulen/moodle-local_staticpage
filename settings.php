@@ -181,6 +181,33 @@ if ($hassiteconfig || $hasmanagedocuments) {
             $cleanhtmlmodes
         ));
 
+        // Create style tag widget.
+        $styletagmodes[STATICPAGE_STYLETAG_YES] = get_string('styletagyes', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
+        $styletagmodes[STATICPAGE_STYLETAG_NO] = get_string('styletagno', 'local_staticpage', null, true);
+        $page->add(new admin_setting_configselect(
+            'local_staticpage/styletag',
+            get_string('styletag', 'local_staticpage', null, true),
+            get_string('styletag_desc', 'local_staticpage', null, true),
+            STATICPAGE_STYLETAG_YES,
+            $styletagmodes
+        ));
+
+        // Create link tags widget.
+        $linktagsmodes[STATICPAGE_LINKTAGS_CLEAN] = get_string('linktagsclean', 'local_staticpage', null, false);
+                // Don't use string lazy loading here because the string will be directly used and
+                // would produce a PHP warning otherwise.
+        $linktagsmodes[STATICPAGE_LINKTAGS_ASIS] = get_string('linktagsasis', 'local_staticpage', null, true);
+        $linktagsmodes[STATICPAGE_LINKTAGS_NO] = get_string('linktagsno', 'local_staticpage', null, true);
+        $page->add(new admin_setting_configselect(
+            'local_staticpage/linktags',
+            get_string('linktags', 'local_staticpage', null, true),
+            get_string('linktags_desc', 'local_staticpage', null, true),
+            STATICPAGE_LINKTAGS_CLEAN,
+            $linktagsmodes
+        ));
+
         // Check availability.
         $page->add(new admin_setting_heading(
             'local_staticpage/checkavailabilityheading',

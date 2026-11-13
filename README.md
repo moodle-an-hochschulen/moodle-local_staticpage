@@ -78,9 +78,15 @@ This behaviour can be set specifically for static pages or can be set to respect
 
 In this section, you can configure if Moodle filters should be processed when serving a static page's content. You can use local_staticpage completely without multilanguage or filter support. But when you need multilanguage or filter support, you can set this setting to yes and make use in your static page files of any Moodle filter which is enabled on system level. Please see https://docs.moodle.org/en/Filters or https://docs.moodle.org/en/Multi-language_content_filter for details.
 
-In this section, you can also configure if the static page's HTML code should be cleaned. If this setting is set to yes, local_staticpage will use a Moodle library function to remove unclean HTML code and special tags like `<iframe>`. If this setting is set to no, local_staticpage will trust the HTML code in your static page's file and will just pass it on to the browser. This setting also controls if the `<link>` tags in the `<head>` section of your static page's file are cleaned (see 'Styling static pages' section).
+In this section, you can also configure if the static page's HTML code should be cleaned. If this setting is set to yes, local_staticpage will use a Moodle library function to remove unclean HTML code and special tags like `<iframe>`. If this setting is set to no, local_staticpage will trust the HTML code in your static page's file and will just pass it on to the browser. This setting only applies to the page content, the `<style>` tag and the `<link>` tags in the `<head>` section of your static page's file are controlled by the separate settings below.
 
 Please note: If you set this setting to no, you are responsible yourself for making sure that all static page documents are clean and safe. This also applies to documents which are uploaded by users who are only allowed to manage the static page documents (see the local/staticpage:managedocuments capability below). With this setting set to no, any JavaScript code in a static page document will be executed in the browser of every user who views the static page.
+
+In this section, you can also configure if the `<style>` tag in the `<head>` section of your static page's file should be used to style the static page. The CSS code of this tag is used as it is, it is not cleaned in any way (see 'Styling static pages' section for details).
+
+In this section, you can also configure if the `<link>` tags in the `<head>` section of your static page's file should be used to load stylesheets. You can choose to not use the link tags at all, to use them as they are or to use them, but to clean them (see 'Styling static pages' for details).
+
+Please note: CSS code cannot execute JavaScript code, but it can restyle the whole Moodle page (not only the static page content) and it can load resources like images, fonts or further stylesheets from external hosts. Combined with CSS attribute selectors, this could even be abused to leak data from the page, like the session key which is part of some links on every Moodle page, to these external hosts. This applies to the CSS code from the `<style>` tag as well as to stylesheets which are loaded with cleaned `<link>` tags. If you do not trust the users who manage the static page documents with this, set these settings to no.
 
 #### 2.5. Check availability
 
@@ -135,17 +141,17 @@ Please note that the `<meta>` tag is neccessary if you want to use UTF-8 charact
 Styling static pages
 --------------------
 
-If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. The content of this style tag will be inserted into Moodle's HTML head.
+If you want to style your static page with CSS in any special way, you can include a `<style>` tag into the `<head>` section of your HTML document. If the style tag should be used (see 'Usage & Settings' section), the content of this style tag will be inserted into Moodle's HTML head as it is.
 
-Additionally, you can include `<link>` tags into the `<head>` section of your HTML document to load external stylesheets. These link tags will be inserted into Moodle's HTML head as well. Link tags outside the `<head>` section are not used. As local_staticpage is not capable of hosting / serving stylesheet files (see 'Adding images to static pages' section), please link to your stylesheets with absolute URLs.
+Additionally, you can include `<link>` tags into the `<head>` section of your HTML document to load external stylesheets. If the link tags should be used (see 'Usage & Settings' section), these link tags will be inserted into Moodle's HTML head as well. Link tags outside the `<head>` section are not used. As local_staticpage is not capable of hosting / serving stylesheet files (see 'Adding images to static pages' section), please link to your stylesheets with absolute URLs.
 
-If the static page's HTML code should be cleaned (see 'Usage & Settings' section), the link tags are rebuilt before they are inserted into Moodle's HTML head:
+If the link tags should be cleaned (see 'Usage & Settings' section), the link tags are rebuilt before they are inserted into Moodle's HTML head:
 
 * Only link tags with a `rel` attribute of `stylesheet` or `alternate stylesheet` are used.
 * Only link tags with an absolute http(s) URL or a properly formatted relative URL (like `/pluginfile.php/...`) in the `href` attribute are used. Protocol-relative URLs (like `//example.com/styles.css`) and relative URLs which point to a parent directory (like `../styles.css`) are not accepted.
 * Of these link tags, only the `rel`, `href`, `type`, `media`, `crossorigin`, `integrity` and `title` attributes are kept, all other attributes (especially event handlers like `onload`) are removed.
 
-If the static page's HTML code should not be cleaned, the link tags are inserted into Moodle's HTML head as they are.
+If the link tags should be used as they are, the link tags are inserted into Moodle's HTML head without any changes.
 
 Additionally, there is a CSS class in the `<body>` which contains the page name of the static page shown, for example `<body class="local-staticpage-imprint [...]">`. With this CSS class, you can style static pages individually in your theme's global CSS code.
 
@@ -233,6 +239,8 @@ Apart from the option to clean HTML code which you can set to yes (and which is 
 Therefore, please make sure that your HTML code is well-formed and that only authorized and briefed users upload static page documents on local_staticpage's settings page.
 
 If you set the option to clean HTML code to no, any HTML and JavaScript code in the static page documents is delivered to the user's browser as it is. In this case, you are responsible yourself for the static page documents being clean and safe. Please keep in mind that this also applies to users who only have the local/staticpage:managedocuments capability and are not allowed to change the plugin settings themselves.
+
+If you set the options to use the style tag or the link tags to yes, the CSS code in the static page documents is delivered to the user's browser as it is, even if the HTML code is cleaned and the link tags are cleaned (see 'Usage & Settings' section). Again, please keep in mind that this also applies to users who only have the local/staticpage:managedocuments capability.
 
 
 Upgrading from previous versions

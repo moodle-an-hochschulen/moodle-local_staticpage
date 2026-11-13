@@ -15,6 +15,10 @@ Feature: Using static pages
     And I press "Save changes"
     And I log out
 
+  ################################################################################
+  # Setting "Documents": Uploading and managing static page documents
+  ################################################################################
+
   Scenario: Check if the uploaded page is accessible
     When I log in as "admin"
     And I am on site homepage
@@ -25,200 +29,19 @@ Feature: Using static pages
     And I click on "Example Page" "link"
     Then I should see "Lorem ipsum dolor sit amet"
 
-    # This scenario falls into a timeout that might be caused by CURL, so its temporarily commented out.
-#  Scenario: Check if the uploaded page is listed under "List of static pages"
-#    When I log in as "admin"
-#    And I navigate to "List of static pages" in site administration
-#    Then I should see "example.html"
-
-  Scenario: Check if multilang filters are processed
-    Given the following "language packs" exist:
-      | language |
-      | de       |
-    And the "multilang" filter is "on"
-    And the "multilang" filter applies to "content and headings"
-    And the following config values are set as admin:
-      | config         | value | plugin           |
-      | processfilters | 1     | local_staticpage |
-    And the following "users" exist:
-     | username | lang |
-     | student1 | de   |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I log out
-    And I log in as "student1"
-    And I am on site homepage
-    And I click on "Example Page" "link"
-    Then I should see "Dies ist eine h2 Überschrift"
-    And I should not see "This is a h2 heading"
-
-  # Counter check previous scenario
-  Scenario: Check if multilang filters are not processed
-    Given the following "language packs" exist:
-      | language |
-      | de       |
-    And the "multilang" filter is "on"
-    And the "multilang" filter applies to "content and headings"
-    And the following config values are set as admin:
-      | config         | value | plugin           |
-      | processfilters | 2     | local_staticpage |
-    And the following "users" exist:
-      | username | lang |
-      | student1 | de   |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I log out
-    And I log in as "student1"
-    And I am on site homepage
-    And I click on "Example Page" "link"
-    Then I should see "Dies ist eine h2 Überschrift"
-    And I should see "This is a h2 heading"
-
-  Scenario: Check that the page is only shown to users that are logged in.
-    Given the following config values are set as admin:
-      | config            | value | plugin           |
-      | forcelogin        | 1     | local_staticpage |
-    And the following config values are set as admin:
-      | config            | value                                                                     |
-      | auth_instructions | <p><a href="/local/staticpage/view.php?page=example">Example page</a></p> |
-    And the following "users" exist:
-      | username |
-      | student1 |
-    When I log in as "student1"
-    And I log out
-    And I click on "Log in" "link"
-    And I click on "Example page" "link"
-    Then I should see "You are not logged in"
-    And I should not see "Dies ist eine h2 Überschrift"
-
-  Scenario: Check if h1 tag is used for the document title
-    Given the following config values are set as admin:
-      | config              | value | plugin           |
-      | documenttitlesource | 1     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//title[contains(text(),'This is a h1 heading')]" "xpath_element" should exist
-
-  Scenario: Check if h1 tag is used for the document heading
-    Given the following config values are set as admin:
-      | config                | value | plugin           |
-      | documentheadingsource | 1     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then I should see "This is a h1 heading" in the ".page-header-headings" "css_element"
-
-  Scenario: Check if title tag is used for the document title
-    Given the following config values are set as admin:
-      | config              | value | plugin           |
-      | documenttitlesource | 2     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//title[contains(text(),'This is a title')]" "xpath_element" should exist
-
-  Scenario: Check if title tag is used instead of first h1 for the document heading
-    Given the following config values are set as admin:
-      | config                | value | plugin           |
-      | documentheadingsource | 2     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then I should see "This is a title" in the ".page-header-headings" "css_element"
-
-  Scenario: Check setting "Don't clean HTML code"
-    Given the following config values are set as admin:
-      | config    | value | plugin           |
-      | cleanhtml | 2     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//div[@id='region-main']//div//iframe" "xpath_element" should exist
-
-  Scenario: Check setting "Clean HTML code"
-    Given the following config values are set as admin:
-      | config    | value | plugin           |
-      | cleanhtml | 1     | local_staticpage |
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then "//div[@id='region-main']//div//iframe" "xpath_element" should not exist
-
-  Scenario: Check setting "Don't clean HTML code" with link tags in the HTML head
-    Given the following config values are set as admin:
-      | config    | value | plugin           |
-      | cleanhtml | 2     | local_staticpage |
+  Scenario Outline: Check if documents with a .htm, .HTM or .HTML extension are renamed to .html
     When I log in as "admin"
     And I navigate to "Static Pages" in site administration
-    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I upload "local/staticpage/tests/fixtures/<file>" file to "Documents" filemanager
     And I press "Save changes"
-    And I visit "/local/staticpage/view.php?page=linktest"
-    Then "//head/link[@href='linktest-safe.css']" "xpath_element" should exist
-    And "//head/link[@href='linktest-onload.css' and @onload]" "xpath_element" should exist
-    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
-    And "//head/link[@href='javascript:void(0)']" "xpath_element" should exist
-    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should exist
-    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
+    And I visit "/local/staticpage/view.php?page=<page>"
+    Then I should see "This is the <page> test page"
 
-  Scenario: Check setting "Clean HTML code" with link tags in the HTML head
-    Given the following config values are set as admin:
-      | config    | value | plugin           |
-      | cleanhtml | 1     | local_staticpage |
-    When I log in as "admin"
-    And I navigate to "Static Pages" in site administration
-    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
-    And I press "Save changes"
-    And I visit "/local/staticpage/view.php?page=linktest"
-    Then "//head/link[@rel='stylesheet' and @href='linktest-safe.css' and @media='screen']" "xpath_element" should exist
-    And "//head/link[@href='linktest-onload.css']" "xpath_element" should exist
-    And "//head/link[@onload]" "xpath_element" should not exist
-    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
-    And "//head/link[@href='javascript:void(0)']" "xpath_element" should not exist
-    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should not exist
-    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
-
-  Scenario: Check if the page name is added as a body class
-    When I log in as "admin"
-    And I am on site homepage
-    And I turn editing mode on
-    And I add the "Text..." block
-    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
-    And I press "Save changes"
-    And I click on "Example Page" "link"
-    Then the "class" attribute of "body" "css_element" should contain "local-staticpage-example"
+    Examples:
+      | file                 | page            |
+      | renamehtm.htm        | renamehtm       |
+      | renamehtmupper.HTM   | renamehtmupper  |
+      | renamehtmlupper.HTML | renamehtmlupper |
 
   Scenario: Check if the static pages can be managed by non-admins with moodle/site:config
     Given the following "roles" exist:
@@ -282,6 +105,20 @@ Feature: Using static pages
     And I click on "Non-Admin Page" "link"
     Then I should see "This is the non-admin test page"
 
+  ################################################################################
+  # Delivery of static pages (independent of any setting)
+  ################################################################################
+
+  Scenario: Check if the page name is added as a body class
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then the "class" attribute of "body" "css_element" should contain "local-staticpage-example"
+
   Scenario Outline: Check if non-ASCII characters are rendered correctly regardless of the document's charset declaration
     Given the following config values are set as admin:
       | config                | value | plugin           |
@@ -302,19 +139,258 @@ Feature: Using static pages
       | encodingbom       |
       | encodingbogusmeta |
 
-  Scenario Outline: Check if documents with a .htm, .HTM or .HTML extension are renamed to .html
+  ################################################################################
+  # Settings "Data source of document title" and "Data source of document heading"
+  ################################################################################
+
+  Scenario: Check if h1 tag is used for the document title
+    Given the following config values are set as admin:
+      | config              | value | plugin           |
+      | documenttitlesource | 1     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then "//title[contains(text(),'This is a h1 heading')]" "xpath_element" should exist
+
+  Scenario: Check if title tag is used for the document title
+    Given the following config values are set as admin:
+      | config              | value | plugin           |
+      | documenttitlesource | 2     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then "//title[contains(text(),'This is a title')]" "xpath_element" should exist
+
+  Scenario: Check if h1 tag is used for the document heading
+    Given the following config values are set as admin:
+      | config                | value | plugin           |
+      | documentheadingsource | 1     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then I should see "This is a h1 heading" in the ".page-header-headings" "css_element"
+
+  Scenario: Check if title tag is used instead of first h1 for the document heading
+    Given the following config values are set as admin:
+      | config                | value | plugin           |
+      | documentheadingsource | 2     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then I should see "This is a title" in the ".page-header-headings" "css_element"
+
+  ################################################################################
+  # Setting "Force login"
+  ################################################################################
+
+  Scenario: Check that the page is only shown to users that are logged in.
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | forcelogin        | 1     | local_staticpage |
+    And the following config values are set as admin:
+      | config            | value                                                                     |
+      | auth_instructions | <p><a href="/local/staticpage/view.php?page=example">Example page</a></p> |
+    And the following "users" exist:
+      | username |
+      | student1 |
+    When I log in as "student1"
+    And I log out
+    And I click on "Log in" "link"
+    And I click on "Example page" "link"
+    Then I should see "You are not logged in"
+    And I should not see "Dies ist eine h2 Überschrift"
+
+  ################################################################################
+  # Setting "Process filters"
+  ################################################################################
+
+  Scenario: Check if multilang filters are processed
+    Given the following "language packs" exist:
+      | language |
+      | de       |
+    And the "multilang" filter is "on"
+    And the "multilang" filter applies to "content and headings"
+    And the following config values are set as admin:
+      | config         | value | plugin           |
+      | processfilters | 1     | local_staticpage |
+    And the following "users" exist:
+     | username | lang |
+     | student1 | de   |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I log out
+    And I log in as "student1"
+    And I am on site homepage
+    And I click on "Example Page" "link"
+    Then I should see "Dies ist eine h2 Überschrift"
+    And I should not see "This is a h2 heading"
+
+  # Counter check previous scenario
+  Scenario: Check if multilang filters are not processed
+    Given the following "language packs" exist:
+      | language |
+      | de       |
+    And the "multilang" filter is "on"
+    And the "multilang" filter applies to "content and headings"
+    And the following config values are set as admin:
+      | config         | value | plugin           |
+      | processfilters | 2     | local_staticpage |
+    And the following "users" exist:
+      | username | lang |
+      | student1 | de   |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I log out
+    And I log in as "student1"
+    And I am on site homepage
+    And I click on "Example Page" "link"
+    Then I should see "Dies ist eine h2 Überschrift"
+    And I should see "This is a h2 heading"
+
+  ################################################################################
+  # Setting "Clean HTML code"
+  ################################################################################
+
+  Scenario: Check setting "Don't clean HTML code"
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 2     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then "//div[@id='region-main']//div//iframe" "xpath_element" should exist
+
+  Scenario: Check setting "Clean HTML code"
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 1     | local_staticpage |
+    When I log in as "admin"
+    And I am on site homepage
+    And I turn editing mode on
+    And I add the "Text..." block
+    And I set the field "Content" to "<p><a href='/local/staticpage/view.php?page=example'>Example Page</a></p>"
+    And I press "Save changes"
+    And I click on "Example Page" "link"
+    Then "//div[@id='region-main']//div//iframe" "xpath_element" should not exist
+
+  ################################################################################
+  # Setting "Use style tag"
+  ################################################################################
+
+  Scenario: Check setting "Use style tag"
+    Given the following config values are set as admin:
+      | config   | value | plugin           |
+      | styletag | 1     | local_staticpage |
     When I log in as "admin"
     And I navigate to "Static Pages" in site administration
-    And I upload "local/staticpage/tests/fixtures/<file>" file to "Documents" filemanager
+    And I upload "local/staticpage/tests/fixtures/styletest.html" file to "Documents" filemanager
     And I press "Save changes"
-    And I visit "/local/staticpage/view.php?page=<page>"
-    Then I should see "This is the <page> test page"
+    And I visit "/local/staticpage/view.php?page=styletest"
+    Then "//head/style[contains(., 'h1.styletest')]" "xpath_element" should exist
 
-    Examples:
-      | file                 | page            |
-      | renamehtm.htm        | renamehtm       |
-      | renamehtmupper.HTM   | renamehtmupper  |
-      | renamehtmlupper.HTML | renamehtmlupper |
+  Scenario: Check setting "Don't use style tag"
+    Given the following config values are set as admin:
+      | config   | value | plugin           |
+      | styletag | 2     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/styletest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=styletest"
+    Then "//head/style[contains(., 'h1.styletest')]" "xpath_element" should not exist
+    And I should see "This is the style test page"
+
+  ################################################################################
+  # Setting "Use link tags"
+  ################################################################################
+
+  Scenario: Check setting "Use link tags as they are"
+    # The HTML code is cleaned to verify that this does not affect the link tags.
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 1     | local_staticpage |
+      | linktags  | 2     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=linktest"
+    Then "//head/link[@href='linktest-safe.css']" "xpath_element" should exist
+    And "//head/link[@href='linktest-onload.css' and @onload]" "xpath_element" should exist
+    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
+    And "//head/link[@href='javascript:void(0)']" "xpath_element" should exist
+    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should exist
+    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
+
+  Scenario: Check setting "Use link tags, but clean link tags"
+    # The HTML code is not cleaned to verify that this does not affect the link tags.
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 2     | local_staticpage |
+      | linktags  | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=linktest"
+    Then "//head/link[@rel='stylesheet' and @href='linktest-safe.css' and @media='screen']" "xpath_element" should exist
+    And "//head/link[@href='linktest-onload.css']" "xpath_element" should exist
+    And "//head/link[@onload]" "xpath_element" should not exist
+    And "//head/link[@rel='alternate stylesheet' and @href='linktest-alternate.css' and @title='Alternate']" "xpath_element" should exist
+    And "//head/link[@href='javascript:void(0)']" "xpath_element" should not exist
+    And "//head/link[@href='linktest-unknownrel.css']" "xpath_element" should not exist
+    And "//head/link[@href='linktest-body.css']" "xpath_element" should not exist
+
+  Scenario: Check setting "Don't use link tags"
+    Given the following config values are set as admin:
+      | config    | value | plugin           |
+      | cleanhtml | 2     | local_staticpage |
+      | linktags  | 3     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/linktest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I visit "/local/staticpage/view.php?page=linktest"
+    Then "//head/link[contains(@href, 'linktest-')]" "xpath_element" should not exist
+    And "//head/link[@href='javascript:void(0)']" "xpath_element" should not exist
+
+  ################################################################################
+  # Setting "Check availability" and "List of static pages"
+  ################################################################################
+
+    # This scenario falls into a timeout that might be caused by CURL, so its temporarily commented out.
+#  Scenario: Check if the uploaded page is listed under "List of static pages"
+#    When I log in as "admin"
+#    And I navigate to "List of static pages" in site administration
+#    Then I should see "example.html"
 
   Scenario Outline: Check if documents with an invalid pagename are marked as invalid in the list of static pages
     # The availability check is disabled as it might run into a timeout (see the commented out scenario above).

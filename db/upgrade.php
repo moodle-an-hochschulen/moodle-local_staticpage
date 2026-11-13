@@ -30,6 +30,10 @@ use core\output\html_writer;
  * @return boolean
  */
 function xmldb_local_staticpage_upgrade($oldversion) {
+    global $CFG;
+
+    // Require plugin library for the plugin's constants.
+    require_once($CFG->dirroot . '/local/staticpage/lib.php');
 
     // Fetch documents from documents directory and put them into the new documents filearea.
     if ($oldversion < 2016020309) {
@@ -82,6 +86,22 @@ function xmldb_local_staticpage_upgrade($oldversion) {
 
         // Remember upgrade savepoint.
         upgrade_plugin_savepoint(true, 2021120803, 'local', 'staticpage');
+    }
+
+    if ($oldversion < 2026100502) {
+        // The style tag and the link tags got their own settings which were previously controlled by the cleanhtml setting.
+        // Set these settings in a way that the static pages keep their existing behaviour.
+        // The style tag was used regardless of the cleanhtml setting.
+        set_config('styletag', STATICPAGE_STYLETAG_YES, 'local_staticpage');
+        // The link tags were passed on as they are if the HTML code should not be cleaned and cleaned otherwise.
+        if (get_config('local_staticpage', 'cleanhtml') == STATICPAGE_CLEANHTML_NO) {
+            set_config('linktags', STATICPAGE_LINKTAGS_ASIS, 'local_staticpage');
+        } else {
+            set_config('linktags', STATICPAGE_LINKTAGS_CLEAN, 'local_staticpage');
+        }
+
+        // Remember upgrade savepoint.
+        upgrade_plugin_savepoint(true, 2026100502, 'local', 'staticpage');
     }
 
     return true;
