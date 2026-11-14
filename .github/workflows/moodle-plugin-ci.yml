@@ -17,3 +17,6 @@ jobs:
     uses: moodle-an-hochschulen/moodle-workflows/.github/workflows/moodle-plugin-ci.yml@main
     with:
       moodle-core-branch: ${{ inputs.moodle-core-branch || github.event.client_payload.moodle-core-branch }}
+      # The availability check on the list of static pages lets the site make HTTP requests to its own wwwroot,
+      # which requires a Behat web server which can handle several requests in parallel.
+      behat-webserver-workers: 4

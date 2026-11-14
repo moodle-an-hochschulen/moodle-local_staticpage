@@ -39,6 +39,14 @@ function local_staticpage_check_availability($url) {
     // Require filelib for the Moodle cURL wrapper.
     require_once($CFG->libdir . '/filelib.php');
 
+    // If we are running a Behat test and the scenario asks for it, replace the URL with a URL which refuses the
+    // connection immediately. This allows the Behat tests to cover the connection error path of the availability check
+    // as the site's own URL can't be made unavailable on purpose otherwise.
+    // This config value has no admin setting and is only respected on the Behat test site.
+    if (defined('BEHAT_SITE_RUNNING') && get_config('local_staticpage', 'behat_checkavailabilityforceerror')) {
+        $url = 'http://127.0.0.1:1/';
+    }
+
     // Prepare cURL request.
     // We ignore the cURL security helper here as the URL is always built from $CFG->wwwroot and the
     // security helper's default blocklist (private IP ranges, localhost, non-web ports) would otherwise

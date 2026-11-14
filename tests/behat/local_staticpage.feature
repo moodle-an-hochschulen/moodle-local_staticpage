@@ -386,14 +386,74 @@ Feature: Using static pages
   # Setting "Check availability" and "List of static pages"
   ################################################################################
 
-    # This scenario falls into a timeout that might be caused by CURL, so its temporarily commented out.
-#  Scenario: Check if the uploaded page is listed under "List of static pages"
-#    When I log in as "admin"
-#    And I navigate to "List of static pages" in site administration
-#    Then I should see "example.html"
+  # The scenarios with the availability check enabled let the Moodle site make HTTP requests to its own wwwroot while
+  # it renders the list of static pages. This requires a webserver which can handle several requests in parallel.
+  # The PHP built-in web server which is used by moodle-plugin-ci handles only one request at a time by default, the
+  # requests then run into their timeout. Therefore, the GitHub workflow of this plugin sets behat-webserver-workers.
+  # Furthermore, these scenarios expect that the clean URLs are not available as neither the PHP built-in web server
+  # nor a standard Apache webserver are configured with the rewrite rule for the clean URLs.
 
-  Scenario: Check if the URLs of a document are listed with their availability status in the list of static pages
-    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+  Scenario: Check if the availability of the URLs of a document is checked in the list of static pages
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "List of static pages" in site administration
+    Then I should see "example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'card-header')]" "xpath_element"
+    And I should see "Standard URL" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "Available" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge')]" "xpath_element"
+    And "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge') and contains(@class, 'text-bg-success')]" "xpath_element" should exist
+    And I should see "/local/staticpage/view.php?page=example" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "The static page is available and can be linked to at this URL." in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "Clean URL" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "Not available - Non-2xx" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]//*[contains(@class, 'badge')]" "xpath_element"
+    And "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]//*[contains(@class, 'badge') and contains(@class, 'text-bg-warning')]" "xpath_element" should exist
+    And I should see "/static/example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "due to a non-2xx HTTP status code. Perhaps there is something wrong with your webserver or mod_rewrite configuration." in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+
+  Scenario: Check if a non-2xx response of the availability check does not skip the checks of the remaining documents
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/styletest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I navigate to "List of static pages" in site administration
+    # The clean URL of example.html is checked before the URLs of styletest.html and is not available (see above).
+    Then I should see "Not available - Non-2xx" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "Available" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge')]" "xpath_element"
+    And "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge') and contains(@class, 'text-bg-success')]" "xpath_element" should exist
+    And I should see "/local/staticpage/view.php?page=styletest" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "Not available - Non-2xx" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should not see "Not checked" in the "#region-main" "css_element"
+
+  Scenario: Check if a connection error of the availability check skips the checks of the remaining URLs
+    # The behat_checkavailabilityforceerror config value is only respected on the Behat test site.
+    # It lets each availability check run against a URL which refuses the connection.
+    Given the following config values are set as admin:
+      | config                            | value | plugin           |
+      | checkavailability                 | 1     | local_staticpage |
+      | behat_checkavailabilityforceerror | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "Static Pages" in site administration
+    And I upload "local/staticpage/tests/fixtures/styletest.html" file to "Documents" filemanager
+    And I press "Save changes"
+    And I navigate to "List of static pages" in site administration
+    # The standard URL of example.html is the first URL which is checked.
+    Then I should see "Not available - Error" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge')]" "xpath_element"
+    And "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge') and contains(@class, 'text-bg-danger')]" "xpath_element" should exist
+    And I should see "either because of a connection error or because the webserver responds slower than the configured timeout. Perhaps there is something wrong with your webserver configuration." in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    # All remaining URLs are skipped.
+    And I should see "Not checked - Skipped" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]//*[contains(@class, 'badge')]" "xpath_element"
+    And "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]//*[contains(@class, 'badge') and contains(@class, 'text-bg-secondary')]" "xpath_element" should exist
+    And I should see "already failed with a connection error or a timeout" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "Not checked - Skipped" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][1]//*[contains(@class, 'badge')]" "xpath_element"
+    And I should see "Not checked - Skipped" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][2]//*[contains(@class, 'badge')]" "xpath_element"
+    And I should see "/local/staticpage/view.php?page=styletest" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "/static/styletest.html" in the "//*[@id='region-main']//li[contains(., 'styletest.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+
+  Scenario: Check if the URLs of a document are listed with their availability status in the list of static pages if the availability check is disabled
     Given the following config values are set as admin:
       | config            | value | plugin           |
       | checkavailability | 2     | local_staticpage |
@@ -411,7 +471,7 @@ Feature: Using static pages
     And I should not see "Invalid pagename" in the "#region-main" "css_element"
 
   Scenario: Check if only the clean URL of a document is listed in the list of static pages if Apache mod_rewrite is forced
-    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+    # The availability check is disabled as it is not needed for this scenario.
     Given the following config values are set as admin:
       | config            | value | plugin           |
       | checkavailability | 2     | local_staticpage |
@@ -424,7 +484,7 @@ Feature: Using static pages
     And I should see "/static/example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
 
   Scenario Outline: Check if documents with an invalid pagename are marked as invalid in the list of static pages
-    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+    # The availability check is disabled as it is not needed for this scenario.
     Given the following config values are set as admin:
       | config            | value | plugin           |
       | checkavailability | 2     | local_staticpage |
