@@ -392,6 +392,37 @@ Feature: Using static pages
 #    And I navigate to "List of static pages" in site administration
 #    Then I should see "example.html"
 
+  Scenario: Check if the URLs of a document are listed with their availability status in the list of static pages
+    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 2     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "List of static pages" in site administration
+    Then I should see "example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'card-header')]" "xpath_element"
+    And I should see "Standard URL" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "Not checked" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "/local/staticpage/view.php?page=example" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "checking availability is disabled" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][1]" "xpath_element"
+    And I should see "Clean URL" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "Not checked" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "/static/example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should see "checking availability is disabled" in the "//*[@id='region-main']//li[contains(., 'example.html')]//*[contains(@class, 'list-group-item')][2]" "xpath_element"
+    And I should not see "Invalid pagename" in the "#region-main" "css_element"
+
+  Scenario: Check if only the clean URL of a document is listed in the list of static pages if Apache mod_rewrite is forced
+    # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 2     | local_staticpage |
+      | apacherewrite     | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "List of static pages" in site administration
+    Then I should not see "Standard URL" in the "#region-main" "css_element"
+    And I should not see "/local/staticpage/view.php?page=example" in the "#region-main" "css_element"
+    And I should see "Clean URL" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
+    And I should see "/static/example.html" in the "//*[@id='region-main']//li[contains(., 'example.html')]" "xpath_element"
+
   Scenario Outline: Check if documents with an invalid pagename are marked as invalid in the list of static pages
     # The availability check is disabled as it might run into a timeout (see the commented out scenario above).
     Given the following config values are set as admin:
