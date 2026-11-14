@@ -25,6 +25,7 @@
       * pagename - The pagename which is derived from the filename.
       * invalid - If the pagename contains characters which are not supported in pagenames.
       * urls - The list of URLs of the static page (empty if the pagename is invalid), each with:
+        * type - The URL type (standard or rewrite).
         * label - The label of the URL type.
         * url - The URL.
         * status - The label of the availability check result.
@@ -40,6 +41,7 @@
                 "invalid": false,
                 "urls": [
                     {
+                        "type": "standard",
                         "label": "Standard URL",
                         "url": "https://moodle.example.com/local/staticpage/view.php?page=example",
                         "status": "Available",
@@ -47,6 +49,7 @@
                         "description": "The static page is available and can be linked to at this URL."
                     },
                     {
+                        "type": "rewrite",
                         "label": "Clean URL",
                         "url": "https://moodle.example.com/static/example.html",
                         "status": "Not available - Non-2xx",
@@ -66,7 +69,7 @@
 }}
 <ul class="list-unstyled local_staticpage-pagelist">
     {{#pages}}
-    <li class="card mb-5 {{#invalid}}border-danger{{/invalid}}{{^invalid}}border-secondary{{/invalid}}">
+    <li data-filename="{{filename}}" class="card mb-5 {{#invalid}}border-danger{{/invalid}}{{^invalid}}border-secondary{{/invalid}}">
         <div class="card-header d-flex align-items-center gap-2">
             <span class="icon-size-5">{{#pix}} f/markup, core {{/pix}}</span>
             <div class="text-break">
@@ -85,7 +88,7 @@
         {{^invalid}}
         <div class="list-group list-group-flush">
             {{#urls}}
-            <div class="list-group-item">
+            <div data-urltype="{{type}}" class="list-group-item">
                 <div class="d-flex align-items-center gap-2 mb-1">
                     <span class="fw-bold">{{label}}</span>
                     <span class="badge {{badgeclass}} ms-auto">{{status}}</span>
