@@ -383,6 +383,35 @@ Feature: Using static pages
     And "//head/link[@href='javascript:void(0)']" "xpath_element" should not exist
 
   ################################################################################
+  # Setting "Force Apache mod_rewrite"
+  ################################################################################
+
+  # These scenarios only check the redirect which the plugin itself sends to the canonical clean URL.
+  # They do not check if the static page is delivered at the clean URL as this depends on the rewrite rule in the
+  # webserver configuration which is neither present in the PHP built-in web server nor in a standard Apache webserver.
+
+  Scenario: Check if the static page is delivered at the standard URL if Apache mod_rewrite is not forced
+    Given the following config values are set as admin:
+      | config        | value | plugin           |
+      | apacherewrite | 0     | local_staticpage |
+    When I visit "/local/staticpage/view.php?page=example"
+    Then the url should match "/local/staticpage/view\.php\?page=example$"
+    And I should see "Lorem ipsum dolor sit amet"
+
+  Scenario Outline: Check if the standard URL is redirected to the canonical clean URL if Apache mod_rewrite is forced
+    Given the following config values are set as admin:
+      | config        | value | plugin           |
+      | apacherewrite | 1     | local_staticpage |
+    When I visit "<url>"
+    Then the url should match "/static/example\.html$"
+
+    Examples:
+      | url                                                         |
+      | /local/staticpage/view.php?page=example                     |
+      | /local/staticpage/view.php?page=example&foo=bar             |
+      | /local/staticpage/view.php/static/example.html?page=example |
+
+  ################################################################################
   # Setting "Check availability" and "List of static pages"
   ################################################################################
 
@@ -390,8 +419,12 @@ Feature: Using static pages
   # it renders the list of static pages. This requires a webserver which can handle several requests in parallel.
   # The PHP built-in web server which is used by moodle-plugin-ci handles only one request at a time by default, the
   # requests then run into their timeout. Therefore, the GitHub workflow of this plugin sets behat-webserver-workers.
-  # Furthermore, these scenarios expect that the clean URLs are not available as neither the PHP built-in web server
-  # nor a standard Apache webserver are configured with the rewrite rule for the clean URLs.
+  # The scenarios do not check the availability result of the clean URLs as it depends on the webserver: A standard
+  # Apache webserver without the rewrite rule for the clean URLs returns HTTP 404, but the PHP built-in web server falls
+  # back to Moodle's index.php for missing files and thus returns the frontpage with HTTP 200.
+  # The non-2xx path and the connection error path of the availability check are covered with config values which
+  # are only respected on the Behat test site and which let the availability check run against a URL which returns
+  # HTTP 404 on every webserver or which refuses the connection.
 
   Scenario: Check if the availability of the URLs of a document is checked in the list of static pages
     Given the following config values are set as admin:
@@ -406,10 +439,7 @@ Feature: Using static pages
     And I should see "/local/staticpage/view.php?page=example" in the "#region-main li[data-filename='example.html'] [data-urltype='standard']" "css_element"
     And I should see "The static page is available and can be linked to at this URL." in the "#region-main li[data-filename='example.html'] [data-urltype='standard']" "css_element"
     And I should see "Clean URL" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
-    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge" "css_element"
-    And "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge.text-bg-warning" "css_element" should exist
     And I should see "/static/example.html" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
-    And I should see "due to a non-2xx HTTP status code. Perhaps there is something wrong with your webserver or mod_rewrite configuration." in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
 
   Scenario: Check if the availability check reports that a login is required if force login is enabled for static pages
     Given the following config values are set as admin:
@@ -423,24 +453,28 @@ Feature: Using static pages
     And "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge.text-bg-info" "css_element" should exist
     And "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge.text-bg-success" "css_element" should not exist
     And I should see "to logged in users only because force login is enabled for static pages" in the "#region-main li[data-filename='example.html'] [data-urltype='standard']" "css_element"
-    # The clean URL is not available at all, regardless of the force login setting.
-    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge" "css_element"
 
-  Scenario: Check if a non-2xx response of the availability check does not skip the checks of the remaining documents
+  Scenario: Check if a non-2xx response of the availability check does not skip the checks of the remaining URLs
+    # The behat_checkavailabilityforcefail config value is only respected on the Behat test site.
+    # It lets each availability check run against a URL which returns HTTP 404.
     Given the following config values are set as admin:
-      | config            | value | plugin           |
-      | checkavailability | 1     | local_staticpage |
+      | config                           | value | plugin           |
+      | checkavailability                | 1     | local_staticpage |
+      | behat_checkavailabilityforcefail | 1     | local_staticpage |
     When I log in as "admin"
     And I navigate to "Static Pages" in site administration
     And I upload "local/staticpage/tests/fixtures/styletest.html" file to "Documents" filemanager
     And I press "Save changes"
     And I navigate to "List of static pages" in site administration
-    # The clean URL of example.html is checked before the URLs of styletest.html and is not available (see above).
-    Then I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
-    And I should see "Available" in the "#region-main li[data-filename='styletest.html'] [data-urltype='standard'] .badge" "css_element"
-    And "#region-main li[data-filename='styletest.html'] [data-urltype='standard'] .badge.text-bg-success" "css_element" should exist
-    And I should see "/local/staticpage/view.php?page=styletest" in the "#region-main li[data-filename='styletest.html'] [data-urltype='standard']" "css_element"
-    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='styletest.html'] [data-urltype='rewrite']" "css_element"
+    Then I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge" "css_element"
+    And "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge.text-bg-danger" "css_element" should exist
+    And I should see "due to a non-2xx HTTP status code. Perhaps there is something wrong with your webserver configuration." in the "#region-main li[data-filename='example.html'] [data-urltype='standard']" "css_element"
+    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge" "css_element"
+    And "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge.text-bg-warning" "css_element" should exist
+    And I should see "due to a non-2xx HTTP status code. Perhaps there is something wrong with your webserver or mod_rewrite configuration." in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
+    # All remaining URLs are checked as well.
+    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='styletest.html'] [data-urltype='standard'] .badge" "css_element"
+    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='styletest.html'] [data-urltype='rewrite'] .badge" "css_element"
     And I should not see "Not checked" in the "#region-main" "css_element"
 
   Scenario: Check if a connection error of the availability check skips the checks of the remaining URLs
