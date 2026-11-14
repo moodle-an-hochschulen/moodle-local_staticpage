@@ -98,14 +98,18 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         'standard' => [
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'text-bg-success',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'text-bg-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'text-bg-danger',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'text-bg-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'text-bg-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'text-bg-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'text-bg-secondary',
         ],
         'rewrite' => [
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'text-bg-success',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'text-bg-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'text-bg-warning',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'text-bg-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'text-bg-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'text-bg-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'text-bg-secondary',
         ],
