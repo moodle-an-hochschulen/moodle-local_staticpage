@@ -23,6 +23,23 @@
  */
 
 /**
+ * Check if a login is required to view the static pages.
+ *
+ * This is the case if the plugin is configured to force login or if it is configured to respect Moodle's global
+ * forcelogin setting and this setting is enabled.
+ *
+ * @return bool
+ */
+function local_staticpage_is_login_required(): bool {
+    global $CFG;
+
+    $forcelogin = get_config('local_staticpage', 'forcelogin');
+
+    return $forcelogin == STATICPAGE_FORCELOGIN_YES ||
+            ($forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && !empty($CFG->forcelogin));
+}
+
+/**
  * Check if static page is available and downloadable on given URL
  *
  * @param string $url Static page URL
@@ -65,6 +82,7 @@ function local_staticpage_check_availability($url) {
     // We use a GET request instead of a HEAD request here even though we are not interested in the response body.
     // The reason is that the Moodle cURL wrapper does only follow HTTP 303 redirects for GET requests and
     // Moodle's redirect() function (which is used by require_login() for example) sends HTTP 303 redirects.
+    // The redirects have to be followed to be able to tell where the request finally ends (see below).
     $curl->get($url, null, $options);
 
     // Check cURL result and return if there was a general problem.
@@ -76,14 +94,32 @@ function local_staticpage_check_availability($url) {
     $info = $curl->get_info();
     $code = isset($info['http_code']) ? (int) $info['http_code'] : 0;
 
-    // Return a success if the static page was available (HTTP 200).
-    if ($code >= 200 && $code < 300) {
-        return STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS;
-
-        // Otherwise return a failure.
-    } else {
+    // Return a failure if the request did not end with a 2xx HTTP status code.
+    if ($code < 200 || $code >= 300) {
         return STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL;
     }
+
+    // The request followed all redirects, so a 2xx HTTP status code alone does not prove that the static page itself
+    // was delivered. Thus, compare the URL which was finally delivered with the requested URL (ignoring the query
+    // string). The list of static pages only checks URLs which deliver the static page without any redirect.
+    $requestedurl = new \moodle_url($url);
+    $finalurl = new \moodle_url($info['url'] ?? '');
+
+    // Return a success if the static page itself was delivered.
+    if ($finalurl->compare($requestedurl, URL_MATCH_BASE)) {
+        return STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS;
+    }
+
+    // Otherwise, the request was redirected to another page.
+    // As the request is sent without a session, this is expected if view.php requires a login. In this case, the
+    // request ends on the login page (or on an alternate login URL or a SSO page) and the static page is fine,
+    // but it is not available for visitors who are not logged in.
+    if (local_staticpage_is_login_required()) {
+        return STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN;
+    }
+
+    // In all other cases, the redirect is unexpected and the static page is not delivered at this URL.
+    return STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT;
 }
 
 /**
