@@ -57,11 +57,18 @@ function local_staticpage_check_availability($url) {
     require_once($CFG->libdir . '/filelib.php');
 
     // If we are running a Behat test and the scenario asks for it, replace the URL with a URL which refuses the
-    // connection immediately. This allows the Behat tests to cover the connection error path of the availability check
-    // as the site's own URL can't be made unavailable on purpose otherwise.
-    // This config value has no admin setting and is only respected on the Behat test site.
-    if (defined('BEHAT_SITE_RUNNING') && get_config('local_staticpage', 'behat_checkavailabilityforceerror')) {
-        $url = 'http://127.0.0.1:1/';
+    // connection immediately or with a URL on this site which returns HTTP 404 on every webserver.
+    // This allows the Behat tests to cover the connection error path and the non-2xx path of the availability check
+    // as the site's own URLs can't be made unavailable on purpose otherwise. Missing files can't be used for the
+    // non-2xx path as the PHP built-in web server which is used for Behat in CI falls back to index.php for them.
+    // These config values have no admin setting and are only respected on the Behat test site.
+    if (defined('BEHAT_SITE_RUNNING')) {
+        if (get_config('local_staticpage', 'behat_checkavailabilityforceerror')) {
+            $url = 'http://127.0.0.1:1/';
+        } else if (get_config('local_staticpage', 'behat_checkavailabilityforcefail')) {
+            $url = $CFG->wwwroot . '/pluginfile.php/' . \context_system::instance()->id .
+                    '/local_staticpage/behat/doesnotexist.html';
+        }
     }
 
     // Prepare cURL request.
