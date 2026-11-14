@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-15 - Tests: Cover the non-2xx path and the connection error path of the availability check with config values which are only respected on the Behat test site, as the result for the clean URLs depends on the webserver, and add Behat scenarios for the redirect to the canonical clean URL if Apache mod_rewrite is forced.
 * 2026-11-14 - Improvement: Show a distinct 'Login required' status on the list of static pages if the availability check is redirected to the login page because force login is enabled for static pages and a distinct 'Not available - Redirected' status if it is redirected to any other page, instead of reporting the URL as 'Available' as soon as any page was delivered after following the redirects.
 * 2026-11-14 - Tests: Enable the Behat scenarios for the availability check on the list of static pages again and let the PHP web server in Github actions run with several workers, so that the site can reach its own URL during the Behat run.
 * 2026-11-13 - Improvement: Show the list of static pages as Bootstrap cards which are rendered with a Mustache template, with a compact status badge and a short explanation for each URL.
