@@ -1,0 +1,101 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template local_staticpage/pagelist
+
+    Local plugin "staticpage" - List of static pages.
+
+    Context variables required for this template:
+    * pages - The list of static page documents, each with:
+      * filename - The filename of the document.
+      * pagename - The pagename which is derived from the filename.
+      * invalid - If the pagename contains characters which are not supported in pagenames.
+      * urls - The list of URLs of the static page (empty if the pagename is invalid), each with:
+        * label - The label of the URL type.
+        * url - The URL.
+        * status - The label of the availability check result.
+        * badgeclass - The CSS classes of the availability check result badge.
+        * description - The explanation of the availability check result.
+
+    Example context (json):
+    {
+        "pages": [
+            {
+                "filename": "example.html",
+                "pagename": "example",
+                "invalid": false,
+                "urls": [
+                    {
+                        "label": "Standard URL",
+                        "url": "https://moodle.example.com/local/staticpage/view.php?page=example",
+                        "status": "Available",
+                        "badgeclass": "text-bg-success",
+                        "description": "The static page is available and can be linked to at this URL."
+                    },
+                    {
+                        "label": "Clean URL",
+                        "url": "https://moodle.example.com/static/example.html",
+                        "status": "Not available - Non-2xx",
+                        "badgeclass": "text-bg-warning",
+                        "description": "A browser won't be able to download and view the static page at this URL."
+                    }
+                ]
+            },
+            {
+                "filename": "invalid pagename.html",
+                "pagename": "invalid pagename",
+                "invalid": true,
+                "urls": []
+            }
+        ]
+    }
+}}
+<ul class="list-unstyled local_staticpage-pagelist">
+    {{#pages}}
+    <li class="card mb-5 {{#invalid}}border-danger{{/invalid}}{{^invalid}}border-secondary{{/invalid}}">
+        <div class="card-header d-flex align-items-center gap-2">
+            <span class="icon-size-5">{{#pix}} f/markup, core {{/pix}}</span>
+            <div class="text-break">
+                <h3 class="fs-6 fw-bold mb-0">{{filename}}</h3>
+                <div class="font-monospace">{{pagename}}</div>
+            </div>
+            {{#invalid}}
+            <span class="badge text-bg-danger ms-auto">{{#str}} settingspagelistentryinvalidpagenamebadge, local_staticpage {{/str}}</span>
+            {{/invalid}}
+        </div>
+        {{#invalid}}
+        <div class="card-body">
+            <div class="alert alert-danger mb-0">{{#str}} settingspagelistinvalidpagename, local_staticpage {{/str}}</div>
+        </div>
+        {{/invalid}}
+        {{^invalid}}
+        <div class="list-group list-group-flush">
+            {{#urls}}
+            <div class="list-group-item">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="fw-bold">{{label}}</span>
+                    <span class="badge {{badgeclass}} ms-auto">{{status}}</span>
+                </div>
+                <a href="{{url}}" class="d-block text-break font-monospace">{{url}}</a>
+                <div class="small text-body-secondary mt-1">{{description}}</div>
+            </div>
+            {{/urls}}
+        </div>
+        {{/invalid}}
+    </li>
+    {{/pages}}
+</ul>
