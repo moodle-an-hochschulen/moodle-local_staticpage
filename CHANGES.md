@@ -6,6 +6,7 @@ Changes
 
 ### Unreleased
 
+* 2026-11-14 - Tests: Enable the Behat scenarios for the availability check on the list of static pages again and let the PHP web server in Github actions run with several workers, so that the site can reach its own URL during the Behat run.
 * 2026-11-13 - Improvement: Show the list of static pages as Bootstrap cards which are rendered with a Mustache template, with a compact status badge and a short explanation for each URL.
 * 2026-11-13 - Improvement: Remove the duplicate heading on the 'list of static pages' page
 * 2026-11-13 - Improvement: Skip the remaining availability checks on the list of static pages as soon as one check fails with a connection error or a timeout, as the site most probably can't reach its own URL at all in this case and each further check would just wait for the timeout again.

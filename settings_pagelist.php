@@ -161,6 +161,7 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             }
 
             $templatepage['urls'][] = [
+                'type' => $urltype,
                 'label' => get_string('settingspagelisturl' . $urltype, 'local_staticpage'),
                 'url' => $pageurl,
                 'status' => get_string('checkavailabilityresponse' . $pageurlavailable, 'local_staticpage'),
