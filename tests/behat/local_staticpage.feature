@@ -408,6 +408,21 @@ Feature: Using static pages
     And I should see "/static/example.html" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
     And I should see "due to a non-2xx HTTP status code. Perhaps there is something wrong with your webserver or mod_rewrite configuration." in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite']" "css_element"
 
+  Scenario: Check if the availability check reports that a login is required if force login is enabled for static pages
+    Given the following config values are set as admin:
+      | config            | value | plugin           |
+      | checkavailability | 1     | local_staticpage |
+      | forcelogin        | 1     | local_staticpage |
+    When I log in as "admin"
+    And I navigate to "List of static pages" in site administration
+    # The availability check is sent without a session and is redirected to the login page which returns HTTP 200.
+    Then I should see "Login required" in the "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge" "css_element"
+    And "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge.badge-info" "css_element" should exist
+    And "#region-main li[data-filename='example.html'] [data-urltype='standard'] .badge.badge-success" "css_element" should not exist
+    And I should see "to logged in users only because force login is enabled for static pages" in the "#region-main li[data-filename='example.html'] [data-urltype='standard']" "css_element"
+    # The clean URL is not available at all, regardless of the force login setting.
+    And I should see "Not available - Non-2xx" in the "#region-main li[data-filename='example.html'] [data-urltype='rewrite'] .badge" "css_element"
+
   Scenario: Check if a non-2xx response of the availability check does not skip the checks of the remaining documents
     Given the following config values are set as admin:
       | config            | value | plugin           |

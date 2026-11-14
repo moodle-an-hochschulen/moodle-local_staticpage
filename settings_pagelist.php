@@ -98,14 +98,18 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         'standard' => [
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'badge-danger',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'badge-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'badge-secondary',
         ],
         'rewrite' => [
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'badge-success',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'badge-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'badge-warning',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'badge-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'badge-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'badge-info',
             STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'badge-secondary',
         ],
