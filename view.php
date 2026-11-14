@@ -41,10 +41,7 @@ require_once($CFG->dirroot . '/local/staticpage/locallib.php');
 $localstaticpageconfig = get_config('local_staticpage');
 
 // Require login if the plugin or Moodle is configured to force login.
-if (
-    $localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_YES ||
-        ($localstaticpageconfig->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)
-) {
+if (local_staticpage_is_login_required()) {
     require_login();
 }
 
