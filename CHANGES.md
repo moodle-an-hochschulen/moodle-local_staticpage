@@ -4,6 +4,21 @@ moodle-local_staticpage
 Changes
 -------
 
+### Unreleased
+
+* 2026-11-15 - Tests: Cover the non-2xx path and the connection error path of the availability check with config values which are only respected on the Behat test site, as the result for the clean URLs depends on the webserver, and add Behat scenarios for the redirect to the canonical clean URL if Apache mod_rewrite is forced.
+* 2026-11-14 - Improvement: Show a distinct 'Login required' status on the list of static pages if the availability check is redirected to the login page because force login is enabled for static pages and a distinct 'Not available - Redirected' status if it is redirected to any other page, instead of reporting the URL as 'Available' as soon as any page was delivered after following the redirects.
+* 2026-11-14 - Tests: Enable the Behat scenarios for the availability check on the list of static pages again and let the PHP web server in Github actions run with several workers, so that the site can reach its own URL during the Behat run.
+* 2026-11-13 - Improvement: Show the list of static pages as Bootstrap cards which are rendered with a Mustache template, with a compact status badge and a short explanation for each URL.
+* 2026-11-13 - Improvement: Remove the duplicate heading on the 'list of static pages' page
+* 2026-11-13 - Improvement: Skip the remaining availability checks on the list of static pages as soon as one check fails with a connection error or a timeout, as the site most probably can't reach its own URL at all in this case and each further check would just wait for the timeout again.
+* 2026-11-13 - Improvement: Use a default of 5 seconds for the 'Connect timeout' and 10 seconds for the 'Timeout' setting of the availability check instead of 0 which let the list of static pages hang for a long time if the site can't reach its own URL.\
+               Please note: On existing installations, a value of 0 in these settings is replaced with the new defaults during the upgrade.
+* 2026-11-13 - Improvement: Add separate settings to control if the <style> tag and the <link> tags in the <head> element of the static page documents are used, the 'Clean HTML code' setting does now only apply to the page content. Existing installations keep their previous rendering behaviour.
+* 2026-11-12 - Improvement: Show a warning instead of non-working URLs on the list of static pages for documents whose filename contains characters which are not supported in pagenames (e.g. spaces or umlauts).
+* 2026-11-12 - Cleanup: Escape the document filename, the pagename and the URLs explicitly on the list of static pages, even though the file storage already cleans all filenames.
+* 2026-11-12 - Cleanup: Remove the unused $todelete array and a redundant check of the directory handle from the legacy upgrade step 2016020309.
+
 ### v5.3-r2
 
 * 2026-11-01 - Improvement: If the 'Force Apache mod_rewrite' setting is enabled, check the path of the requested URL strictly against the canonical /static/<page>.html URL and redirect all other requests to this URL instead of only looking for /static/ anywhere in the URL and showing a blank page otherwise.

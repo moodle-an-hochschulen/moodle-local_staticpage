@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use core\output\html_writer;
-
 // Include config.php.
 require(__DIR__ . '/../../config.php');
 
@@ -47,7 +45,6 @@ $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($title);
 
 
 // Initialize HTML output.
@@ -82,16 +79,44 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
         'alert alert-info'
     );
 
-    // Start page list.
-    $html .= html_writer::start_tag('ul');
-
     // Fetch all files.
     $pages = $fs->get_area_files($context->id, 'local_staticpage', 'documents', false, 'filename', false);
 
     // Get plugin config.
     $localstaticpageconfig = get_config('local_staticpage');
 
-    // Output each page as a page list entry.
+    // Remember if an availability check failed with a connection error or a timeout.
+    // In this case, the site most probably can't reach its own URL at all (e.g. because of a firewall, DNS or
+    // hairpin NAT issue) and each further check would just wait for the timeout again.
+    // Thus, the remaining checks are skipped to prevent this list from loading for a long time.
+    $checkavailabilityconnectionerror = false;
+
+    // Map the availability check results to badge classes.
+    // A non-working clean URL is only shown as a warning as the static page can still be delivered at the standard URL
+    // if Apache mod_rewrite isn't forced.
+    $badgeclasses = [
+        'standard' => [
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'text-bg-success',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'text-bg-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'text-bg-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'text-bg-danger',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'text-bg-info',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'text-bg-info',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'text-bg-secondary',
+        ],
+        'rewrite' => [
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'text-bg-success',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'text-bg-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_REDIRECT => 'text-bg-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'text-bg-warning',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_LOGIN => 'text-bg-info',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'text-bg-info',
+            STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED => 'text-bg-secondary',
+        ],
+    ];
+
+    // Collect the page list entries.
+    $templatepages = [];
     foreach ($pages as $page) {
         // Collect information about the page.
         $pagefilename = $page->get_filename();
@@ -103,79 +128,61 @@ if ($fs->is_area_empty($context->id, 'local_staticpage', 'documents')) {
             continue;
         }
 
-        // Start page list entry.
-        $html .= html_writer::start_tag('li');
+        // Compose the page list entry.
+        // The filename and the pagename are escaped by the template even though the file storage
+        // cleans all filenames with PARAM_FILE already.
+        $templatepage = [
+            'filename' => $pagefilename,
+            'pagename' => $pagepagename,
+            'invalid' => false,
+            'urls' => [],
+        ];
 
-        // Print basic information about the page.
-        $html .= html_writer::tag('p', get_string('settingspagelistentryfilename', 'local_staticpage', $pagefilename));
-        $html .= html_writer::tag('p', get_string('settingspagelistentrypagename', 'local_staticpage', $pagepagename));
-
-        // Print normal static page URL - Do only if apache rewrite isn't forced.
-        if (!$localstaticpageconfig->apacherewrite) {
-            // Check availability.
-            $pageurlstandard = rtrim($CFG->wwwroot, '/') . '/local/staticpage/view.php?page=' . $pagepagename;
-            $pageurlstandardavailable = local_staticpage_check_availability($pageurlstandard);
-
-            // Show if document is available.
-            $statusbadgevariant = strtr(
-                $pageurlstandardavailable,
-                [
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'bg-success text-light',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-danger text-light',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-danger text-light',
-                    STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
-                ]
-            );
-            $html .= html_writer::tag(
-                'p',
-                get_string(
-                    'settingspagelistentrystandard' . $pageurlstandardavailable,
-                    'local_staticpage',
-                    html_writer::tag(
-                        'span',
-                        get_string('checkavailabilityresponse' . $pageurlstandardavailable, 'local_staticpage'),
-                        ['class' => 'badge me-2 ' . $statusbadgevariant]
-                    ) .
-                            html_writer::link($pageurlstandard, $pageurlstandard)
-                )
-            );
+        // If the pagename would be rejected by view.php, show a warning instead of URLs which would not work anyway.
+        if (clean_param($pagepagename, PARAM_ALPHANUMEXT) !== $pagepagename) {
+            $templatepage['invalid'] = true;
+            $templatepages[] = $templatepage;
+            continue;
         }
 
-        // Print rewritten static page URL.
-        // Check availability.
-        $pageurlrewrite = rtrim($CFG->wwwroot, '/') . '/static/' . $pagepagename . '.html';
-        $pageurlrewriteavailable = local_staticpage_check_availability($pageurlrewrite);
+        // Compose the URLs of the page.
+        $pageurls = [];
+        // The standard URL is only used if Apache mod_rewrite isn't forced.
+        if (!$localstaticpageconfig->apacherewrite) {
+            $pageurls['standard'] = rtrim($CFG->wwwroot, '/') . '/local/staticpage/view.php?page=' . $pagepagename;
+        }
+        $pageurls['rewrite'] = rtrim($CFG->wwwroot, '/') . '/static/' . $pagepagename . '.html';
 
-        // Show if document is available.
-        $statusbadgevariant = strtr(
-            $pageurlrewriteavailable,
-            [
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_SUCCESS => 'bg-success text-light',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_FAIL => 'bg-warning text-dark',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR => 'bg-warning text-dark',
-                STATICPAGE_CHECKAVAILABILITY_RESPONSE_DISABLED => 'bg-info text-dark',
-            ]
-        );
-        $html .= html_writer::tag(
-            'p',
-            get_string(
-                'settingspagelistentryrewrite' . $pageurlrewriteavailable,
-                'local_staticpage',
-                html_writer::tag(
-                    'span',
-                    get_string('checkavailabilityresponse' . $pageurlrewriteavailable, 'local_staticpage'),
-                    ['class' => 'badge me-2 ' . $statusbadgevariant]
-                ) .
-                        html_writer::link($pageurlrewrite, $pageurlrewrite)
-            )
-        );
+        // Check the availability of each URL.
+        foreach ($pageurls as $urltype => $pageurl) {
+            if ($checkavailabilityconnectionerror) {
+                $pageurlavailable = STATICPAGE_CHECKAVAILABILITY_RESPONSE_SKIPPED;
+            } else {
+                $pageurlavailable = local_staticpage_check_availability($pageurl);
+                if ($pageurlavailable == STATICPAGE_CHECKAVAILABILITY_RESPONSE_ERROR) {
+                    $checkavailabilityconnectionerror = true;
+                }
+            }
 
-        // Finish page list entry.
-        $html .= html_writer::end_tag('li');
+            $templatepage['urls'][] = [
+                'type' => $urltype,
+                'label' => get_string('settingspagelisturl' . $urltype, 'local_staticpage'),
+                'url' => $pageurl,
+                'status' => get_string('checkavailabilityresponse' . $pageurlavailable, 'local_staticpage'),
+                'badgeclass' => $badgeclasses[$urltype][$pageurlavailable],
+                'description' => get_string(
+                    'settingspagelistcheck' . $pageurlavailable,
+                    'local_staticpage',
+                    get_string('settingspagelistcheckconfig' . $urltype, 'local_staticpage')
+                ),
+            ];
+        }
+
+        $templatepages[] = $templatepage;
     }
 
-    // Finish page list.
-    $html .= html_writer::end_tag('ul');
+    // Output page list.
+    $html .= $OUTPUT->render_from_template('local_staticpage/pagelist', ['pages' => $templatepages]);
 }
 
 // Output HTML.
